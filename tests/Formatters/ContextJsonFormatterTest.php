@@ -9,6 +9,6 @@ class ContextJsonFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$logger = new ContextJsonFormatter($testLogger);
 		$logger->log(LogLevel::DEBUG, 'This is a test');
-		$this->assertEquals('This is a test {}', $testLogger->lastLine());
+		$this->assertEquals('This is a test {}', $testLogger->getLastLine());
 	}
 }

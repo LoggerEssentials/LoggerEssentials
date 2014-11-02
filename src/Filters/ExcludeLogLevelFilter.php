@@ -4,7 +4,7 @@ namespace Logger\Filters;
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
-class SingleLogLevelFilter extends AbstractLoggerAware {
+class ExcludeLogLevelFilter extends AbstractLoggerAware {
 	/**
 	 * @var string
 	 */

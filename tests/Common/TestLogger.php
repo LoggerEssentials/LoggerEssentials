@@ -20,8 +20,22 @@ class TestLogger extends AbstractLogger {
 	/**
 	 * @return string
 	 */
-	public function lastLine() {
+	public function getLastLine() {
 		return $this->lastLine;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getLastContext() {
+		return $this->lastContext;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLastLevel() {
+		return $this->lastLevel;
 	}
 
 	/**

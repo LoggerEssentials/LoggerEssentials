@@ -19,6 +19,10 @@
 			<file>tests/Formatters/DateTimeFormatterTest.php</file>
 			<file>tests/Formatters/ContextJsonFormatterTest.php</file>
 			<file>tests/Formatters/CallbackFormatterTest.php</file>
+			<file>tests/Filters/ExcludeLogLevelFilterTest.php</file>
+			<file>tests/Filters/LogLevelRangeFilterTest.php</file>
+			<file>tests/Filters/CallbackFilterTest.php</file>
+			<file>tests/Filters/RegularExpressionFilterTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>

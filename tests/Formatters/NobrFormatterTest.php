@@ -9,6 +9,6 @@ class NobrFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$logger = new NobrFormatter($testLogger);
 		$logger->log(LogLevel::DEBUG, "This\nis\ra\r\ntest");
-		$this->assertEquals('This is a test', $testLogger->lastLine());
+		$this->assertEquals('This is a test', $testLogger->getLastLine());
 	}
 }

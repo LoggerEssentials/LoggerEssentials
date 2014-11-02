@@ -9,6 +9,6 @@ class PassThroughFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$logger = new PassThroughFormatter($testLogger);
 		$logger->log(LogLevel::DEBUG, 'test');
-		$this->assertEquals('test', $testLogger->lastLine());
+		$this->assertEquals('test', $testLogger->getLastLine());
 	}
 }

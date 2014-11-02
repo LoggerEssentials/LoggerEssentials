@@ -9,13 +9,13 @@ class MaxLengthFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$logger = new MaxLengthFormatter($testLogger, 7, '');
 		$logger->log(LogLevel::DEBUG, 'This is a test');
-		$this->assertEquals('This is', $testLogger->lastLine());
+		$this->assertEquals('This is', $testLogger->getLastLine());
 	}
 
 	public function testWithEllipsis() {
 		$testLogger = $this->createTestLogger();
 		$logger = new MaxLengthFormatter($testLogger, 11, ' ...');
 		$logger->log(LogLevel::DEBUG, 'This is a test');
-		$this->assertEquals('This is ...', $testLogger->lastLine());
+		$this->assertEquals('This is ...', $testLogger->getLastLine());
 	}
 }

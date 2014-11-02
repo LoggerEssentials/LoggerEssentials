@@ -27,7 +27,7 @@ class CallbackFilter extends AbstractLoggerAware {
 	 * @return void
 	 */
 	public function log($level, $message, array $context = array()) {
-		$result = call_user_func_array($this->callback, array($level, $message, $context));
+		$result = call_user_func($this->callback, $level, $message, $context);
 		if($result) {
 			$this->logger()->log($level, $message, $context);
 		}

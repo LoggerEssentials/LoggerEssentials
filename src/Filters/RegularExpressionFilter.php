@@ -39,7 +39,8 @@ class RegularExpressionFilter extends AbstractLoggerAware {
 	 * @return void
 	 */
 	public function log($level, $message, array $context = array()) {
-		if(!!preg_match(sprintf("/%s/%s", preg_quote($this->pattern, '/'), $this->modifiers), $message) !== $this->negate) {
+		$result = preg_match(sprintf("/%s/%s", preg_quote($this->pattern, '/'), $this->modifiers), $message);
+		if(!$result !== $this->negate) {
 			$this->logger()->log($level, $message, $context);
 		}
 	}

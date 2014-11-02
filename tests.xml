@@ -1,0 +1,24 @@
+<phpunit bootstrap="vendor/autoload.php"
+		 backupGlobals="false"
+		 backupStaticAttributes="false"
+		 strict="true"
+		 verbose="true"
+		 timeoutForSmallTests="5">
+	<testsuites>
+		<testsuite name="LoggerEssentials">
+			<file>tests/Loggers/LogLevelTranslatorTest.php</file>
+			<file>tests/Loggers/ResourceLoggerTest.php</file>
+			<file>tests/Formatters/TemplateFormatterTest.php</file>
+			<file>tests/Formatters/TrimFormatterTest.php</file>
+			<file>tests/Formatters/ReplaceFormatterTest.php</file>
+			<file>tests/Formatters/PassThroughFormatterTest.php</file>
+			<file>tests/Formatters/NobrFormatterTest.php</file>
+			<file>tests/Formatters/MessagePrefixFormatterTest.php</file>
+			<file>tests/Formatters/MaxLengthFormatterTest.php</file>
+			<file>tests/Formatters/FormatFormatterTest.php</file>
+			<file>tests/Formatters/DateTimeFormatterTest.php</file>
+			<file>tests/Formatters/ContextJsonFormatterTest.php</file>
+			<file>tests/Formatters/CallbackFormatterTest.php</file>
+		</testsuite>
+	</testsuites>
+</phpunit>

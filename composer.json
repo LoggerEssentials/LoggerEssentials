@@ -1,0 +1,37 @@
+{
+	"name": "logger/essentials",
+	"description": "Advanced logging component library",
+	"license": "MIT",
+	"authors": [{
+		"name": "ron",
+		"email": "ron.kirschler@gmail.com"
+	}],
+	"require": {
+		"php": ">= 5.3",
+		"logger/logger": "dev-master"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~3.7"
+	},
+	"autoload": {
+		"psr-4": {
+			"Logger\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Logger\\": ["src/", "tests/"]
+		}
+	},
+	"suggest": {
+		"logger/chromephp": "Logger for the chrome php plugin",
+		"logger/firephp": "Logger for the firephp plugin",
+		"logger/loggly": "Logger api to loggly.com",
+		"logger/network": "Some components to write logging data via tcp or udp to a network-port",
+		"logger/newrelic": "Logger for NewRelic",
+		"logger/pushover": "Logger api to pushover.net",
+		"logger/rollbar": "Logger api to rollbar.com",
+		"logger/syslog": "Logger for syslogd",
+		"logger/zendmonitor": "Logger for the zend server monitor api"
+	}
+}

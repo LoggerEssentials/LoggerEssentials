@@ -3,6 +3,7 @@ namespace Logger\Common;
 
 use Logger\CaptionRenderer;
 use Logger\ExtendedLogger;
+use Logger\Formatters\MessagePrefixFormatter;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
@@ -16,21 +17,24 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @var string[]
 	 */
 	private $captionPath = null;
-
 	/**
-	 * @var CaptionRenderer
+	 * @var string
 	 */
-	private $captionRenderer = null;
+	private $concatenator;
+	/**
+	 * @var string
+	 */
+	private $endingConcatenator;
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param CaptionRenderer $captionRenderer
-	 * @param array $captionPath
+	 * @param string $concatenator
+	 * @param string $endingConcatenator
 	 */
-	public function __construct(LoggerInterface $logger, CaptionRenderer $captionRenderer, array $captionPath = array()) {
+	public function __construct(LoggerInterface $logger, $concatenator = ' > ', $endingConcatenator = ': ') {
 		$this->logger = $logger;
-		$this->captionRenderer = $captionRenderer;
-		$this->captionPath = $captionPath;
+		$this->concatenator = $concatenator;
+		$this->endingConcatenator = $endingConcatenator;
 	}
 
 	/**
@@ -38,7 +42,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @return ExtendedLogger
 	 */
 	public function createSubLogger($caption) {
-		return new static($this->logger, $this->captionRenderer, $this->captionPath + array($caption));
+		return new static(new MessagePrefixFormatter($this->logger, $caption, $this->concatenator, $this->endingConcatenator), $this->concatenator, $this->endingConcatenator);
 	}
 
 	/**
@@ -49,7 +53,6 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @return void
 	 */
 	public function log($level, $message, array $context = array()) {
-		$message = $this->captionRenderer->renderCaptionPath($this->captionPath, $level, $message, $context);
 		$this->logger->log($level, $message, $context);
 	}
 }

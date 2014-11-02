@@ -12,11 +12,6 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @var LoggerInterface
 	 */
 	private $logger = null;
-
-	/**
-	 * @var string[]
-	 */
-	private $captionPath = null;
 	/**
 	 * @var string
 	 */

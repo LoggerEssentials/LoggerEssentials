@@ -2,7 +2,7 @@ rkr/logger-essentials
 =====================
 [![Build Status](https://travis-ci.org/LoggerEssentials/LoggerEssentials.svg)](https://travis-ci.org/LoggerEssentials/LoggerEssentials)
 
-A fully standards-compliant Logger ([psr-3](http://www.php-fig.org/psr/psr-3/)) with some useful wrappers and adapters.
+A fully standards-compliant logging component library ([psr-3](http://www.php-fig.org/psr/psr-3/)) with some useful wrappers and adapters.
 
 ### So, why not just go with already existing libraries?
 

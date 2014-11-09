@@ -6,13 +6,13 @@ A fully standards-compliant logging component library ([psr-3](http://www.php-fi
 
 TOC
 
-* [Common]()
-* [Extenders]()
-* [Filters]()
-* [Formatters]()
-* [Loggers]()
-* [Tools]()
-* [So, why not just go with already existing libraries?]()
+* [Common](#common)
+* [Extenders](#extenders)
+* [Filters](#filters)
+* [Formatters](#formatters)
+* [Loggers](#loggers)
+* [Tools](#tools)
+* [So, why not just go with already existing libraries?](#so-why-not-just-go-with-already-existing-libraries)
 
 
 ## Common

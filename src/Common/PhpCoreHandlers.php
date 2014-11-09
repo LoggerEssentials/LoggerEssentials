@@ -1,7 +1,6 @@
 <?php
-namespace Common;
+namespace Logger\Common;
 
-use Logger\Common\LoggerCollection;
 use Logger\Filters\LogLevelRangeFilter;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;

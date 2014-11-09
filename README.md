@@ -38,20 +38,39 @@ $errorLogger = new LoggerCollection();
 $errorLogger->add(new ResourceLogger(STDERR));
 $errorLogger->add(new ErrorLogLogger());
 $errorLogger->add(new PushoverLogger(/* ... */));
-
 $logger = new LoggerCollection();
 $logger->add(new LogLevelRangeFilter($errorLogger, LogLevel::ERROR, LogLevel::EMERGENCY));
 $errorLogger->add(new LogLevelRangeFilter(new ResourceLogger(STDOUT), LogLevel::INFO, LogLevel::WARNING));
-
 $logger->error("This is a log message");
 ```
 
 
 ## Extenders
 
-### `CallbackExtender` extends the `context` by using a callback-function 
+### `CallbackExtender` 
 
-### `ContextExtender` extends the `context` by using an (key-value-)array 
+Extends the `log-item` by using a callback-function.
+
+```PHP
+$logger = new ResourceLogger(STDOUT);
+$logger = new CallbackExtender($logger, function ($level, &$message) {
+	if($level === LogLevel::INFO) {
+		$message = preg_replace('/\\bworld\\b/', 'planet', $message);
+	}
+});
+$logger->info('Hello world');
+```
+
+### `ContextExtender`
+ 
+Extends the `context` by using an (key-value-)array.
+
+```PHP
+$logger = new ResourceLogger(STDOUT);
+$logger = new ContextExtender($logger, array('test2' => 456));
+$logger->info('Hello world', array('test1' => 123));
+// Context is not ['test1' => 123, 'test2' => 456]
+```
 
 
 ## Filters
@@ -68,7 +87,6 @@ Define a range of valid log-levels.
 $logger = new LoggerCollection();
 $logger->add(new SingleLogLevelFilterProxy(new StreamLogger(STDOUT), LogLevel::INFO, LogLevel::ERROR));
 $logger->add(new SingleLogLevelFilterProxy(new StreamLogger(STDERR), LogLevel::ERROR, LogLevel::EMERGENCY));
-
 $logger->notice('test');
 ```
 

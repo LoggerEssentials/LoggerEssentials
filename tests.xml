@@ -6,8 +6,11 @@
 		 timeoutForSmallTests="5">
 	<testsuites>
 		<testsuite name="LoggerEssentials">
+			<file>tests/Common/LoggerCollectionTest.php</file>
 			<file>tests/Loggers/LogLevelTranslatorTest.php</file>
 			<file>tests/Loggers/ResourceLoggerTest.php</file>
+			<file>tests/Extenders/CallbackExtenderTest.php</file>
+			<file>tests/Extenders/ContextExtenderTest.php</file>
 			<file>tests/Formatters/TemplateFormatterTest.php</file>
 			<file>tests/Formatters/TrimFormatterTest.php</file>
 			<file>tests/Formatters/ReplaceFormatterTest.php</file>

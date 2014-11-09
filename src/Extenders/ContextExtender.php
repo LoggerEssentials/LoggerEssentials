@@ -1,5 +1,5 @@
 <?php
-namespace extenders;
+namespace Logger\Extenders;
 
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;

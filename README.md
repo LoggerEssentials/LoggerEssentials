@@ -6,6 +6,7 @@ A fully standards-compliant logging component library ([psr-3](http://www.php-fi
 
 TOC
 
+* [Install](#install)
 * [Common](#common)
 * [Extenders](#extenders)
 * [Filters](#filters)
@@ -13,6 +14,11 @@ TOC
 * [Loggers](#loggers)
 * [Tools](#tools)
 * [So, why not just go with already existing libraries?](#so-why-not-just-go-with-already-existing-libraries)
+
+
+## Install
+
+`composer require logger/essentials dev-master@stable`
 
 
 ## Common

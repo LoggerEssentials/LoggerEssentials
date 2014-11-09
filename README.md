@@ -1,4 +1,4 @@
-rkr/logger-essentials
+logger/logger
 =====================
 [![Build Status](https://travis-ci.org/LoggerEssentials/LoggerEssentials.svg?branch=master)](https://travis-ci.org/LoggerEssentials/LoggerEssentials) [![Latest Stable Version](https://poser.pugx.org/logger/logger/version.svg)](https://packagist.org/packages/logger/logger) [![Total Downloads](https://poser.pugx.org/logger/logger/downloads.svg)](https://packagist.org/packages/logger/logger) [![License](https://poser.pugx.org/logger/logger/license.svg)](https://packagist.org/packages/logger/logger)
 

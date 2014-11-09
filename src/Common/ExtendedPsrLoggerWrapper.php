@@ -1,7 +1,7 @@
 <?php
 namespace Logger\Common;
 
-use Logger\ExtendedLogger;
+use Logger\Common\ExtendedLogger;
 use Logger\Formatters\MessagePrefixFormatter;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;

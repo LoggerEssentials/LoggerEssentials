@@ -1,5 +1,5 @@
 <?php
-namespace Logger;
+namespace Logger\Common;
 
 use Psr\Log\LoggerInterface;
 

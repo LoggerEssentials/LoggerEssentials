@@ -2,6 +2,7 @@
 namespace Logger\Common;
 
 use Logger\Filters\LogLevelRangeFilter;
+use Logger\Loggers\LoggerCollection;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 

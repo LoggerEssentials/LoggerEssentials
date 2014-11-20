@@ -2,6 +2,7 @@
 namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
+use Logger\Logger;
 
 class TrimFormatter extends AbstractLoggerAware {
 	/**

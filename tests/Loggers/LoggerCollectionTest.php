@@ -1,5 +1,7 @@
 <?php
-namespace Logger\Common;
+namespace Logger\Loggers;
+
+use Logger\Common\TestLogger;
 
 class LoggerCollectionTest extends \PHPUnit_Framework_TestCase {
 	public function testConstructor() {

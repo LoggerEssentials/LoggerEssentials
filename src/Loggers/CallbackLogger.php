@@ -1,9 +1,10 @@
 <?php
 namespace Kir\Logging\Loggers;
 
+use Logger\Logger;
 use Psr\Log\AbstractLogger;
 
-class CallbackLogger extends AbstractLogger {
+class CallbackLogger extends AbstractLogger implements Logger {
 	/**
 	 * @var callable
 	 */

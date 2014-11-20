@@ -2,6 +2,7 @@
 namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
+use Logger\Logger;
 use Psr\Log\LoggerInterface;
 
 class TemplateFormatter extends AbstractLoggerAware {

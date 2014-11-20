@@ -1,9 +1,10 @@
 <?php
 namespace Logger\Loggers;
 
+use Logger\Logger;
 use Psr\Log\AbstractLogger;
 
-class ErrorLogLogger extends AbstractLogger {
+class ErrorLogLogger extends AbstractLogger implements Logger {
 	/**
 	 * @var mixed
 	 */

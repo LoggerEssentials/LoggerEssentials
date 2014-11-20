@@ -1,10 +1,11 @@
 <?php
 namespace Logger\Loggers;
 
+use Logger\Logger;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 
-class SyslogLogger extends AbstractLogger {
+class SyslogLogger extends AbstractLogger implements Logger {
 	/**
 	 * @var array
 	 */

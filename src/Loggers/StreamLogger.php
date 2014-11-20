@@ -1,7 +1,9 @@
 <?php
 namespace Logger\Loggers;
 
-class StreamLogger extends ResourceLogger {
+use Logger\Logger;
+
+class StreamLogger extends ResourceLogger implements Logger {
 	/**
 	 * @param string $connectionUri
 	 * @param string $mode

@@ -1,5 +1,10 @@
-/_dev
-/.idea
-/composer.lock
-/vendor
-/test.php
+/*
+!/doc
+!/src
+!/tests
+!/.gitignore
+!/.travis.yml
+!/composer.json
+!/LICENSE
+!/README.md
+!/tests.xml

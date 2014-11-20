@@ -1,5 +1,5 @@
 <?php
-namespace Logger\Common;
+namespace Logger\Loggers;
 
 use Logger\Logger;
 use Psr\Log\AbstractLogger;

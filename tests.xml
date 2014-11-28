@@ -6,26 +6,7 @@
 		 timeoutForSmallTests="5">
 	<testsuites>
 		<testsuite name="LoggerEssentials">
-			<file>tests/Loggers/LoggerCollectionTest.php</file>
-			<file>tests/Loggers/LogLevelTranslatorTest.php</file>
-			<file>tests/Loggers/ResourceLoggerTest.php</file>
-			<file>tests/Extenders/CallbackExtenderTest.php</file>
-			<file>tests/Extenders/ContextExtenderTest.php</file>
-			<file>tests/Formatters/TemplateFormatterTest.php</file>
-			<file>tests/Formatters/TrimFormatterTest.php</file>
-			<file>tests/Formatters/ReplaceFormatterTest.php</file>
-			<file>tests/Formatters/PassThroughFormatterTest.php</file>
-			<file>tests/Formatters/NobrFormatterTest.php</file>
-			<file>tests/Formatters/MessagePrefixFormatterTest.php</file>
-			<file>tests/Formatters/MaxLengthFormatterTest.php</file>
-			<file>tests/Formatters/FormatFormatterTest.php</file>
-			<file>tests/Formatters/DateTimeFormatterTest.php</file>
-			<file>tests/Formatters/ContextJsonFormatterTest.php</file>
-			<file>tests/Formatters/CallbackFormatterTest.php</file>
-			<file>tests/Filters/ExcludeLogLevelFilterTest.php</file>
-			<file>tests/Filters/LogLevelRangeFilterTest.php</file>
-			<file>tests/Filters/CallbackFilterTest.php</file>
-			<file>tests/Filters/RegularExpressionFilterTest.php</file>
+			<directory>tests</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

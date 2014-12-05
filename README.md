@@ -98,6 +98,10 @@ $logger->notice('test');
 
 ### `RegularExpressionFilter`
 
+### `MinLogLevelFilter`
+
+### `MaxLogLevelFilter`
+
 
 ## Formatters
 

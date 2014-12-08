@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Logging\Essentials\Tools;
+namespace Logger\Tools;
 
 use Logger\Tools\LogLevelTranslator;
 use Logger\Tools\Rfc5424LogLevels;

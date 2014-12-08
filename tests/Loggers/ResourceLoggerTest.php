@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Logging\Essentials\Loggers;
+namespace Logger\Loggers;
 
 use Logger\Formatters\FormatFormatter;
 use Logger\Loggers\ResourceLogger;

@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Logging\Loggers;
+namespace Logger\Loggers;
 
 use Logger\Logger;
 use Psr\Log\AbstractLogger;

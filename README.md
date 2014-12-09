@@ -21,6 +21,16 @@ TOC
 `composer require logger/essentials dev-master@stable`
 
 
+## Example
+
+```PHP
+$logger = new LoggerCollection();
+$logger->add(new TemplateFormatter(new MaxLogLevelFilter(new ResourceLogger(STDOUT), LogLevel::WARNING)));
+$logger->add(new TemplateFormatter(new MinLogLevelFilter(new ResourceLogger(STDERR), LogLevel::ERROR)));
+
+$logger->info('Hello world');
+```
+
 ## Common
 
 ### `ExtendedLogger` for sub-loggers

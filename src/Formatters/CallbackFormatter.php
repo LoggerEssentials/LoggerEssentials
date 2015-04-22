@@ -5,9 +5,7 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class CallbackFormatter extends AbstractLoggerAware {
-	/**
-	 * @var callable
-	 */
+	/** @var callable */
 	private $fn;
 
 	/**

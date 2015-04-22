@@ -6,9 +6,7 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
 class LoggerCollection extends AbstractLogger implements Logger {
-	/**
-	 * @var LoggerInterface[]
-	 */
+	/** @var LoggerInterface[] */
 	private $loggers = array();
 
 	/**

@@ -2,25 +2,16 @@
 namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
-use Logger\Logger;
 use Psr\Log\LoggerInterface;
 
 class TemplateFormatter extends AbstractLoggerAware {
 	const DEFAULT_FORMAT = "[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:\"-\"% %context|json%\n";
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $format;
-
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $values;
-
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $extra = null;
 
 	/**

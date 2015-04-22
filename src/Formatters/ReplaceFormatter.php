@@ -5,9 +5,7 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class ReplaceFormatter extends AbstractLoggerAware {
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $replacement;
 
 	/**

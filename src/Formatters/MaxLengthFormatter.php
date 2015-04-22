@@ -5,17 +5,11 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class MaxLengthFormatter extends AbstractLoggerAware {
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $maxLength;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $charset;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $ellipsis;
 
 	/**

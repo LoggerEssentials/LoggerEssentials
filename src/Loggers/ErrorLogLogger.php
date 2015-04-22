@@ -5,17 +5,11 @@ use Logger\Logger;
 use Psr\Log\AbstractLogger;
 
 class ErrorLogLogger extends AbstractLogger implements Logger {
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	private $messageType;
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	private $destination;
-	/**
-	 * @var mixed
-	 */
+	/** @var mixed */
 	private $extraHeaders;
 
 	/**

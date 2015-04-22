@@ -5,17 +5,11 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class MessagePrefixFormatter extends AbstractLoggerAware {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $caption = null;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $concatenator = null;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $endingConcatenator = null;
 
 	/**

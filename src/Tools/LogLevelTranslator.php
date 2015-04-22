@@ -5,9 +5,7 @@ use Logger\Exceptions\LogLevelNotFoundException;
 use Psr\Log\LogLevel;
 
 final class LogLevelTranslator {
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private static $levelsA = array(
 		Rfc5424LogLevels::EMERGENCY => LogLevel::EMERGENCY,
 		Rfc5424LogLevels::ALERT => LogLevel::ALERT,
@@ -18,10 +16,7 @@ final class LogLevelTranslator {
 		Rfc5424LogLevels::INFO => LogLevel::INFO,
 		Rfc5424LogLevels::DEBUG => LogLevel::DEBUG
 	);
-
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private static $levelsB = array(
 		LogLevel::EMERGENCY => Rfc5424LogLevels::EMERGENCY,
 		LogLevel::ALERT => Rfc5424LogLevels::ALERT,

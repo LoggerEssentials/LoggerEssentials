@@ -5,9 +5,7 @@ use Logger\Logger;
 use Psr\Log\AbstractLogger;
 
 class ArrayLogger extends AbstractLogger implements Logger {
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $lines = array();
 
 	/**

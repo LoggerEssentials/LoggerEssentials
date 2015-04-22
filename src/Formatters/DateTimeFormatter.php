@@ -5,13 +5,9 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class DateTimeFormatter extends AbstractLoggerAware {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $dateFmt;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $format;
 
 	/**

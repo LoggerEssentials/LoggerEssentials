@@ -5,13 +5,9 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class ContextJsonFormatter extends AbstractLoggerAware {
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $jsonOptions;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $format;
 
 	/**

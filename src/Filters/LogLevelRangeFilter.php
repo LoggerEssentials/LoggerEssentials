@@ -7,14 +7,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 class LogLevelRangeFilter extends AbstractLoggerAware {
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $minLevel = null;
-
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $maxLevel = null;
 
 	/**

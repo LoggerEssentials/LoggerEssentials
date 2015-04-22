@@ -5,13 +5,9 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class StacktraceExtender extends AbstractLoggerAware {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $contextKey;
-	/**
-	 * @var int|null
-	 */
+	/** @var int|null */
 	private $debugbacktraceArgs;
 
 	/**

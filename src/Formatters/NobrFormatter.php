@@ -5,9 +5,7 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class NobrFormatter extends AbstractLoggerAware {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $replacement;
 
 	/**

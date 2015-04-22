@@ -5,22 +5,16 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class RegularExpressionFilter extends AbstractLoggerAware {
-	/**
-	 * @var
-	 */
+	/** @var string */
 	private $pattern;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $modifiers;
-	/**
-	 * @var bool
-	 */
+	/** @var bool */
 	private $negate;
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param $pattern
+	 * @param string $pattern
 	 * @param string $modifiers
 	 * @param bool $negate
 	 */

@@ -6,9 +6,7 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 
 class SyslogLogger extends AbstractLogger implements Logger {
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private static $levels = array(
 		LogLevel::DEBUG => LOG_DEBUG,
 		LogLevel::INFO => LOG_INFO,
@@ -19,18 +17,11 @@ class SyslogLogger extends AbstractLogger implements Logger {
 		LogLevel::ALERT => LOG_ALERT,
 		LogLevel::EMERGENCY => LOG_EMERG,
 	);
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $ident;
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $options;
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $facility;
 
 	/**

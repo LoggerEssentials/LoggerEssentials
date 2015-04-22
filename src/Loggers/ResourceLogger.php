@@ -5,9 +5,7 @@ use Logger\Logger;
 use Psr\Log\AbstractLogger;
 
 class ResourceLogger extends AbstractLogger implements Logger {
-	/**
-	 * @var resource
-	 */
+	/** @var resource */
 	private $resource = null;
 
 	/**

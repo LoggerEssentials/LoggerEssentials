@@ -5,9 +5,7 @@ use Logger\Logger;
 use Psr\Log\AbstractLogger;
 
 class CallbackLogger extends AbstractLogger implements Logger {
-	/**
-	 * @var callable
-	 */
+	/** @var callable */
 	private $callable = null;
 
 	/**

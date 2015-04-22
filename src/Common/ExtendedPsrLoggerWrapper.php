@@ -6,17 +6,11 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
 class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger {
-	/**
-	 * @var LoggerInterface
-	 */
+	/** @var LoggerInterface */
 	private $logger = null;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $concatenator;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $endingConcatenator;
 
 	/**

@@ -1,3 +1,11 @@
+# Filters
+
+## CallbackFilter
+
+
+## ExcludeLogLevelFilter
+
+
 # LogLevelRangeFilter
 
 Define a range of valid log-levels.
@@ -8,3 +16,12 @@ $logger->add(new SingleLogLevelFilterProxy(new StreamLogger(STDOUT), LogLevel::I
 $logger->add(new SingleLogLevelFilterProxy(new StreamLogger(STDERR), LogLevel::ERROR, LogLevel::EMERGENCY));
 $logger->notice('test');
 ```
+
+
+## MaxLogLevelFilter
+
+
+## MinLogLevelFilter
+
+
+## RegularExpressionFilter

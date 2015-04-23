@@ -16,7 +16,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	private $captions = array();
 	/** @var ExtendedLoggerMessageRenderer */
 	private $messageRenderer;
-	/** @var ContextExtender */
+	/** @var ExtendedLoggerContextExtender */
 	private $contextExtender;
 
 	/**

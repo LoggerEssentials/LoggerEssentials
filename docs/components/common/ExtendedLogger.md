@@ -10,7 +10,7 @@ $logger = $logger->createSubLogger('Sub-Sub-Routine');
 $logger->notice('Hello World'); // Sub-Routine / Sub-Sub-Routine: Hello World
 ```
 
-# ExtendedLogger
+# ExtendedPsrLoggerWrapper
 
 In addition to the standard-interface LoggerInterface, ExtendedLogger provides a way to build a breadcrumb-path to better communicate the context of a log-entry.
 

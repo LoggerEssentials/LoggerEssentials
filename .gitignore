@@ -1,10 +1,11 @@
 /*
-!/doc
+!/docs
 !/src
 !/tests
 !/.gitignore
 !/.travis.yml
 !/composer.json
 !/LICENSE
+!/mkdocs.yml
 !/README.md
 !/tests.xml

@@ -1,0 +1,8 @@
+site_name: LoggerEssentials
+site_url: https://github.com/LoggerEssentials/LoggerEssentials
+site_description: A fully standards-compliant logging component library (PSR-3) with some useful wrappers and adapters.
+repo_url: https://github.com/LoggerEssentials/LoggerEssentials
+pages:
+- ['index.md', 'Home']
+- ['user-guide/install.md', 'User Guide', 'Writing your docs']
+- ['user-guide/styling-your-docs.md', 'User Guide', 'Styling your docs']

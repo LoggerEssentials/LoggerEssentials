@@ -21,7 +21,7 @@ TOC
 
 ## Install
 
-`composer require logger/essentials dev-master@stable`
+`composer require logger/essentials *@stable`
 
 
 ## Example

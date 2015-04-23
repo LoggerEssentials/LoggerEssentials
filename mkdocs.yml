@@ -6,7 +6,6 @@ pages:
 - ['index.md', 'Home']
 - ['user-guide/install.md', 'User Guide']
 - ['user-guide/getting-started.md', 'User Guide']
-- ['components/loggers/LoggerCollection.md', 'Loggers', 'LoggerCollection']
 - ['components/loggers/ArrayLogger.md', 'Loggers', 'ArrayLogger']
 - ['components/loggers/CallbackLogger.md', 'Loggers', 'CallbackLogger']
 - ['components/loggers/ErrorLogLogger.md', 'Loggers', 'ErrorLogLogger']

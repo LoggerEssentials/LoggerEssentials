@@ -10,7 +10,6 @@ class ArrayLogger extends AbstractLogger implements Logger {
 
 	/**
 	 * Logs with an arbitrary level.
-	 *
 	 * @param string $level See Psr\Log\LogLevel::*
 	 * @param string $message The message MUST be a string or object implementing __toString().
 	 * @param array $context The context array can contain arbitrary data, the only assumption that can be made by implementors is that if an Exception instance is given to produce a stack trace, it MUST be in a key named "exception".

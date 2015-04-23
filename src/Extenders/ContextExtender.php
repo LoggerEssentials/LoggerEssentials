@@ -28,7 +28,7 @@ class ContextExtender extends AbstractLoggerAware {
 		foreach($this->keyValueArray as $key => $value) {
 			if(is_object($value)) {
 				if(method_exists($value, '__toString')) {
-					$value = (string) $value;
+					$value = (string)$value;
 				} else {
 					$value = json_encode($value);
 				}

@@ -34,12 +34,12 @@ class ErrorLogLogger extends AbstractLogger implements Logger {
 		try {
 			if($this->messageType === null) {
 				error_log($message);
-			} elseif((int) $this->messageType === 0 || (int) $this->messageType === 4) {
+			} elseif((int)$this->messageType === 0 || (int)$this->messageType === 4) {
 				error_log($message, $this->messageType);
 			} else {
-				error_log($message, (int) $this->messageType, $this->destination, $this->extraHeaders);
+				error_log($message, (int)$this->messageType, $this->destination, $this->extraHeaders);
 			}
-		} catch (\Exception $e) {
+		} catch(\Exception $e) {
 		}
 	}
 }

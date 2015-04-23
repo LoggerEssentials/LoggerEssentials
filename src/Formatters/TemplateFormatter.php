@@ -76,7 +76,12 @@ class TemplateFormatter extends AbstractLoggerAware {
 		list($input, $modifiers) = explode('|', $value . '|', 2);
 		$modifiers = rtrim($modifiers, '|');
 		if(!$modifiers) {
-			return array($input ?: null, function ($value) { return $value; });
+			return array(
+				$input ?: null,
+				function ($value) {
+					return $value;
+				}
+			);
 		}
 		$modifiers = explode('|', $modifiers);
 		$modifiers = $this->expandModifiers($modifiers);
@@ -94,7 +99,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 			$functions[] = $this->convertCommandToClosure($command, $params);
 		}
 		return function ($value) use ($functions) {
-			foreach ($functions as $fn) {
+			foreach($functions as $fn) {
 				$value = call_user_func($fn, $value);
 			}
 			return $value;
@@ -135,7 +140,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 			}
 			return $params[$key];
 		};
-		switch (strtolower($command)) {
+		switch(strtolower($command)) {
 			case 'date':
 				return function ($value) use ($param) {
 					$dt = new \DateTime($value);
@@ -202,7 +207,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 				};
 			case 'default':
 				return function ($value) use ($param) {
-					return (string) $value === '' ? $param(0) : $value;
+					return (string)$value === '' ? $param(0) : $value;
 				};
 		}
 		throw new \Exception("Command not registered: {$command}");

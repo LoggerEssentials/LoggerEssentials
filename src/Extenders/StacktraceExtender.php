@@ -28,7 +28,6 @@ class StacktraceExtender extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 *
 	 * @param mixed $level
 	 * @param string $message
 	 * @param array $context

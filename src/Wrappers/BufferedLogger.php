@@ -65,7 +65,6 @@ class BufferedLogger extends AbstractLogger {
 
 	/**
 	 * Logs with an arbitrary level.
-	 *
 	 * @param mixed $level
 	 * @param string $message
 	 * @param array $context

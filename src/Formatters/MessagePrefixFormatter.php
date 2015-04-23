@@ -37,7 +37,7 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 		if(is_array($this->caption)) {
 			$parts[] = join($this->concatenator, $this->caption);
 		} else {
-			$parts[] = (string) $this->caption;
+			$parts[] = (string)$this->caption;
 		}
 		$parts[] = $message;
 		$parts = array_filter($parts);

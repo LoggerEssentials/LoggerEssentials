@@ -9,4 +9,4 @@ interface ExtendedLogger extends LoggerInterface {
 	 * @return ExtendedLogger
 	 */
 	public function createSubLogger($caption);
-} 
+}

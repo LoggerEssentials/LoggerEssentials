@@ -1,35 +1,84 @@
 <?php
 namespace Logger\Common;
 
-use Logger\Formatters\MessagePrefixFormatter;
+use Logger\Common\ExtendedLogger\ExtendedLoggerContextExtender;
+use Logger\Common\ExtendedLogger\ExtendedLoggerMessageRenderer;
+use Logger\Common\ExtendedLogger\ExtendedLoggerStandardContextExtender;
+use Logger\Common\ExtendedLogger\ExtendedLoggerStandardMessageRenderer;
+use Logger\Extenders\ContextExtender;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
 class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger {
 	/** @var LoggerInterface */
 	private $logger = null;
-	/** @var string */
-	private $concatenator;
-	/** @var string */
-	private $endingConcatenator;
+	/** @var string[] */
+	private $captions = array();
+	/** @var ExtendedLoggerMessageRenderer */
+	private $messageRenderer;
+	/** @var ContextExtender */
+	private $contextExtender;
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param string $concatenator
-	 * @param string $endingConcatenator
+	 * @param ExtendedLoggerMessageRenderer $messageRenderer
+	 * @param ExtendedLoggerContextExtender $contextExtender
 	 */
-	public function __construct(LoggerInterface $logger, $concatenator = ' > ', $endingConcatenator = ': ') {
+	public function __construct(LoggerInterface $logger, ExtendedLoggerMessageRenderer $messageRenderer = null, ExtendedLoggerContextExtender $contextExtender = null) {
+		if($messageRenderer === null) {
+			$messageRenderer = new ExtendedLoggerStandardMessageRenderer();
+		}
+		if($contextExtender === null) {
+			$contextExtender = new ExtendedLoggerStandardContextExtender();
+		}
 		$this->logger = $logger;
-		$this->concatenator = $concatenator;
-		$this->endingConcatenator = $endingConcatenator;
+		$this->messageRenderer = $messageRenderer;
+		$this->contextExtender = $contextExtender;
+	}
+
+	/**
+	 * @return LoggerInterface
+	 */
+	public function getLogger() {
+		return $this->logger;
+	}
+
+	/**
+	 * @param $caption
+	 * @return $this
+	 */
+	public function addCaption($caption) {
+		$caption = strtr($caption, array("\n" => ' ', "\r" => ' ', "\t" => ' '));
+		$this->captions[] = $caption;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCaptions() {
+		return $this->captions;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function clearCaptions() {
+		$this->captions = array();
+		return $this;
 	}
 
 	/**
 	 * @param string $caption
-	 * @return ExtendedLogger
+	 * @return $this
 	 */
 	public function createSubLogger($caption) {
-		return new static(new MessagePrefixFormatter($this->logger, $caption, $this->concatenator, $this->endingConcatenator), $this->concatenator, $this->endingConcatenator);
+		$logger = new static($this->logger, $this->messageRenderer);
+		foreach($this->captions as $parentCaption) {
+			$logger->addCaption($parentCaption);
+		}
+		$logger->addCaption($caption);
+		return $logger;
 	}
 
 	/**
@@ -40,6 +89,8 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @return void
 	 */
 	public function log($level, $message, array $context = array()) {
+		$message = $this->messageRenderer->render($message, $this->captions);
+		$context = $this->contextExtender->extend($context, $this->captions);
 		$this->logger->log($level, $message, $context);
 	}
 }

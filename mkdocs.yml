@@ -14,7 +14,6 @@ pages:
 - ['components/loggers/StreamLogger.md', 'Loggers', 'StreamLogger']
 - ['components/loggers/SyslogLogger.md', 'Loggers', 'SyslogLogger']
 - ['components/common/ExtendedLogger.md', 'Common', 'ExtendedLogger']
-- ['components/common/ExtendedPsrLoggerWrapper.md', 'Common', 'ExtendedPsrLoggerWrapper']
 - ['components/formatters/CallbackFormatter.md', 'Formatters', 'CallbackFormatter']
 - ['components/formatters/ContextJsonFormatter.md', 'Formatters', 'ContextJsonFormatter']
 - ['components/formatters/DateTimeFormatter.md', 'Formatters', 'DateTimeFormatter']

@@ -4,5 +4,5 @@ site_description: A fully standards-compliant logging component library (PSR-3) 
 repo_url: https://github.com/LoggerEssentials/LoggerEssentials
 pages:
 - ['index.md', 'Home']
-- ['user-guide/install.md', 'User Guide', 'Writing your docs']
-- ['user-guide/styling-your-docs.md', 'User Guide', 'Styling your docs']
+- ['user-guide/install.md', 'User Guide', 'Install']
+- ['user-guide/getting-started.md', 'User Guide', 'Getting started']

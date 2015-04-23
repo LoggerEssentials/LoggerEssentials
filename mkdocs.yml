@@ -6,4 +6,4 @@ pages:
 - ['index.md', 'Home']
 - ['user-guide/install.md', 'User Guide', 'Install']
 - ['user-guide/getting-started.md', 'User Guide', 'Getting started']
-- ['components/common/ExtendedLogger.md', 'Components', 'Common', 'ExtendedLogger']
+- ['components/common/ExtendedLogger.md', 'Components', 'ExtendedLogger']

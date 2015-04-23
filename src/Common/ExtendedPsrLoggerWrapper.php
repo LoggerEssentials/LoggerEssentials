@@ -1,10 +1,10 @@
 <?php
 namespace Logger\Common;
 
-use Logger\Common\ExtendedLogger\ExtendedLoggerContextExtender;
-use Logger\Common\ExtendedLogger\ExtendedLoggerMessageRenderer;
-use Logger\Common\ExtendedLogger\ExtendedLoggerStandardContextExtender;
-use Logger\Common\ExtendedLogger\ExtendedLoggerStandardMessageRenderer;
+use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerContextExtender;
+use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerMessageRenderer;
+use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardContextExtender;
+use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardMessageRenderer;
 use Logger\Extenders\ContextExtender;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;

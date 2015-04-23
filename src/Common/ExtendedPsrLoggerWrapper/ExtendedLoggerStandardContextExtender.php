@@ -1,5 +1,5 @@
 <?php
-namespace Logger\Common\ExtendedLogger;
+namespace Logger\Common\ExtendedPsrLoggerWrapper;
 
 class ExtendedLoggerStandardContextExtender implements ExtendedLoggerContextExtender {
 	/**

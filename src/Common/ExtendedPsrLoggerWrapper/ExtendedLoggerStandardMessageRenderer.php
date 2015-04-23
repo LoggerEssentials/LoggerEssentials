@@ -1,5 +1,5 @@
 <?php
-namespace Logger\Common\ExtendedLogger;
+namespace Logger\Common\ExtendedPsrLoggerWrapper;
 
 class ExtendedLoggerStandardMessageRenderer implements ExtendedLoggerMessageRenderer {
 	/** @var string */
@@ -8,8 +8,6 @@ class ExtendedLoggerStandardMessageRenderer implements ExtendedLoggerMessageRend
 	private $endingConcatenator;
 
 	/**
-	 * ExtendedLoggerStandardMessageRenderer constructor.
-	 *
 	 * @param string $concatenator
 	 * @param string $endingConcatenator
 	 */

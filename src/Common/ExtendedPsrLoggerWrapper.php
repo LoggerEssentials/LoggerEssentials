@@ -5,7 +5,6 @@ use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerMessageRenderer;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardMessageRenderer;
-use Logger\Extenders\ContextExtender;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 

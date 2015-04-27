@@ -6,9 +6,15 @@
 ## ExcludeLogLevelFilter
 
 
-# LogLevelRangeFilter
+## LogLevelRangeFilter
 
 Define a range of valid log-levels.
+
+### Motivation
+
+
+
+### Example
 
 ```PHP
 $logger = new LoggerCollection();

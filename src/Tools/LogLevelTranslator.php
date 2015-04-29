@@ -52,9 +52,9 @@ final class LogLevelTranslator {
 	}
 
 	/**
-	 * @param string $levelNo
+	 * @param int $levelNo
 	 * @throws LogLevelNotFoundException
-	 * @return int
+	 * @return string
 	 */
 	static public function getLevelToken($levelNo) {
 		return self::getFrom(self::$levelsA, $levelNo);

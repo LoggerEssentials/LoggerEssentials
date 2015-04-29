@@ -72,4 +72,4 @@ final class LogLevelTranslator {
 		}
 		throw new LogLevelNotFoundException("Log-level not found: {$level}");
 	}
-} 
+}

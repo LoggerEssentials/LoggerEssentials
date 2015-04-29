@@ -8,7 +8,7 @@ class StacktraceExtender extends AbstractLoggerAware {
 	/** @var string */
 	private $contextKey;
 	/** @var int|null */
-	private $debugbacktraceArgs;
+	private $debugbacktraceArgs = DEBUG_BACKTRACE_PROVIDE_OBJECT;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -34,7 +34,7 @@ class StacktraceExtender extends AbstractLoggerAware {
 	 * @return null
 	 */
 	public function log($level, $message, array $context = array()) {
-		$stacktrace = debug_backtrace();
+		$stacktrace = debug_backtrace($this->debugbacktraceArgs);
 		$context[$this->contextKey] = json_decode(json_encode($stacktrace), true);
 		$this->logger()->log($level, $message, $context);
 	}

@@ -182,11 +182,11 @@ class TemplateFormatter extends AbstractLoggerAware {
 					return str_pad($value, $param(0), $param(1, ' '), STR_PAD_LEFT);
 				};
 			case 'uppercase':
-				return function ($value) use ($param) {
+				return function ($value) {
 					return strtoupper($value);
 				};
 			case 'lowercase':
-				return function ($value) use ($param) {
+				return function ($value) {
 					return strtolower($value);
 				};
 			case 'lcfirst':

@@ -33,7 +33,7 @@ class ContextJsonFormatter extends AbstractLoggerAware {
 		if(!count($ctx)) {
 			$ctx = new \stdClass();
 		}
-		$message = sprintf('%s %s', $message, json_encode($ctx, $this->jsonOptions));
+		$message = sprintf($this->format, $message, json_encode($ctx, $this->jsonOptions));
 		$this->logger()->log($level, $message, $context);
 	}
 }

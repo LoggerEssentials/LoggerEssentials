@@ -1,10 +1,8 @@
-# Extenders
-
-## CallbackExtender
+# CallbackExtender
 
 
-## ContextExtender
+# ContextExtender
 
 
-## StacktraceExtender
+# StacktraceExtender
 

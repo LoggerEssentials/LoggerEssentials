@@ -13,4 +13,4 @@ before_script:
   - composer update
 
 script:
-  - phpunit -c tests.xml
+  - vendor/bin/phpunit -c tests.xml

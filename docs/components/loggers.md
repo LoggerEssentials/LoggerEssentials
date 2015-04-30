@@ -1,12 +1,10 @@
-# Loggers
-
-## ArrayLogger
+# ArrayLogger
 
 
-## CallbackLogger
+# CallbackLogger
 
 
-## ErrorLogLogger
+# ErrorLogLogger
 
 
 # LoggerCollection
@@ -25,10 +23,11 @@ $logger->error("This is a log message");
 ```
 
 
-## ResourceLogger
+# ResourceLogger
 
 
-## StreamLogger
+# StreamLogger
 
 
-## SyslogLogger
+# SyslogLogger
+

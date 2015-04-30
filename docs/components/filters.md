@@ -1,20 +1,18 @@
-# Filters
-
-## CallbackFilter
+# CallbackFilter
 
 
-## ExcludeLogLevelFilter
+# ExcludeLogLevelFilter
 
 
-## LogLevelRangeFilter
+# LogLevelRangeFilter
 
 Define a range of valid log-levels.
 
-### Motivation
+## Motivation
 
 
 
-### Example
+## Example
 
 ```PHP
 $logger = new LoggerCollection();
@@ -24,11 +22,11 @@ $logger->notice('test');
 ```
 
 
-## MaxLogLevelFilter
+# MaxLogLevelFilter
 
 
-## MinLogLevelFilter
+# MinLogLevelFilter
 
 
-## RegularExpressionFilter
+# RegularExpressionFilter
 

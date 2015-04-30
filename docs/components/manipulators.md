@@ -1,6 +1,4 @@
-# Manipulators
-
-## LogLevelCompressor
+# LogLevelCompressor
 
 Set an min and/or max log-level. If a log-message has a log-level that is not in the range of min- and max-log-level, then the level is changed to match either the min or the max log-level.
 

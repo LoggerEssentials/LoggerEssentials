@@ -8,11 +8,11 @@
 
 Define a range of valid log-levels.
 
-## Motivation
+### Motivation
 
 
 
-## Example
+### Example
 
 ```PHP
 $logger = new LoggerCollection();

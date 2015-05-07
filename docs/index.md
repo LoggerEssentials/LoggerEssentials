@@ -19,7 +19,7 @@ $logger->info('Hello world');
 You could use Monolog as an output-channel, which is also PSR-3 compatible but ships propritary log-handlers. LoggerEssentials assumes, that all LogHandlers are PSR-3 compatible, so you can't use those handlers directly. May be I could create a wrapper for them at some time. 
 
 ```PHP
-// This is not working due to a missing self-reference return 
+// This is not working due to a missing self-reference return. *arg*
 // $slackLogger = (new Monolog\Logger())->pushHandler(new SlackHandler( /* ... */ ));
 
 $monolog = (new Monolog\Logger());

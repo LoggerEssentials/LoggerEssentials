@@ -20,9 +20,9 @@ You could use Monolog as an output-channel, which is also PSR-3 compatible but s
 
 ```PHP
 // This is not working due to a missing self-referenced return. *arg*
-// $slackLogger = (new Monolog\Logger())->pushHandler(new SlackHandler( /* ... */ ));
+// $slackLogger = (new Monolog\Logger( /* ... */ ))->pushHandler(new SlackHandler( /* ... */ ));
 
-$monolog = (new Monolog\Logger());
+$monolog = new Monolog\Logger( /* ... */ );
 $monolog->pushHandler(new SlackHandler( /* ... */ ));
 $slackLogger = $monolog;
 

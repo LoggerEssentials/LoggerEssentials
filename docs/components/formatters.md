@@ -1,21 +1,19 @@
-# Formatters
-
-## CallbackFormatter
+# CallbackFormatter
 
 
-## ContextJsonFormatter
+# ContextJsonFormatter
 
 
-## DateTimeFormatter
+# DateTimeFormatter
 
 
-## FormatFormatter
+# FormatFormatter
 
 
-## MaxLengthFormatter
+# MaxLengthFormatter
 
 
-## MessagePrefixFormatter
+# MessagePrefixFormatter
 
 Add a prefix to all log messages:
 
@@ -24,16 +22,16 @@ $logger = new MessagePrefixProxy(new ResourceLogger(STDOUT), 'AddCustomer: ');
 ```
 
 
-## NobrFormatter
+# NobrFormatter
 
 
-## PassThroughFormatter
+# PassThroughFormatter
 
 
-## ReplaceFormatter
+# ReplaceFormatter
 
 
-## TemplateFormatter
+# TemplateFormatter
 
 
-## TrimFormatter
+# TrimFormatter

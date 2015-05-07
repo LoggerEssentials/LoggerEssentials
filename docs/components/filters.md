@@ -1,12 +1,10 @@
-# Filters
-
-## CallbackFilter
+# CallbackFilter
 
 
-## ExcludeLogLevelFilter
+# ExcludeLogLevelFilter
 
 
-## LogLevelRangeFilter
+# LogLevelRangeFilter
 
 Define a range of valid log-levels.
 
@@ -24,11 +22,11 @@ $logger->notice('test');
 ```
 
 
-## MaxLogLevelFilter
+# MaxLogLevelFilter
 
 
-## MinLogLevelFilter
+# MinLogLevelFilter
 
 
-## RegularExpressionFilter
+# RegularExpressionFilter
 

@@ -1,5 +1,9 @@
 # LoggerEssentials
 
+## What is LoggerEssentials?
+
+[LoggerEssentials](https://github.com/LoggerEssentials/LoggerEssentials) is a collection of PSR-3 compatible loggers and wrappers to get a greater control of your logs.
+
 ## Example
 
 ```PHP

@@ -13,9 +13,9 @@ class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 	public function testContextExtender() {
 		$testLogger = new TestLogger();
 		$logger = new ExtendedPsrLoggerWrapper($testLogger);
-		$logger->context('context a', [], function () use ($logger) {
+		$logger->context('context a', array(), function () use ($logger) {
 			$logger = $logger->createSubLogger('child a');
-			$logger->context('context b', [], function () use ($logger) {
+			$logger->context('context b', array(), function () use ($logger) {
 				$logger = $logger->createSubLogger('child b');
 				$logger->info('Hello world');
 			});

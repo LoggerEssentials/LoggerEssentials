@@ -11,3 +11,4 @@
 !/mkdocs.yml
 !/README.md
 !/tests.xml
+!/test-*

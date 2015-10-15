@@ -9,4 +9,12 @@ interface ExtendedLogger extends LoggerInterface {
 	 * @return ExtendedLogger
 	 */
 	public function createSubLogger($caption);
+
+	/**
+	 * @param string $caption
+	 * @param array $context
+	 * @param callable $fn
+	 * @return ExtendedLogger
+	 */
+	public function context($caption, array $context = [], $fn);
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Logger\Common;
 
+use Exception;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerMessageRenderer;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardContextExtender;
@@ -78,6 +79,25 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		}
 		$logger->addCaption($caption);
 		return $logger;
+	}
+
+	/**
+	 * @param string $caption
+	 * @param array $context
+	 * @param callable $fn
+	 * @return $this
+	 * @throws Exception
+	 */
+	public function context($caption, array $context = [], $fn) {
+		try {
+			$this->captions[] = $caption;
+			$result = call_user_func($fn);
+			array_pop($this->captions);
+			return $result;
+		} catch(Exception $e) {
+			array_pop($this->captions);
+			throw $e;
+		}
 	}
 
 	/**

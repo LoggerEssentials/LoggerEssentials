@@ -10,9 +10,9 @@ class MinLogLevelFilterTest extends \PHPUnit_Framework_TestCase {
 		$logger = new MinLogLevelFilter($testLogger, LogLevel::ERROR);
 
 		$logger->warning('test');
-		$this->assertNotEquals('test', $testLogger->getLastLine());
+		$this->assertNotEquals('test', $testLogger->getLastLine()->getMessage());
 
 		$logger->error('test');
-		$this->assertEquals('test', $testLogger->getLastLine());
+		$this->assertEquals('test', $testLogger->getLastLine()->getMessage());
 	}
 }

@@ -9,6 +9,6 @@ class FormatFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$logger = new FormatFormatter($testLogger, "[%s]");
 		$logger->log(LogLevel::DEBUG, 'This is a test');
-		$this->assertEquals('[This is a test]', $testLogger->getLastLine());
+		$this->assertEquals('[This is a test]', $testLogger->getLastLine()->getMessage());
 	}
 }

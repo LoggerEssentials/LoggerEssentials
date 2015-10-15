@@ -10,15 +10,15 @@ class LogLevelRangeFilterTest extends \PHPUnit_Framework_TestCase {
 		$logger = new LogLevelRangeFilter($testLogger, LogLevel::DEBUG, LogLevel::WARNING);
 
 		$logger->error('error');
-		$this->assertNotEquals('error', $testLogger->getLastLine());
+		$this->assertNotEquals('error', $testLogger->getLastLine()->getMessage());
 
 		$logger->alert('alert');
-		$this->assertNotEquals('alert', $testLogger->getLastLine());
+		$this->assertNotEquals('alert', $testLogger->getLastLine()->getMessage());
 
 		$logger->warning('warning');
-		$this->assertEquals('warning', $testLogger->getLastLine());
+		$this->assertEquals('warning', $testLogger->getLastLine()->getMessage());
 
 		$logger->debug('debug');
-		$this->assertEquals('debug', $testLogger->getLastLine());
+		$this->assertEquals('debug', $testLogger->getLastLine()->getMessage());
 	}
 }

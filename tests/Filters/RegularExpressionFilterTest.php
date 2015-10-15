@@ -9,10 +9,10 @@ class RegularExpressionFilterTest extends \PHPUnit_Framework_TestCase {
 		$logger = new RegularExpressionFilter($testLogger, 'is a', 'u');
 
 		$logger->info('hello world');
-		$this->assertEquals('hello world', $testLogger->getLastLine());
+		$this->assertEquals('hello world', $testLogger->getLastLine()->getMessage());
 
 		$logger->notice('this is a test');
-		$this->assertNotEquals('this is a test', $testLogger->getLastLine());
+		$this->assertNotEquals('this is a test', $testLogger->getLastLine()->getMessage());
 	}
 
 	public function testNegate() {
@@ -20,9 +20,9 @@ class RegularExpressionFilterTest extends \PHPUnit_Framework_TestCase {
 		$logger = new RegularExpressionFilter($testLogger, 'is a', 'u');
 
 		$logger->info('hello world');
-		$this->assertEquals('hello world', $testLogger->getLastLine());
+		$this->assertEquals('hello world', $testLogger->getLastLine()->getMessage());
 
 		$logger->notice('this is a test');
-		$this->assertNotEquals('this is a test', $testLogger->getLastLine());
+		$this->assertNotEquals('this is a test', $testLogger->getLastLine()->getMessage());
 	}
 }

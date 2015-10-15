@@ -1,8 +1,6 @@
 <?php
 namespace Logger\Tools;
 
-use Logger\Tools\LogLevelTranslator;
-use Logger\Tools\Rfc5424LogLevels;
 use Psr\Log\LogLevel;
 
 class LogLevelTranslatorTest extends \PHPUnit_Framework_TestCase {
@@ -58,4 +56,3 @@ class LogLevelTranslatorTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 }
- 

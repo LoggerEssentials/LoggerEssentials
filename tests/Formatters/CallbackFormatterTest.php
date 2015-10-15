@@ -11,6 +11,6 @@ class CallbackFormatterTest extends FormatterTestCase {
 			return json_encode(array('lvl' => $level, 'msg' => $message));
 		});
 		$logger->log(LogLevel::DEBUG, 'This is a test');
-		$this->assertEquals('{"lvl":"debug","msg":"This is a test"}', $testLogger->getLastLine());
+		$this->assertEquals('{"lvl":"debug","msg":"This is a test"}', $testLogger->getLastLine()->getMessage());
 	}
 }

@@ -9,8 +9,8 @@ class ExcludeLogLevelFilterTest extends \PHPUnit_Framework_TestCase {
 		$testLogger = new TestLogger();
 		$logger = new ExcludeLogLevelFilter($testLogger, LogLevel::DEBUG);
 		$logger->debug('Hello world');
-		$this->assertNotEquals('Hello world', $testLogger->getLastLine());
+		$this->assertNotEquals('Hello world', $testLogger->getLastLine()->getMessage());
 		$logger->info('Hello world');
-		$this->assertEquals('Hello world', $testLogger->getLastLine());
+		$this->assertEquals('Hello world', $testLogger->getLastLine()->getMessage());
 	}
 }

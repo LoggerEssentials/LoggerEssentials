@@ -10,9 +10,9 @@ class MaxLogLevelFilterTest extends \PHPUnit_Framework_TestCase {
 		$logger = new MaxLogLevelFilter($testLogger, LogLevel::WARNING);
 
 		$logger->error('test');
-		$this->assertNotEquals('test', $testLogger->getLastLine());
+		$this->assertNotEquals('test', $testLogger->getLastLine()->getMessage());
 
 		$logger->warning('test');
-		$this->assertEquals('test', $testLogger->getLastLine());
+		$this->assertEquals('test', $testLogger->getLastLine()->getMessage());
 	}
 }

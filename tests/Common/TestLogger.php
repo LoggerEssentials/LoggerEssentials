@@ -4,50 +4,39 @@ namespace Logger\Common;
 use Psr\Log\AbstractLogger;
 
 class TestLogger extends AbstractLogger {
-	/**
-	 * @var string
-	 */
-	private $lastLevel;
-	/**
-	 * @var string
-	 */
-	private $lastLine = '';
-	/**
-	 * @var array
-	 */
-	private $lastContext;
+	/** @var array */
+	private $firstLine = null;
+	/** @var array */
+	private $lastLine = null;
 
 	/**
-	 * @return string
+	 * @return TestLoggerLine
+	 */
+	public function getFirstLine() {
+		return new TestLoggerLine($this->firstLine['message'], $this->firstLine['context'], $this->firstLine['severty']);
+	}
+
+	/**
+	 * @return TestLoggerLine
 	 */
 	public function getLastLine() {
-		return $this->lastLine;
+		return new TestLoggerLine($this->lastLine['message'], $this->lastLine['context'], $this->lastLine['severty']);
 	}
 
 	/**
-	 * @return array
-	 */
-	public function getLastContext() {
-		return $this->lastContext;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getLastLevel() {
-		return $this->lastLevel;
-	}
-
-	/**
-	 * Logs with an arbitrary level.
 	 * @param string $level
 	 * @param string $message
 	 * @param array $context
 	 * @return void
 	 */
 	public function log($level, $message, array $context = array()) {
-		$this->lastLevel = $level;
-		$this->lastLine = $message;
-		$this->lastContext = $context;
+		$this->lastLine = array(
+			'message' => $message,
+			'context' => $context,
+			'severty' => $level,
+		);
+		if($this->firstLine === null) {
+			$this->firstLine = $this->lastLine;
+		}
 	}
 }

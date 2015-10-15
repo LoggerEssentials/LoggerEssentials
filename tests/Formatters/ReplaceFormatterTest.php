@@ -9,6 +9,6 @@ class ReplaceFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$formatter = new ReplaceFormatter($testLogger, array('h' => 'b'));
 		$formatter->log(LogLevel::DEBUG, "hand");
-		$this->assertEquals('band', $testLogger->getLastLine());
+		$this->assertEquals('band', $testLogger->getLastLine()->getMessage());
 	}
 }

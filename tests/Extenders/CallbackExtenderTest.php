@@ -13,6 +13,6 @@ class CallbackExtenderTest extends \PHPUnit_Framework_TestCase {
 			}
 		});
 		$logger->info('Hello world');
-		$this->assertEquals('Hello planet', $testLogger->getLastLine());
+		$this->assertEquals('Hello planet', $testLogger->getLastLine()->getMessage());
 	}
 }

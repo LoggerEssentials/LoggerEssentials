@@ -12,15 +12,15 @@ class CallbackFilterTest extends \PHPUnit_Framework_TestCase {
 		});
 
 		$logger->debug('debug');
-		$this->assertEquals('debug', $testLogger->getLastLine());
+		$this->assertEquals('debug', $testLogger->getLastLine()->getMessage());
 
 		$logger->notice('notice');
-		$this->assertEquals('notice', $testLogger->getLastLine());
+		$this->assertEquals('notice', $testLogger->getLastLine()->getMessage());
 
 		$logger->warning('warning');
-		$this->assertNotEquals('warning', $testLogger->getLastLine());
+		$this->assertNotEquals('warning', $testLogger->getLastLine()->getMessage());
 
 		$logger->error('error');
-		$this->assertEquals('error', $testLogger->getLastLine());
+		$this->assertEquals('error', $testLogger->getLastLine()->getMessage());
 	}
 }

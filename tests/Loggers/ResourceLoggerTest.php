@@ -2,7 +2,6 @@
 namespace Logger\Loggers;
 
 use Logger\Formatters\FormatFormatter;
-use Logger\Loggers\ResourceLogger;
 use Logger\Tools\LogLevelTranslator;
 
 class ResourceLoggerTest extends \PHPUnit_Framework_TestCase {
@@ -17,4 +16,3 @@ class ResourceLoggerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals("emergency\nalert\ncritical\nerror\nwarning\nnotice\ninfo\ndebug\n", $data);
 	}
 }
- 

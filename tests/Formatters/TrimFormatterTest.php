@@ -9,6 +9,6 @@ class TrimFormatterTest extends \PHPUnit_Framework_TestCase {
 		$testLogger = new TestLogger();
 		$formatter = new TrimFormatter($testLogger);
 		$formatter->log(LogLevel::DEBUG, "    test    ");
-		$this->assertEquals('test', $testLogger->getLastLine());
+		$this->assertEquals('test', $testLogger->getLastLine()->getMessage());
 	}
 }

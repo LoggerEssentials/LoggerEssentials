@@ -11,8 +11,8 @@ class LoggerCollectionTest extends \PHPUnit_Framework_TestCase {
 		$loggerCollection = new LoggerCollection(array($testLogger1, $testLogger2));
 		$loggerCollection->info('Hello world');
 
-		$this->assertEquals('Hello world', $testLogger1->getLastLine());
-		$this->assertEquals('Hello world', $testLogger2->getLastLine());
+		$this->assertEquals('Hello world', $testLogger1->getLastLine()->getMessage());
+		$this->assertEquals('Hello world', $testLogger2->getLastLine()->getMessage());
 	}
 
 	public function testAdd() {
@@ -24,8 +24,8 @@ class LoggerCollectionTest extends \PHPUnit_Framework_TestCase {
 		$loggerCollection->add($testLogger2);
 		$loggerCollection->info('Hello world');
 
-		$this->assertEquals('Hello world', $testLogger1->getLastLine());
-		$this->assertEquals('Hello world', $testLogger2->getLastLine());
+		$this->assertEquals('Hello world', $testLogger1->getLastLine()->getMessage());
+		$this->assertEquals('Hello world', $testLogger2->getLastLine()->getMessage());
 	}
 
 	public function testBoth() {
@@ -36,7 +36,7 @@ class LoggerCollectionTest extends \PHPUnit_Framework_TestCase {
 		$loggerCollection->add($testLogger2);
 		$loggerCollection->info('Hello world');
 
-		$this->assertEquals('Hello world', $testLogger1->getLastLine());
-		$this->assertEquals('Hello world', $testLogger2->getLastLine());
+		$this->assertEquals('Hello world', $testLogger1->getLastLine()->getMessage());
+		$this->assertEquals('Hello world', $testLogger2->getLastLine()->getMessage());
 	}
 }

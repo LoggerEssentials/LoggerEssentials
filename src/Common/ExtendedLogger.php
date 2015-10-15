@@ -5,10 +5,10 @@ use Psr\Log\LoggerInterface;
 
 interface ExtendedLogger extends LoggerInterface {
 	/**
-	 * @param string $caption
+	 * @param string $captions
 	 * @return ExtendedLogger
 	 */
-	public function createSubLogger($caption);
+	public function createSubLogger($captions);
 
 	/**
 	 * @param string $caption
@@ -16,5 +16,5 @@ interface ExtendedLogger extends LoggerInterface {
 	 * @param callable $fn
 	 * @return ExtendedLogger
 	 */
-	public function context($caption, array $context = [], $fn);
+	public function context($caption, array $context = array(), $fn);
 }

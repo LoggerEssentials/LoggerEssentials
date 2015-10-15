@@ -2,6 +2,7 @@
 namespace Logger\Common;
 
 use Exception;
+use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerCaptionTrail;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerMessageRenderer;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardContextExtender;
@@ -13,24 +14,25 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	/** @var LoggerInterface */
 	private $logger = null;
 	/** @var string[] */
-	private $captions = array();
+	private $captionTrail = null;
 	/** @var ExtendedLoggerMessageRenderer */
 	private $messageRenderer;
 	/** @var ExtendedLoggerContextExtender */
 	private $contextExtender;
 	/** @var array */
-	private $captionTrail;
-	/** @var array */
 	private $context;
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param string[] $captionTrail
+	 * @param ExtendedLoggerCaptionTrail $captionTrail
 	 * @param array $context
 	 * @param ExtendedLoggerMessageRenderer $messageRenderer
 	 * @param ExtendedLoggerContextExtender $contextExtender
 	 */
-	public function __construct(LoggerInterface $logger, array $captionTrail = array(), array $context = array(), ExtendedLoggerMessageRenderer $messageRenderer = null, ExtendedLoggerContextExtender $contextExtender = null) {
+	public function __construct(LoggerInterface $logger, ExtendedLoggerCaptionTrail $captionTrail = null, array $context = array(), ExtendedLoggerMessageRenderer $messageRenderer = null, ExtendedLoggerContextExtender $contextExtender = null) {
+		if($captionTrail === null) {
+			$captionTrail = new ExtendedLoggerCaptionTrail();
+		}
 		if($messageRenderer === null) {
 			$messageRenderer = new ExtendedLoggerStandardMessageRenderer();
 		}
@@ -54,20 +56,25 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	/**
 	 * @return string
 	 */
-	public function getCaptions() {
-		return $this->captions;
+	public function getCaptionTrail() {
+		return $this->captionTrail->getCaptions();
 	}
 
 	/**
-	 * @param string $caption
+	 * @param string|string[] $captions
 	 * @param array $context
 	 * @return $this
 	 */
-	public function createSubLogger($caption, array $context = array()) {
-		$captions = $this->captions;
-		$captions[] = $caption;
+	public function createSubLogger($captions, array $context = array()) {
+		if(!is_array($captions)) {
+			$captions = array($captions);
+		}
+		$captionTrail = new ExtendedLoggerCaptionTrail($this->captionTrail);
+		foreach($captions as $caption) {
+			$captionTrail->addCaption($caption);
+		}
 		$context = array_merge($this->context, $context);
-		$logger = new static($this->logger, $captions, $context, $this->messageRenderer);
+		$logger = new static($this->logger, $captionTrail, $context, $this->messageRenderer);
 		return $logger;
 	}
 
@@ -78,23 +85,17 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @return $this
 	 * @throws Exception
 	 */
-	public function context($captions, array $context = [], $fn) {
+	public function context($captions, array $context = array(), $fn) {
+		if(!is_array($captions)) {
+			$captions = array($captions);
+		}
+		$coupon = $this->captionTrail->addCaption($captions);
 		try {
-			if(!is_array($captions)) {
-				$captions = [$captions];
-			}
-			foreach($captions as $caption) {
-				$this->captions[] = $caption;
-			}
 			$result = call_user_func($fn);
-			for($i = 0; $i<count($captions); $i++) {
-				array_pop($this->captions);
-			}
+			$this->captionTrail->removeCaption($coupon);
 			return $result;
 		} catch(Exception $e) {
-			for($i = 0; $i<count($captions); $i++) {
-				array_pop($this->captions);
-			}
+			$this->captionTrail->removeCaption($coupon);
 			throw $e;
 		}
 	}
@@ -107,8 +108,9 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @return void
 	 */
 	public function log($level, $message, array $context = array()) {
-		$message = $this->messageRenderer->render($message, $this->captions);
-		$context = $this->contextExtender->extend($context, $this->captions);
+		$captions = $this->captionTrail->getCaptions();
+		$message = $this->messageRenderer->render($message, $captions);
+		$context = $this->contextExtender->extend($context, $captions);
 		$this->logger->log($level, $message, $context);
 	}
 }

@@ -8,7 +8,7 @@ class StacktraceExtenderTest extends \PHPUnit_Framework_TestCase {
 		$testLogger = new TestLogger();
 		$logger = new StacktraceExtender($testLogger, 'stacktrace');
 		$logger->info('Hello world');
-		$context = $testLogger->getLastContext();
+		$context = $testLogger->getLastLine()->getContext();
 		$this->assertArrayHasKey('stacktrace', $context);
 	}
 }

@@ -9,6 +9,6 @@ class DateTimeFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$logger = new DateTimeFormatter($testLogger);
 		$logger->log(LogLevel::DEBUG, 'This is a test');
-		$this->assertRegExp('/\\[\\d+\\-\\d+\\-\\d+\\ \\d+:\\d+:\\d+\\] This is a test/', $testLogger->getLastLine());
+		$this->assertRegExp('/\\[\\d+\\-\\d+\\-\\d+\\ \\d+:\\d+:\\d+\\] This is a test/', $testLogger->getLastLine()->getMessage());
 	}
 }

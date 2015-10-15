@@ -80,6 +80,18 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
                 $result[] = $caption;
             }
         }
+		foreach($result as &$entry) {
+			if(is_object($entry)) {
+				if(method_exists($entry, '__toString')) {
+					$entry = (string) $entry;
+				} else {
+					$rc = new \ReflectionClass($entry);
+					$entry = $rc->getShortName();
+				}
+			} elseif(!is_string($entry)) {
+				$entry = json_encode($entry, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+			}
+		}
         return $result;
     }
 }

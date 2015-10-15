@@ -91,7 +91,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		}
 		$coupon = $this->captionTrail->addCaption($captions);
 		try {
-			$result = call_user_func($fn);
+			$result = call_user_func($fn, $this);
 			$this->captionTrail->removeCaption($coupon);
 			return $result;
 		} catch(Exception $e) {

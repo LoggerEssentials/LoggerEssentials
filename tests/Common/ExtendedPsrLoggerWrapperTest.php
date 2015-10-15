@@ -24,3 +24,4 @@ class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('context a > child a > context b > child b: Hello world', $testLogger->getLastLine());
 	}
 }
+

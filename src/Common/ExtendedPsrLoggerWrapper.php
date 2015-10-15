@@ -18,13 +18,19 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	private $messageRenderer;
 	/** @var ExtendedLoggerContextExtender */
 	private $contextExtender;
+	/** @var array */
+	private $captionTrail;
+	/** @var array */
+	private $context;
 
 	/**
 	 * @param LoggerInterface $logger
+	 * @param string[] $captionTrail
+	 * @param array $context
 	 * @param ExtendedLoggerMessageRenderer $messageRenderer
 	 * @param ExtendedLoggerContextExtender $contextExtender
 	 */
-	public function __construct(LoggerInterface $logger, ExtendedLoggerMessageRenderer $messageRenderer = null, ExtendedLoggerContextExtender $contextExtender = null) {
+	public function __construct(LoggerInterface $logger, array $captionTrail = array(), array $context = array(), ExtendedLoggerMessageRenderer $messageRenderer = null, ExtendedLoggerContextExtender $contextExtender = null) {
 		if($messageRenderer === null) {
 			$messageRenderer = new ExtendedLoggerStandardMessageRenderer();
 		}
@@ -34,6 +40,8 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		$this->logger = $logger;
 		$this->messageRenderer = $messageRenderer;
 		$this->contextExtender = $contextExtender;
+		$this->captionTrail = $captionTrail;
+		$this->context = $context;
 	}
 
 	/**
@@ -44,16 +52,6 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	}
 
 	/**
-	 * @param $caption
-	 * @return $this
-	 */
-	public function addCaption($caption) {
-		$caption = strtr($caption, array("\n" => ' ', "\r" => ' ', "\t" => ' '));
-		$this->captions[] = $caption;
-		return $this;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getCaptions() {
@@ -61,41 +59,42 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	}
 
 	/**
-	 * @return $this
-	 */
-	public function clearCaptions() {
-		$this->captions = array();
-		return $this;
-	}
-
-	/**
 	 * @param string $caption
+	 * @param array $context
 	 * @return $this
 	 */
-	public function createSubLogger($caption) {
-		$logger = new static($this->logger, $this->messageRenderer);
-		foreach($this->captions as $parentCaption) {
-			$logger->addCaption($parentCaption);
-		}
-		$logger->addCaption($caption);
+	public function createSubLogger($caption, array $context = array()) {
+		$captions = $this->captions;
+		$captions[] = $caption;
+		$context = array_merge($this->context, $context);
+		$logger = new static($this->logger, $captions, $context, $this->messageRenderer);
 		return $logger;
 	}
 
 	/**
-	 * @param string $caption
+	 * @param string|array $captions
 	 * @param array $context
 	 * @param callable $fn
 	 * @return $this
 	 * @throws Exception
 	 */
-	public function context($caption, array $context = [], $fn) {
+	public function context($captions, array $context = [], $fn) {
 		try {
-			$this->captions[] = $caption;
+			if(!is_array($captions)) {
+				$captions = [$captions];
+			}
+			foreach($captions as $caption) {
+				$this->captions[] = $caption;
+			}
 			$result = call_user_func($fn);
-			array_pop($this->captions);
+			for($i = 0; $i<count($captions); $i++) {
+				array_pop($this->captions);
+			}
 			return $result;
 		} catch(Exception $e) {
-			array_pop($this->captions);
+			for($i = 0; $i<count($captions); $i++) {
+				array_pop($this->captions);
+			}
 			throw $e;
 		}
 	}

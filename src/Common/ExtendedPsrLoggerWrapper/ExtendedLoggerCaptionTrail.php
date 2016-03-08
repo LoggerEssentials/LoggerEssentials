@@ -26,7 +26,11 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     public function addCaption($caption) {
         $this->couponCounter++;
         $key = "caption-{$this->couponCounter}";
-        $this->captions[$key] = $caption;
+        if(is_object($caption)) {
+			$refC = new \ReflectionClass($caption);
+			$caption = $refC->getShortName();
+		}
+		$this->captions[$key] = $caption;
         return $key;
     }
 

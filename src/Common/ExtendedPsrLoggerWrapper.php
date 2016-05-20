@@ -7,6 +7,7 @@ use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerMessageRenderer;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardMessageRenderer;
+use Logger\Tools\TryFinally;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
@@ -20,7 +21,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	/** @var ExtendedLoggerContextExtender */
 	private $contextExtender;
 	/** @var array */
-	private $context;
+	private $context = array();
 
 	/**
 	 * @param LoggerInterface $logger
@@ -73,7 +74,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		foreach($captions as $caption) {
 			$captionTrail->addCaption($caption);
 		}
-		$context = array_merge($this->context, $context);
+		$context = $this->contextExtender->extend($this->context, $context);
 		$logger = new static($this->logger, $captionTrail, $context, $this->messageRenderer);
 		return $logger;
 	}
@@ -89,13 +90,17 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		if(!is_array($captions)) {
 			$captions = array($captions);
 		}
+		$oldContext = $this->context;
+		$this->context = $this->contextExtender->extend($this->context, $context);
 		$coupon = $this->captionTrail->addCaption($captions);
 		try {
 			$result = call_user_func($fn, $this);
 			$this->captionTrail->removeCaption($coupon);
+			$this->context = $oldContext;
 			return $result;
 		} catch(Exception $e) {
 			$this->captionTrail->removeCaption($coupon);
+			$this->context = $oldContext;
 			throw $e;
 		}
 	}
@@ -110,7 +115,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	public function log($level, $message, array $context = array()) {
 		$captions = $this->captionTrail->getCaptions();
 		$message = $this->messageRenderer->render($message, $captions);
-		$context = $this->contextExtender->extend($context, $captions);
+		$context = $this->contextExtender->extend($this->context, $context);
 		$this->logger->log($level, $message, $context);
 	}
 }

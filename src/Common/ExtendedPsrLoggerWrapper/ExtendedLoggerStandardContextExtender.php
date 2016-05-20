@@ -3,11 +3,11 @@ namespace Logger\Common\ExtendedPsrLoggerWrapper;
 
 class ExtendedLoggerStandardContextExtender implements ExtendedLoggerContextExtender {
 	/**
+	 * @param array $parent
 	 * @param array $context
-	 * @param array $parents
 	 * @return array
 	 */
-	public function extend(array $context, array $parents) {
-		return $context;
+	public function extend(array $parent, array $context) {
+		return array_merge($parent, $context);
 	}
 }

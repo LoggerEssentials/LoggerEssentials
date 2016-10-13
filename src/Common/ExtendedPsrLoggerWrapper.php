@@ -99,6 +99,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		try {
 			$result = call_user_func($fn, $this);
 		} catch(Exception $e) {
+			// Simulate try...finally
 		}
 		$this->captionTrail->removeCaption($coupon);
 		$this->context = $oldContext;
@@ -125,6 +126,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		try {
 			$result = call_user_func($fn, $this);
 		} catch(Exception $e) {
+			// Simulate try...finally
 		}
 		$this->logger = $previousLogger;
 		if($e !== null) {

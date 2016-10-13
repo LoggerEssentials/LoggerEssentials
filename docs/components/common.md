@@ -17,6 +17,8 @@ In addition to the standard-interface LoggerInterface, ExtendedLogger provides a
 
 Here is some code that illustrates, how this is meant:
 
+## Sub-loggers
+
 ```php
 <?php
 use Logger\Common\ExtendedPsrLoggerWrapper;
@@ -58,4 +60,56 @@ Output:
 [2015-04-01T00:00:00+00:00] INFO       Process order > 4352617: Start processing - {}
 [2015-04-01T00:00:00+00:00] INFO       Process order > 4352617: Successfully processed order - {}
 [2015-04-01T00:00:00+00:00] INFO       Process order: Done - {}
+```
+
+## Contexts
+
+```php
+<?php
+use Logger\Common\ExtendedPsrLoggerWrapper;
+use Logger\Formatters\TemplateFormatter;
+use Logger\Loggers\ResourceLogger;
+
+include 'vendor/autoload.php';
+
+$logger = new TemplateFormatter(new ResourceLogger(STDOUT));
+$logger = new ExtendedPsrLoggerWrapper($logger);
+
+$logger->context(['a', 'b'], [], function () use ($logger) {
+    $logger->context('c', [], function () use ($logger) {
+        $logger->info('Test');
+    });
+});
+```
+
+Output:
+
+```
+[2015-04-01T00:00:00+00:00] INFO       a > b > c: Test - {}
+```
+
+## Intercepting
+
+```php
+<?php
+use Logger\Common\ExtendedPsrLoggerWrapper;
+use Logger\Formatters\TemplateFormatter;
+use Logger\Loggers\ResourceLogger;
+
+include 'vendor/autoload.php';
+
+$logger = new TemplateFormatter(new ResourceLogger(STDOUT));
+$logger = new ExtendedPsrLoggerWrapper($logger);
+
+$logger->intercept(function () use ($logger) {
+    $logger->info('Hello World');
+}, function (CapturedLogEvent $logEvent) {
+    $logEvent->getParentLogger()->log($logEvent->getLevel(), strtoupper($logEvent->getMessage()), $logEvent->getContext());
+});
+```
+
+Output:
+
+```
+[2015-04-01T00:00:00+00:00] INFO       HELLO WORLD - {}
 ```

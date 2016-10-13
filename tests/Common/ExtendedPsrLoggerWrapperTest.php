@@ -1,6 +1,8 @@
 <?php
 namespace Logger\Common;
 
+use Logger\Common\ExtendedPsrLoggerWrapper\CapturedLogEvent;
+
 class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 	public function testSubLogger() {
 		$testLogger = new TestLogger();
@@ -39,6 +41,20 @@ class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('context a > context b > child c: Hello world', $testLogger->getLastLine()->getMessage());
 		$this->assertEquals(array('id' => 456, 'test' => 'abc'), $testLogger->getFirstLine()->getContext());
 		$this->assertEquals(array('id' => 123, 'name' => 'Peter'), $testLogger->getLastLine()->getContext());
+	}
+
+	public function testCapture() {
+		$testLogger = new TestLogger();
+		$logger = new ExtendedPsrLoggerWrapper($testLogger);
+		$logger->intercept(function () use ($logger) {
+			$logger->info('Hello world');
+		}, function (CapturedLogEvent $logEvent) {
+			$logEvent->getParentLogger()->log($logEvent->getLevel(), strtoupper($logEvent->getMessage()), $logEvent->getContext());
+		});
+
+		$this->assertEquals('info', $testLogger->getLastLine()->getSeverty());
+		$this->assertEquals('HELLO WORLD', $testLogger->getLastLine()->getMessage());
+		$this->assertEquals(array(), $testLogger->getLastLine()->getContext());
 	}
 }
 

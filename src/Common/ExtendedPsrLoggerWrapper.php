@@ -2,12 +2,13 @@
 namespace Logger\Common;
 
 use Exception;
+use Logger\Common\ExtendedPsrLoggerWrapper\CapturedLogEvent;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerCaptionTrail;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerMessageRenderer;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardMessageRenderer;
-use Logger\Tools\TryFinally;
+use Logger\Loggers\CallbackLogger;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
@@ -93,16 +94,43 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 		$oldContext = $this->context;
 		$this->context = $this->contextExtender->extend($this->context, $context);
 		$coupon = $this->captionTrail->addCaption($captions);
+		$result = null;
+		$e = null;
 		try {
 			$result = call_user_func($fn, $this);
-			$this->captionTrail->removeCaption($coupon);
-			$this->context = $oldContext;
-			return $result;
 		} catch(Exception $e) {
-			$this->captionTrail->removeCaption($coupon);
-			$this->context = $oldContext;
+		}
+		$this->captionTrail->removeCaption($coupon);
+		$this->context = $oldContext;
+		if($e !== null) {
 			throw $e;
 		}
+		return $result;
+	}
+	
+	/**
+	 * @param callable $fn
+	 * @param callable $callback
+	 * @return mixed
+	 * @throws Exception
+	 */
+	public function intercept($fn, $callback) {
+		$previousLogger = $this->logger;
+		$this->logger = new CallbackLogger(function ($level, $message, $context) use ($previousLogger, $callback) {
+			$capturedLogEvent = new CapturedLogEvent($level, $message, $context, $previousLogger);
+			call_user_func($callback, $capturedLogEvent);
+		});
+		$result = null;
+		$e = null;
+		try {
+			$result = call_user_func($fn, $this);
+		} catch(Exception $e) {
+		}
+		$this->logger = $previousLogger;
+		if($e !== null) {
+			throw $e;
+		}
+		return $result;
 	}
 
 	/**

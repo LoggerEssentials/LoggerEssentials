@@ -15,7 +15,7 @@ interface ExtendedLogger extends LoggerInterface {
 	 * @param string $caption
 	 * @param array $context
 	 * @param callable $fn
-	 * @return ExtendedLogger
+	 * @return mixed
 	 */
 	public function context($caption, array $context = array(), $fn);
 	

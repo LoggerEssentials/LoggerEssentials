@@ -84,7 +84,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	 * @param string|array $captions
 	 * @param array $context
 	 * @param callable $fn
-	 * @return $this
+	 * @return mixed
 	 * @throws Exception
 	 */
 	public function context($captions, array $context = array(), $fn) {

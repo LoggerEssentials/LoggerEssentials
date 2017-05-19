@@ -18,4 +18,11 @@ class MaxLengthFormatterTest extends FormatterTestCase {
 		$logger->log(LogLevel::DEBUG, 'This is a test');
 		$this->assertEquals('This is ...', $testLogger->getLastLine()->getMessage());
 	}
+
+	public function testNotTooLong() {
+		$testLogger = $this->createTestLogger();
+		$logger = new MaxLengthFormatter($testLogger, 64, ' ...');
+		$logger->log(LogLevel::DEBUG, 'This is a test');
+		$this->assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
+	}
 }

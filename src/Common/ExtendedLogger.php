@@ -6,13 +6,13 @@ use Psr\Log\LoggerInterface;
 
 interface ExtendedLogger extends LoggerInterface {
 	/**
-	 * @param string $captions
+	 * @param string|string[] $captions
 	 * @return ExtendedLogger
 	 */
 	public function createSubLogger($captions);
 
 	/**
-	 * @param string $caption
+	 * @param string|string[] $caption
 	 * @param array $context
 	 * @param callable $fn
 	 * @return mixed

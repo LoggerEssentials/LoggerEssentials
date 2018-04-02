@@ -167,7 +167,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 					if(!count($value)) {
 						$value = new \stdClass();
 					}
-					return json_encode($value);
+					return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 				};
 			case 'pad':
 				return function ($value) use ($param) {

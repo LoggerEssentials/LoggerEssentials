@@ -28,7 +28,7 @@ class LogLevelCompressor extends AbstractLogger {
 
 	/**
 	 * @param string $level
-	 * @return int
+	 * @return string
 	 */
 	public function compress($level) {
 		$levelNo = LogLevelTranslator::getLevelNo($level);

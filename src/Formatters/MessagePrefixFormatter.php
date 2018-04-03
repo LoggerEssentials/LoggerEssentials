@@ -5,7 +5,7 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class MessagePrefixFormatter extends AbstractLoggerAware {
-	/** @var string */
+	/** @var string|string[] */
 	private $caption = null;
 	/** @var string */
 	private $concatenator = null;
@@ -14,7 +14,7 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param string $caption
+	 * @param string|string[] $caption
 	 * @param string $concatenator
 	 * @param string $endingConcatenator
 	 */
@@ -37,7 +37,7 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 		if(is_array($this->caption)) {
 			$parts[] = join($this->concatenator, $this->caption);
 		} else {
-			$parts[] = (string)$this->caption;
+			$parts[] = (string) $this->caption;
 		}
 		$parts[] = $message;
 		$parts = array_filter($parts);

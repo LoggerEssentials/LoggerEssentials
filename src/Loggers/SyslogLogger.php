@@ -19,8 +19,8 @@ class SyslogLogger extends AbstractLogger implements Logger {
 	);
 	/** @var string */
 	private $ident;
-	/** @var int */
-	private $options;
+	/** @var int|null */
+	private $options = null;
 	/** @var int */
 	private $facility;
 

@@ -48,7 +48,7 @@ final class LogLevelTranslator {
 	 * @return int
 	 */
 	static public function getLevelNo($levelToken) {
-		return self::getFrom(self::$levelsB, $levelToken);
+		return (int) self::getFrom(self::$levelsB, $levelToken);
 	}
 
 	/**
@@ -57,7 +57,7 @@ final class LogLevelTranslator {
 	 * @return string
 	 */
 	static public function getLevelToken($levelNo) {
-		return self::getFrom(self::$levelsA, $levelNo);
+		return (string) self::getFrom(self::$levelsA, $levelNo);
 	}
 
 	/**

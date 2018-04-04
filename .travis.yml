@@ -1,24 +1,14 @@
 language: php
 
-matrix:
-    include:
-      - php: 7.2
-        env: XPHPENV="NEW"
-      - php: 7.1
-        env: XPHPENV="NEW"
-      - php: 7.0
-        env: XPHPENV="NEW"
-      - php: 5.6
-        env: XPHPENV="OLD"
-      - php: 5.5
-        env: XPHPENV="OLD"
+php:
+  - php: 7.2
+  - php: 7.1
+  - php: 7.0
 
 before_script:
   - composer self-update
-  - if [ $XPHPENV == "NEW" ]; then composer install; fi
-  - if [ $XPHPENV == "OLD" ]; then composer --no-dev --ignore-platform-reqs install; fi
-  - if [ $XPHPENV == "OLD" ]; then composer require phpunit/phpunit "^3"; fi
+  - composer install
 
 script:
   - composer run-script test
-  - if [ $XPHPENV == "NEW" ]; then composer run-script phpstan; fi
+  - composer run-script phpstan

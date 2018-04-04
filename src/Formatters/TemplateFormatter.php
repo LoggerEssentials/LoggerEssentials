@@ -1,8 +1,10 @@
 <?php
 namespace Logger\Formatters;
 
+use Closure;
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 class TemplateFormatter extends AbstractLoggerAware {
 	const DEFAULT_FORMAT = "[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:\"-\"% %context|json%\n";
@@ -87,10 +89,10 @@ class TemplateFormatter extends AbstractLoggerAware {
 		$modifiers = $this->expandModifiers($modifiers);
 		return array($input ?: null, $modifiers);
 	}
-
+	
 	/**
 	 * @param string[] $modifiers
-	 * @return \Closure[]
+	 * @return Closure
 	 */
 	private function expandModifiers($modifiers) {
 		$functions = array();
@@ -126,8 +128,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 	/**
 	 * @param string $command
 	 * @param array $params
-	 * @return \Closure
-	 * @throws \Exception
+	 * @return Closure
 	 */
 	private function convertCommandToClosure($command, array $params) {
 		$param = function ($key, $default = null) use ($params) {
@@ -135,7 +136,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 				if($default !== null) {
 					return $default;
 				} else {
-					throw new \Exception("Missing parameter {$key}");
+					throw new RuntimeException("Missing parameter {$key}");
 				}
 			}
 			return $params[$key];
@@ -210,6 +211,6 @@ class TemplateFormatter extends AbstractLoggerAware {
 					return (string)$value === '' ? $param(0) : $value;
 				};
 		}
-		throw new \Exception("Command not registered: {$command}");
+		throw new RuntimeException("Command not registered: {$command}");
 	}
 }

@@ -2,6 +2,8 @@
 namespace Logger\Common\ExtendedPsrLoggerWrapper;
 
 use IteratorAggregate;
+use ReflectionClass;
+use ReflectionException;
 use Traversable;
 
 class ExtendedLoggerCaptionTrail implements IteratorAggregate {
@@ -18,17 +20,21 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     public function __construct(ExtendedLoggerCaptionTrail $parentCaptions = null) {
         $this->parentCaptions = $parentCaptions;
     }
-
-    /**
-     * @param string|string[] $caption
-     * @return int Coupon to address exactly this caption
-     */
+	
+	/**
+	 * @param string|string[]|object $caption
+	 * @return string Coupon to address exactly this caption
+	 */
     public function addCaption($caption) {
         $this->couponCounter++;
         $key = "caption-{$this->couponCounter}";
         if(is_object($caption)) {
-			$refC = new \ReflectionClass($caption);
-			$caption = $refC->getShortName();
+        	try {
+				$refC = new ReflectionClass($caption);
+				$caption = $refC->getShortName();
+			} catch (ReflectionException $e) {
+				$caption = gettype($caption);
+			}
 		}
 		$this->captions[$key] = $caption;
         return $key;

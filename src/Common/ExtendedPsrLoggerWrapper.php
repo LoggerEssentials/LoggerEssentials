@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger {
 	/** @var LoggerInterface */
 	private $logger = null;
-	/** @var string[] */
+	/** @var ExtendedLoggerCaptionTrail */
 	private $captionTrail = null;
 	/** @var ExtendedLoggerMessageRenderer */
 	private $messageRenderer;
@@ -56,7 +56,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	}
 
 	/**
-	 * @return string
+	 * @return string[]
 	 */
 	public function getCaptionTrail() {
 		return $this->captionTrail->getCaptions();
@@ -65,7 +65,7 @@ class ExtendedPsrLoggerWrapper extends AbstractLogger implements ExtendedLogger 
 	/**
 	 * @param string|string[] $captions
 	 * @param array $context
-	 * @return $this
+	 * @return static
 	 */
 	public function createSubLogger($captions, array $context = array()) {
 		if(!is_array($captions)) {

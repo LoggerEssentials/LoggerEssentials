@@ -15,10 +15,10 @@ matrix:
 
 before_script:
   - composer self-update
-  - if [ $XPHPENV = "NEW" ]; then composer install; fi
-  - if [ $XPHPENV = "OLD" ]; then composer install --no-dev; fi
-  - if [ $XPHPENV = "OLD" ]; then composer require phpunit/phpunit "^3"; fi
+  - if [ $XPHPENV == "NEW" ]; then composer install; fi
+  - if [ $XPHPENV == "OLD" ]; then composer install --no-dev; fi
+  - if [ $XPHPENV == "OLD" ]; then composer require phpunit/phpunit "^3"; fi
 
 script:
   - composer run-script test
-  - if [ $XPHPENV = "NEW" ]; then composer run-script phpstan; fi
+  - if [ $XPHPENV == "NEW" ]; then composer run-script phpstan; fi

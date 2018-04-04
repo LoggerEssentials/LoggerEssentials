@@ -16,7 +16,7 @@ matrix:
 before_script:
   - composer self-update
   - if [ $XPHPENV == "NEW" ]; then composer install; fi
-  - if [ $XPHPENV == "OLD" ]; then composer --no-dev install; fi
+  - if [ $XPHPENV == "OLD" ]; then composer --no-dev --ignore-platform-reqs install; fi
   - if [ $XPHPENV == "OLD" ]; then composer require phpunit/phpunit "^3"; fi
 
 script:

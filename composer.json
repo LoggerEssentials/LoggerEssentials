@@ -7,8 +7,7 @@
 		"email": "ron.kirschler@gmail.com"
 	}],
 	"require": {
-		"php": ">= 5.5",
-		"logger/logger": "~0.0.1@stable"
+		"php": ">= 5.5"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~5.0",
@@ -24,16 +23,15 @@
 			"Logger\\": ["src/", "tests/"]
 		}
 	},
+	"provide": {
+		"psr/log-implementation": "1.0.0"
+	},
 	"suggest": {
-		"logger/chromephp": "Logger for the chrome php plugin",
-		"logger/firephp": "Logger for the firephp plugin",
+		"logger/chrome": "Logger for the chrome-logger plugin",
 		"logger/loggly": "Logger api to loggly.com",
-		"logger/network": "Some components to write logging data via tcp or udp to a network-port",
 		"logger/newrelic": "Logger for NewRelic",
 		"logger/pushover": "Logger api to pushover.net",
 		"logger/rollbar": "Logger api to rollbar.com",
-		"logger/syslog": "Logger for syslogd",
-		"logger/zendmonitor": "Logger for the zend server monitor api"
 	},
 	"scripts": {
 		"phpstan": "phpstan analyze -l 4 src/",

@@ -1,10 +1,10 @@
 <?php
 namespace Logger\Loggers;
 
-use Logger\Logger;
 use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
 
-class CallbackLogger extends AbstractLogger implements Logger {
+class CallbackLogger extends AbstractLogger implements LoggerInterface {
 	/** @var callable */
 	private $callable = null;
 

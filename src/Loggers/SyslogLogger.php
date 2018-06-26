@@ -1,11 +1,11 @@
 <?php
 namespace Logger\Loggers;
 
-use Logger\Logger;
 use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class SyslogLogger extends AbstractLogger implements Logger {
+class SyslogLogger extends AbstractLogger implements LoggerInterface {
 	/** @var array */
 	private static $levels = array(
 		LogLevel::DEBUG => LOG_DEBUG,

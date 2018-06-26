@@ -1,11 +1,10 @@
 <?php
 namespace Logger\Loggers;
 
-use Logger\Logger;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
-class LoggerCollection extends AbstractLogger implements Logger {
+class LoggerCollection extends AbstractLogger implements LoggerInterface {
 	/** @var LoggerInterface[] */
 	private $loggers = array();
 

@@ -1,11 +1,10 @@
 <?php
 namespace Logger\Common;
 
-use Logger\Logger;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
-abstract class AbstractLoggerAware extends AbstractLogger implements Logger {
+abstract class AbstractLoggerAware extends AbstractLogger implements LoggerInterface {
 	/** @var LoggerInterface */
 	private $logger = null;
 

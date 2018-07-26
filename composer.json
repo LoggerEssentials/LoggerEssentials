@@ -35,6 +35,6 @@
 	},
 	"scripts": {
 		"phpstan": "phpstan analyze -l 4 src/",
-		"test": "phpunit -c tests.xml"
+		"tests": "phpunit -c tests.xml"
 	}
 }

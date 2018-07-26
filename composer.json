@@ -31,7 +31,7 @@
 		"logger/loggly": "Logger api to loggly.com",
 		"logger/newrelic": "Logger for NewRelic",
 		"logger/pushover": "Logger api to pushover.net",
-		"logger/rollbar": "Logger api to rollbar.com",
+		"logger/rollbar": "Logger api to rollbar.com"
 	},
 	"scripts": {
 		"phpstan": "phpstan analyze -l 4 src/",

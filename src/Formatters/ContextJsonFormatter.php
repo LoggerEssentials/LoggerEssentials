@@ -2,14 +2,22 @@
 namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
+use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;
 use stdClass;
 
-class ContextJsonFormatter extends AbstractLoggerAware {
+class ContextJsonFormatter extends AbstractLoggerAware implements BuilderAware {
 	/** @var int */
 	private $jsonOptions;
 	/** @var string */
 	private $format;
+
+	/**
+	 * @return int
+	 */
+	public static function getWeight(): int {
+		return 0;
+	}
 
 	/**
 	 * @param LoggerInterface $logger
@@ -27,7 +35,7 @@ class ContextJsonFormatter extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []) {
 		$ctx = $context;
 		if(!count($ctx)) {
 			$ctx = new stdClass();

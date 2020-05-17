@@ -2,13 +2,21 @@
 namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
+use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;
 
-class DateTimeFormatter extends AbstractLoggerAware {
+class DateTimeFormatter extends AbstractLoggerAware implements BuilderAware {
 	/** @var string */
 	private $dateFmt;
 	/** @var string */
 	private $format;
+
+	/**
+	 * @return int
+	 */
+	public static function getWeight(): int {
+		return 0;
+	}
 
 	/**
 	 * @param LoggerInterface $logger
@@ -26,7 +34,7 @@ class DateTimeFormatter extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []) {
 		$message = sprintf($this->format, date($this->dateFmt), $message);
 		$this->logger()->log($level, $message, $context);
 	}

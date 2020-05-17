@@ -3,11 +3,19 @@ namespace Logger\Formatters;
 
 use Closure;
 use Logger\Common\AbstractLoggerAware;
+use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;
 
-class CallbackFormatter extends AbstractLoggerAware {
+class CallbackFormatter extends AbstractLoggerAware implements BuilderAware {
 	/** @var callable */
 	private $fn;
+
+	/**
+	 * @return int
+	 */
+	public static function getWeight(): int {
+		return 0;
+	}
 
 	/**
 	 * @param LoggerInterface $logger
@@ -23,7 +31,7 @@ class CallbackFormatter extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []) {
 		$message = call_user_func($this->fn, $level, $message, $context);
 		$this->logger()->log($level, $message, $context);
 	}

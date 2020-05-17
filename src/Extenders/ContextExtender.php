@@ -22,7 +22,7 @@ class ContextExtender extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []) {
 		foreach($this->keyValueArray as $key => $value) {
 			if(is_object($value)) {
 				if(method_exists($value, '__toString')) {

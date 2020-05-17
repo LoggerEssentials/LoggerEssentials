@@ -2,22 +2,22 @@
 namespace Logger\Common;
 
 class TestLoggerLine {
-	/** @var string */
+	/** @var string|null */
 	private $message;
 	/** @var array */
 	private $context;
-	/** @var int */
-	private $severty;
+	/** @var int|null */
+	private $severity;
 
 	/**
-	 * @param string $message
+	 * @param string|null $message
 	 * @param array $context
-	 * @param int $severty
+	 * @param int|null $severity
 	 */
-	public function __construct($message, $context, $severty) {
+	public function __construct($message, $context, $severity) {
 		$this->message = $message;
 		$this->context = $context;
-		$this->severty = $severty;
+		$this->severity = $severity;
 	}
 
 	/**
@@ -38,6 +38,6 @@ class TestLoggerLine {
 	 * @return int
 	 */
 	public function getSeverty() {
-		return $this->severty;
+		return $this->severity;
 	}
 }

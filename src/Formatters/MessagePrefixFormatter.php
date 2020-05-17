@@ -6,11 +6,11 @@ use Psr\Log\LoggerInterface;
 
 class MessagePrefixFormatter extends AbstractLoggerAware {
 	/** @var string|string[] */
-	private $caption = null;
+	private $caption;
 	/** @var string */
-	private $concatenator = null;
+	private $concatenator;
 	/** @var string */
-	private $endingConcatenator = null;
+	private $endingConcatenator;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -27,15 +27,13 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$parts = array();
 		if(is_array($this->caption)) {
-			$parts[] = join($this->concatenator, $this->caption);
+			$parts[] = implode($this->concatenator, $this->caption);
 		} elseif(is_scalar($this->caption)) {
 			/** @var mixed $caption */
 			$caption = $this->caption;
@@ -43,7 +41,7 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 		}
 		$parts[] = $message;
 		$parts = array_filter($parts);
-		$newMessage = join($this->endingConcatenator, $parts);
+		$newMessage = implode($this->endingConcatenator, $parts);
 		$this->logger()->log($level, $newMessage, $context);
 	}
 }

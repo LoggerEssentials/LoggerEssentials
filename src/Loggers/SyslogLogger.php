@@ -2,12 +2,17 @@
 namespace Logger\Loggers;
 
 use Psr\Log\AbstractLogger;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-class SyslogLogger extends AbstractLogger implements LoggerInterface {
+class SyslogLogger extends AbstractLogger {
+	/** @var string */
+	private $ident;
+	/** @var int|null */
+	private $options;
+	/** @var int */
+	private $facility;
 	/** @var array */
-	private static $levels = array(
+	private static $levels = [
 		LogLevel::DEBUG => LOG_DEBUG,
 		LogLevel::INFO => LOG_INFO,
 		LogLevel::NOTICE => LOG_NOTICE,
@@ -16,13 +21,7 @@ class SyslogLogger extends AbstractLogger implements LoggerInterface {
 		LogLevel::CRITICAL => LOG_CRIT,
 		LogLevel::ALERT => LOG_ALERT,
 		LogLevel::EMERGENCY => LOG_EMERG,
-	);
-	/** @var string */
-	private $ident;
-	/** @var int|null */
-	private $options = null;
-	/** @var int */
-	private $facility;
+	];
 
 	/**
 	 * @param string $ident
@@ -37,10 +36,8 @@ class SyslogLogger extends AbstractLogger implements LoggerInterface {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$options = $this->options;

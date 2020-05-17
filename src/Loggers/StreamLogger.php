@@ -1,9 +1,7 @@
 <?php
 namespace Logger\Loggers;
 
-use Psr\Log\LoggerInterface;
-
-class StreamLogger extends ResourceLogger implements LoggerInterface {
+class StreamLogger extends ResourceLogger {
 	/**
 	 * @param string $connectionUri
 	 * @param string $mode

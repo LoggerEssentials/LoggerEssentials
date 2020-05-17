@@ -17,14 +17,12 @@ class ExtendedLoggerStandardMessageRenderer implements ExtendedLoggerMessageRend
 	}
 
 	/**
-	 * @param string $message
-	 * @param array $parents
-	 * @return string
+	 * @inheritDoc
 	 */
-	public function render($message, array $parents) {
-		$path = join($this->concatenator, $parents);
+	public function render($message, array $parents): string {
+		$path = implode($this->concatenator, $parents);
 		if($path) {
-			$message = join($this->endingConcatenator, array($path, $message));
+			$message = implode($this->endingConcatenator, [$path, $message]);
 		}
 		return $message;
 	}

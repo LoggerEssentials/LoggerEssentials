@@ -5,6 +5,7 @@
 !/.editorconfig
 !/.gitattributes
 !/.gitignore
+!/.phpstorm.meta.php
 !/.travis.yml
 !/composer.json
 !/LICENSE

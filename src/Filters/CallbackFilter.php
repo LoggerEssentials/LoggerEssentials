@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 
 class CallbackFilter extends AbstractLoggerAware {
 	/** @var callable */
-	private $callback = null;
+	private $callback;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -19,10 +19,8 @@ class CallbackFilter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$result = call_user_func($this->callback, $level, $message, $context);

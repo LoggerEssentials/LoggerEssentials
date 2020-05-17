@@ -2,9 +2,9 @@
 namespace Logger\Loggers;
 
 use Psr\Log\AbstractLogger;
-use Psr\Log\LoggerInterface;
+use Throwable;
 
-class ErrorLogLogger extends AbstractLogger implements LoggerInterface {
+class ErrorLogLogger extends AbstractLogger {
 	/** @var mixed */
 	private $messageType;
 	/** @var mixed */
@@ -25,10 +25,8 @@ class ErrorLogLogger extends AbstractLogger implements LoggerInterface {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		try {
@@ -39,7 +37,7 @@ class ErrorLogLogger extends AbstractLogger implements LoggerInterface {
 			} else {
 				error_log($message, (int)$this->messageType, $this->destination, $this->extraHeaders);
 			}
-		} catch(\Exception $e) {
+		} catch(Throwable $e) {
 		}
 	}
 }

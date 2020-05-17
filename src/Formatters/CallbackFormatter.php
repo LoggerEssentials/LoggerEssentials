@@ -1,6 +1,7 @@
 <?php
 namespace Logger\Formatters;
 
+use Closure;
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
@@ -10,7 +11,7 @@ class CallbackFormatter extends AbstractLoggerAware {
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param \Closure $fn
+	 * @param Closure $fn
 	 */
 	public function __construct(LoggerInterface $logger, $fn) {
 		parent::__construct($logger);
@@ -19,10 +20,8 @@ class CallbackFormatter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$message = call_user_func($this->fn, $level, $message, $context);

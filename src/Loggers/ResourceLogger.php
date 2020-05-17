@@ -2,11 +2,10 @@
 namespace Logger\Loggers;
 
 use Psr\Log\AbstractLogger;
-use Psr\Log\LoggerInterface;
 
-class ResourceLogger extends AbstractLogger implements LoggerInterface {
+class ResourceLogger extends AbstractLogger {
 	/** @var resource */
-	private $resource = null;
+	private $resource;
 
 	/**
 	 * @param resource $resource
@@ -17,10 +16,8 @@ class ResourceLogger extends AbstractLogger implements LoggerInterface {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		fwrite($this->resource, $message);

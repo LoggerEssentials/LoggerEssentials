@@ -22,15 +22,13 @@ class RegularExpressionFilter extends AbstractLoggerAware {
 		parent::__construct($logger);
 		$this->pattern = $pattern;
 		$this->modifiers = $modifiers;
-		$this->negate = !!$negate;
+		$this->negate = (bool) $negate;
 	}
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$result = preg_match(sprintf("/%s/%s", preg_quote($this->pattern, '/'), $this->modifiers), $message);

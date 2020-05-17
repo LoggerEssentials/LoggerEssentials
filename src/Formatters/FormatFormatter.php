@@ -19,10 +19,8 @@ class FormatFormatter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$message = sprintf($this->format, $message);

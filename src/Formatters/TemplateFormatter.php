@@ -2,9 +2,11 @@
 namespace Logger\Formatters;
 
 use Closure;
+use DateTime;
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use stdClass;
 
 class TemplateFormatter extends AbstractLoggerAware {
 	const DEFAULT_FORMAT = "[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:\"-\"% %context|json%\n";
@@ -14,7 +16,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 	/** @var array */
 	private $values;
 	/** @var array */
-	private $extra = null;
+	private $extra;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -29,23 +31,21 @@ class TemplateFormatter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
-		$packet = array(
+	public function log($level, $message, array $context = []) {
+		$packet = [
 			'level' => $level,
 			'message' => $message,
 			'context' => $context,
 			'now' => date('c')
-		);
+		];
 		$packet = array_merge($this->extra, $packet);
-		$values = array();
+		$values = [];
 		foreach($this->values as $valueDesc) {
 			$key = $valueDesc[0];
-			$value = array_key_exists($key, $packet) ? $packet[$key] : null;
+			$value = $packet[$key] ?? null;
 			$values[] = call_user_func($valueDesc[1], $value);
 		}
 		$message = vsprintf($this->format, $values);
@@ -57,17 +57,17 @@ class TemplateFormatter extends AbstractLoggerAware {
 	 * @return array
 	 */
 	private function compileFormat($format) {
-		$values = array();
-		$fn = function ($matches) use (&$values) {
+		$values = [];
+		$fn = static function ($matches) use (&$values) {
 			$values[] = $matches[1];
 			return '%s';
 		};
 		$format = preg_replace_callback('/%([^%]+)%/', $fn, $format);
-		$result = array();
-		foreach($values as &$value) {
+		$result = [];
+		foreach($values as $value) {
 			$result[] = $this->extractConverters($value);
 		}
-		return array($format, $result);
+		return [$format, $result];
 	}
 
 	/**
@@ -78,31 +78,31 @@ class TemplateFormatter extends AbstractLoggerAware {
 		list($input, $modifiers) = explode('|', $value . '|', 2);
 		$modifiers = rtrim($modifiers, '|');
 		if(!$modifiers) {
-			return array(
+			return [
 				$input ?: null,
-				function ($value) {
+				static function ($value) {
 					return $value;
 				}
-			);
+			];
 		}
 		$modifiers = explode('|', $modifiers);
 		$modifiers = $this->expandModifiers($modifiers);
-		return array($input ?: null, $modifiers);
+		return [$input ?: null, $modifiers];
 	}
-	
+
 	/**
 	 * @param string[] $modifiers
 	 * @return Closure
 	 */
 	private function expandModifiers($modifiers) {
-		$functions = array();
+		$functions = [];
 		foreach($modifiers as $modifier) {
 			list($command, $params) = $this->extractFn($modifier);
 			$functions[] = $this->convertCommandToClosure($command, $params);
 		}
-		return function ($value) use ($functions) {
+		return static function ($value) use ($functions) {
 			foreach($functions as $fn) {
-				$value = call_user_func($fn, $value);
+				$value = $fn($value);
 			}
 			return $value;
 		};
@@ -117,9 +117,9 @@ class TemplateFormatter extends AbstractLoggerAware {
 		$params = explode(':', $params);
 		array_pop($params);
 		foreach($params as &$param) {
-			if(substr($param, 0, 1) === '"' && substr($param, strlen($param) - 1, 1) === '"') {
-				$param = substr($param, 1, strlen($param) - 2);
-				$param = strtr($param, array('\\"' => '"', '\\\\' => '\\'));
+			if(strpos($param, '"') === 0 && $param[strlen($param) - 1] === '"') {
+				$param = substr($param, 1, -1);
+				$param = strtr($param, ['\\"' => '"', '\\\\' => '\\']);
 			}
 		}
 		return array($command, $params);
@@ -131,83 +131,82 @@ class TemplateFormatter extends AbstractLoggerAware {
 	 * @return Closure
 	 */
 	private function convertCommandToClosure($command, array $params) {
-		$param = function ($key, $default = null) use ($params) {
+		$param = static function ($key, $default = null) use ($params) {
 			if(!array_key_exists($key, $params)) {
 				if($default !== null) {
 					return $default;
-				} else {
-					throw new RuntimeException("Missing parameter {$key}");
 				}
+				throw new RuntimeException("Missing parameter {$key}");
 			}
 			return $params[$key];
 		};
 		switch(strtolower($command)) {
 			case 'date':
-				return function ($value) use ($param) {
-					$dt = new \DateTime($value);
+				return static function ($value) use ($param) {
+					$dt = new DateTime($value);
 					return $dt->format($param(0));
 				};
 			case 'nobr':
-				return function ($value) {
+				return static function ($value) {
 					return preg_replace('/[\\r\\n]+/', ' ', $value);
 				};
 			case 'trim':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return trim($value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'ltrim':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return ltrim($value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'rtrim':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return rtrim($value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'json':
-				return function ($value) {
+				return static function ($value) {
 					if(!count($value)) {
-						$value = new \stdClass();
+						$value = new stdClass();
 					}
 					return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 				};
 			case 'pad':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return str_pad($value, $param(0), $param(1, ' '), STR_PAD_BOTH);
 				};
 			case 'lpad':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return str_pad($value, $param(0), $param(1, ' '), STR_PAD_RIGHT);
 				};
 			case 'rpad':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return str_pad($value, $param(0), $param(1, ' '), STR_PAD_LEFT);
 				};
 			case 'uppercase':
-				return function ($value) {
+				return static function ($value) {
 					return strtoupper($value);
 				};
 			case 'lowercase':
-				return function ($value) {
+				return static function ($value) {
 					return strtolower($value);
 				};
 			case 'lcfirst':
-				return function ($value) {
+				return static function ($value) {
 					return lcfirst($value);
 				};
 			case 'ucfirst':
-				return function ($value) {
+				return static function ($value) {
 					return ucfirst($value);
 				};
 			case 'ucwords':
-				return function ($value) {
+				return static function ($value) {
 					return ucwords($value);
 				};
 			case 'cut':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return substr($value, 0, $param(0));
 				};
 			case 'default':
-				return function ($value) use ($param) {
+				return static function ($value) use ($param) {
 					return (string)$value === '' ? $param(0) : $value;
 				};
 		}

@@ -1,9 +1,10 @@
 <?php
 namespace Logger\Loggers;
 
+use PHPUnit_Framework_TestCase;
 use Psr\Log\LogLevel;
 
-class ArrayLoggerTest extends \PHPUnit_Framework_TestCase {
+class ArrayLoggerTest extends PHPUnit_Framework_TestCase {
 	public function test() {
 		$logger = new ArrayLogger();
 		$this->assertCount(0, $logger->getMessages());

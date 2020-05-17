@@ -4,9 +4,9 @@ namespace Logger\Common;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
-abstract class AbstractLoggerAware extends AbstractLogger implements LoggerInterface {
+abstract class AbstractLoggerAware extends AbstractLogger {
 	/** @var LoggerInterface */
-	private $logger = null;
+	private $logger;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -18,7 +18,7 @@ abstract class AbstractLoggerAware extends AbstractLogger implements LoggerInter
 	/**
 	 * @return LoggerInterface
 	 */
-	protected function logger() {
+	protected function logger(): LoggerInterface {
 		return $this->logger;
 	}
 }

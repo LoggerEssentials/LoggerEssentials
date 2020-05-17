@@ -19,10 +19,8 @@ class NobrFormatter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return null
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$message = preg_replace("/[\r\n]+/", $this->replacement, $message);

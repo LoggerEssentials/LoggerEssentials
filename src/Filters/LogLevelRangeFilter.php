@@ -8,9 +8,9 @@ use Psr\Log\LogLevel;
 
 class LogLevelRangeFilter extends AbstractLoggerAware {
 	/** @var int */
-	private $minLevel = null;
+	private $minLevel;
 	/** @var int */
-	private $maxLevel = null;
+	private $maxLevel;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -25,10 +25,8 @@ class LogLevelRangeFilter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $psrLevel
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($psrLevel, $message, array $context = array()) {
 		$level = 7 - LogLevelTranslator::getLevelNo($psrLevel);

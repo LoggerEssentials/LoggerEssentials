@@ -28,16 +28,13 @@ class MaxLengthFormatter extends AbstractLoggerAware {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		if($this->maxLength < mb_strlen($message, $this->charset)) {
 			$ellipses = iconv('UTF-8', $this->charset, $this->ellipsis);
 			$message = mb_substr($message, 0, $this->maxLength - strlen($this->ellipsis), $this->charset);
-			$message = $message . $ellipses;
+			$message .= $ellipses;
 		}
 		$this->logger()->log($level, $message, $context);
 	}

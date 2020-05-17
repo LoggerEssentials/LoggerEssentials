@@ -6,7 +6,7 @@ use Psr\Log\LogLevel;
 
 final class LogLevelTranslator {
 	/** @var array */
-	private static $levelsA = array(
+	private static $levelsA = [
 		Rfc5424LogLevels::EMERGENCY => LogLevel::EMERGENCY,
 		Rfc5424LogLevels::ALERT => LogLevel::ALERT,
 		Rfc5424LogLevels::CRITICAL => LogLevel::CRITICAL,
@@ -15,9 +15,9 @@ final class LogLevelTranslator {
 		Rfc5424LogLevels::NOTICE => LogLevel::NOTICE,
 		Rfc5424LogLevels::INFO => LogLevel::INFO,
 		Rfc5424LogLevels::DEBUG => LogLevel::DEBUG
-	);
+	];
 	/** @var array */
-	private static $levelsB = array(
+	private static $levelsB = [
 		LogLevel::EMERGENCY => Rfc5424LogLevels::EMERGENCY,
 		LogLevel::ALERT => Rfc5424LogLevels::ALERT,
 		LogLevel::CRITICAL => Rfc5424LogLevels::CRITICAL,
@@ -26,19 +26,19 @@ final class LogLevelTranslator {
 		LogLevel::NOTICE => Rfc5424LogLevels::NOTICE,
 		LogLevel::INFO => Rfc5424LogLevels::INFO,
 		LogLevel::DEBUG => Rfc5424LogLevels::DEBUG
-	);
+	];
 
 	/**
 	 * @return array
 	 */
-	static public function getRfc5424Levels() {
+	public static function getRfc5424Levels(): array {
 		return self::$levelsB;
 	}
 
 	/**
 	 * @return array
 	 */
-	static public function getLevelTokens() {
+	public static function getLevelTokens(): array {
 		return self::$levelsA;
 	}
 
@@ -47,7 +47,7 @@ final class LogLevelTranslator {
 	 * @throws LogLevelNotFoundException
 	 * @return int
 	 */
-	static public function getLevelNo($levelToken) {
+	public static function getLevelNo($levelToken): int {
 		return (int) self::getFrom(self::$levelsB, $levelToken);
 	}
 
@@ -56,7 +56,7 @@ final class LogLevelTranslator {
 	 * @throws LogLevelNotFoundException
 	 * @return string
 	 */
-	static public function getLevelToken($levelNo) {
+	public static function getLevelToken($levelNo): string {
 		return (string) self::getFrom(self::$levelsA, $levelNo);
 	}
 
@@ -66,7 +66,7 @@ final class LogLevelTranslator {
 	 * @return string|int
 	 * @throws LogLevelNotFoundException
 	 */
-	static private function getFrom(array $levels, $level) {
+	private static function getFrom(array $levels, $level) {
 		if(array_key_exists($level, $levels)) {
 			return $levels[$level];
 		}

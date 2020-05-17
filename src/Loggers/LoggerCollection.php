@@ -4,7 +4,7 @@ namespace Logger\Loggers;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
-class LoggerCollection extends AbstractLogger implements LoggerInterface {
+class LoggerCollection extends AbstractLogger {
 	/** @var LoggerInterface[] */
 	private $loggers = array();
 
@@ -28,10 +28,8 @@ class LoggerCollection extends AbstractLogger implements LoggerInterface {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		foreach($this->loggers as $logger) {

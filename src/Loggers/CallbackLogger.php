@@ -2,11 +2,11 @@
 namespace Logger\Loggers;
 
 use Psr\Log\AbstractLogger;
-use Psr\Log\LoggerInterface;
+use Throwable;
 
-class CallbackLogger extends AbstractLogger implements LoggerInterface {
+class CallbackLogger extends AbstractLogger {
 	/** @var callable */
-	private $callable = null;
+	private $callable;
 
 	/**
 	 * @param callable $callable
@@ -17,15 +17,13 @@ class CallbackLogger extends AbstractLogger implements LoggerInterface {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		try {
 			call_user_func($this->callable, $level, $message, $context);
-		} catch(\Exception $e) {
+		} catch(Throwable $e) {
 		}
 	}
 }

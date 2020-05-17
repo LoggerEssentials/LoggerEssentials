@@ -7,5 +7,5 @@ interface ExtendedLoggerContextExtender {
 	 * @param array $context
 	 * @return array
 	 */
-	public function extend(array $parent, array $context);
+	public function extend(array $parent, array $context): array;
 }

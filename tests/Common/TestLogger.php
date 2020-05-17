@@ -5,22 +5,39 @@ use Psr\Log\AbstractLogger;
 
 class TestLogger extends AbstractLogger {
 	/** @var array */
-	private $firstLine = null;
-	/** @var array */
-	private $lastLine = null;
+	private $lines = [];
 
 	/**
-	 * @return TestLoggerLine
+	 * @return string[]
 	 */
-	public function getFirstLine() {
-		return new TestLoggerLine($this->firstLine['message'], $this->firstLine['context'], $this->firstLine['severty']);
+	public function getMessages(): array {
+		$messages = [];
+		foreach($this->lines as $line) {
+			$messages[] = $line[0];
+		}
+		return $messages;
 	}
 
 	/**
-	 * @return TestLoggerLine
+	 * @return TestLoggerLine|null
+	 */
+	public function getFirstLine() {
+		if(count($this->lines) > 0) {
+			list($message, $context, $severity) = $this->lines[0];
+			return new TestLoggerLine($message ?? '', $context ?? [], $severity ?? '');
+		}
+		return new TestLoggerLine('', [], '');
+	}
+
+	/**
+	 * @return TestLoggerLine|null
 	 */
 	public function getLastLine() {
-		return new TestLoggerLine($this->lastLine['message'], $this->lastLine['context'], $this->lastLine['severty']);
+		if(count($this->lines) > 0) {
+			list($message, $context, $severity) = array_slice($this->lines, -1, 1)[0];
+			return new TestLoggerLine($message ?? '', $context ?? [], $severity ?? '');
+		}
+		return new TestLoggerLine('', [], '');
 	}
 
 	/**
@@ -29,14 +46,7 @@ class TestLogger extends AbstractLogger {
 	 * @param array $context
 	 * @return void
 	 */
-	public function log($level, $message, array $context = array()) {
-		$this->lastLine = array(
-			'message' => $message,
-			'context' => $context,
-			'severty' => $level,
-		);
-		if($this->firstLine === null) {
-			$this->firstLine = $this->lastLine;
-		}
+	public function log($level, $message, array $context = []) {
+		$this->lines[] = [$message, $context, $level];
 	}
 }

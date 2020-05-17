@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 
 class ExcludeLogLevelFilter extends AbstractLoggerAware {
 	/** @var string */
-	private $excludedLogLevel = null;
+	private $excludedLogLevel;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -19,13 +19,11 @@ class ExcludeLogLevelFilter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $psrLevel
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
-	public function log($psrLevel, $message, array $context = array()) {
-		if($this->excludedLogLevel != $psrLevel) {
+	public function log($psrLevel, $message, array $context = []) {
+		if($this->excludedLogLevel !== $psrLevel) {
 			$this->logger()->log($psrLevel, $message, $context);
 		}
 	}

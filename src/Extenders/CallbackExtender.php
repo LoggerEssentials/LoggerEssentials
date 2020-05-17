@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 
 class CallbackExtender extends AbstractLoggerAware {
 	/** @var callable */
-	private $callback = null;
+	private $callback;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -19,10 +19,10 @@ class CallbackExtender extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
+	 *
+	 * @param $level
+	 * @param $message
 	 * @param array $context
-	 * @return void
 	 */
 	public function log($level, $message, array $context = array()) {
 		$fn = $this->callback;

@@ -1,7 +1,7 @@
 <?php
 namespace Logger\Exceptions;
 
-use Exception;
+use RuntimeException;
 
-class LogLevelNotFoundException extends Exception {
+class LogLevelNotFoundException extends RuntimeException {
 }

@@ -7,5 +7,5 @@ interface ExtendedLoggerMessageRenderer {
 	 * @param array $parents
 	 * @return string
 	 */
-	public function render($message, array $parents);
+	public function render($message, array $parents): string;
 }

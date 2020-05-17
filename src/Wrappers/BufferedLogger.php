@@ -1,7 +1,6 @@
 <?php
 namespace Logger\Wrappers;
 
-use Exception;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
@@ -9,7 +8,7 @@ class BufferedLogger extends AbstractLogger {
 	/** @var LoggerInterface */
 	private $logger;
 	/** @var array */
-	private $entries = array();
+	private $entries = [];
 	/** @var int */
 	private $maxEntries;
 
@@ -24,7 +23,6 @@ class BufferedLogger extends AbstractLogger {
 
 	/**
 	 * @return $this
-	 * @throws Exception
 	 */
 	public function flush() {
 		// This is not optimal, but due to the fact that loggers COULD throw an exception for some reason, we need to
@@ -39,7 +37,7 @@ class BufferedLogger extends AbstractLogger {
 	/**
 	 * @return array[]
 	 */
-	public function getBuffer() {
+	public function getBuffer(): array {
 		return $this->entries;
 	}
 
@@ -48,8 +46,7 @@ class BufferedLogger extends AbstractLogger {
 	 * @return $this
 	 */
 	public function setBuffer(array $entries) {
-		foreach($entries as $entry) {
-			list($level, $message, $context) = $entry;
+		foreach($entries as list($level, $message, $context)) {
 			$this->log($level, $message, $context);
 		}
 		return $this;
@@ -59,19 +56,17 @@ class BufferedLogger extends AbstractLogger {
 	 * @return $this
 	 */
 	public function clearBuffer() {
-		$this->entries = array();
+		$this->entries = [];
 		return $this;
 	}
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
-		$this->entries[] = array($level, $message, $context);
+		$this->entries[] = [$level, $message, $context];
 		if($this->maxEntries > -1 && count($this->entries) >= $this->maxEntries) {
 			$this->flush();
 		}

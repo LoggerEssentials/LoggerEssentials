@@ -40,10 +40,8 @@ class LogLevelCompressor extends AbstractLogger {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param mixed $level
-	 * @param string $message
-	 * @param array $context
-	 * @return null
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$level = $this->compress($level);

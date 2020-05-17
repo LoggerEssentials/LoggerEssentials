@@ -3,6 +3,7 @@ namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
+use stdClass;
 
 class ContextJsonFormatter extends AbstractLoggerAware {
 	/** @var int */
@@ -23,15 +24,13 @@ class ContextJsonFormatter extends AbstractLoggerAware {
 
 	/**
 	 * Logs with an arbitrary level.
-	 * @param string $level
-	 * @param string $message
-	 * @param array $context
-	 * @return void
+	 *
+	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = array()) {
 		$ctx = $context;
 		if(!count($ctx)) {
-			$ctx = new \stdClass();
+			$ctx = new stdClass();
 		}
 		$message = sprintf($this->format, $message, json_encode($ctx, $this->jsonOptions));
 		$this->logger()->log($level, $message, $context);

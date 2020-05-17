@@ -1,16 +1,17 @@
 <?php
 namespace Logger\Common\ExtendedPsrLoggerWrapper;
 
+use ArrayIterator;
 use IteratorAggregate;
 use ReflectionClass;
 use ReflectionException;
-use Traversable;
+use Throwable;
 
 class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     /** @var ExtendedLoggerCaptionTrail */
     private $parentCaptions;
     /** @var string[] */
-    private $captions = array();
+    private $captions = [];
     /** @var int */
     private $couponCounter = 0;
 
@@ -20,12 +21,12 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     public function __construct(ExtendedLoggerCaptionTrail $parentCaptions = null) {
         $this->parentCaptions = $parentCaptions;
     }
-	
+
 	/**
 	 * @param string|string[]|object $caption
 	 * @return string Coupon to address exactly this caption
 	 */
-    public function addCaption($caption) {
+    public function addCaption($caption): string {
         $this->couponCounter++;
         $key = "caption-{$this->couponCounter}";
         if(is_object($caption)) {
@@ -43,8 +44,8 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     /**
      * @return string[]
      */
-    public function getCaptions() {
-		$result = array();
+    public function getCaptions(): array {
+		$result = [];
 		if($this->parentCaptions !== null) {
 			foreach($this->parentCaptions->getCaptions() as $parentCaption) {
 				$result[] = $parentCaption;
@@ -68,18 +69,18 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     }
 
     /**
-     * @return Traversable
+     * @return ArrayIterator
      */
-    public function getIterator() {
-        return new \ArrayIterator($this->getCaptions());
+    public function getIterator(): ArrayIterator {
+        return new ArrayIterator($this->getCaptions());
     }
 
     /**
      * @param array $captions
      * @return string[]
      */
-    private function _getCaptions(array $captions) {
-        $result = array();
+    private function _getCaptions(array $captions): array {
+        $result = [];
         foreach($captions as $caption) {
             if(is_array($caption)) {
                 $subCaptions = $this->_getCaptions($caption);
@@ -95,11 +96,23 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
 				if(method_exists($entry, '__toString')) {
 					$entry = (string) $entry;
 				} else {
-					$rc = new \ReflectionClass($entry);
-					$entry = $rc->getShortName();
+					try {
+						$rc = new ReflectionClass($entry);
+						$entry = $rc->getShortName();
+					} catch (Throwable $e) {
+						$entryParts = explode('\\', $entry);
+						$entry = array_slice($entryParts, -1, 1)[0];
+					}
 				}
 			} elseif(!is_string($entry)) {
-				$entry = json_encode($entry, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+				static $options = null;
+				if($options === null) {
+					$options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
+					if(defined('JSON_THROW_ON_ERROR')) {
+						$options |= constant('JSON_THROW_ON_ERROR');
+					}
+				}
+				$entry = json_encode($entry, $options);
 			}
 		}
         return $result;

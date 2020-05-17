@@ -15,8 +15,8 @@ class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 	public function testContextExtenderSimple() {
 		$testLogger = new TestLogger();
 		$logger = new ExtendedPsrLoggerWrapper($testLogger);
-		$logger->context('context a', array(), function () use ($logger) {
-			$logger->context('context b', array(), function () use ($logger) {
+		$logger->context('context a', [], function () use ($logger) {
+			$logger->context('context b', [], function () use ($logger) {
 				$logger->info('Hello world');
 			});
 		});
@@ -27,11 +27,11 @@ class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 	public function testContextExtenderComplex() {
 		$testLogger = new TestLogger();
 		$logger = new ExtendedPsrLoggerWrapper($testLogger);
-		$logger->context('context a', array('id' => 123), function () use ($logger) {
-			$loggerA = $logger->createSubLogger('child a', array('id' => 456));
-			$loggerC = $logger->createSubLogger('child c', array('name' => 'Peter'));
-			$logger->context('context b', array('id' => 789), function () use ($loggerA, $loggerC) {
-				$loggerB = $loggerA->createSubLogger('child b', array('test' => 'abc'));
+		$logger->context('context a', ['id' => 123], function () use ($logger) {
+			$loggerA = $logger->createSubLogger('child a', ['id' => 456]);
+			$loggerC = $logger->createSubLogger('child c', ['name' => 'Peter']);
+			$logger->context('context b', ['id' => 789], function () use ($loggerA, $loggerC) {
+				$loggerB = $loggerA->createSubLogger('child b', ['test' => 'abc']);
 				$loggerB->info('Hello world');
 				$loggerC->info('Hello world');
 			});
@@ -39,8 +39,8 @@ class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals('context a > context b > child a > child b: Hello world', $testLogger->getFirstLine()->getMessage());
 		$this->assertEquals('context a > context b > child c: Hello world', $testLogger->getLastLine()->getMessage());
-		$this->assertEquals(array('id' => 456, 'test' => 'abc'), $testLogger->getFirstLine()->getContext());
-		$this->assertEquals(array('id' => 123, 'name' => 'Peter'), $testLogger->getLastLine()->getContext());
+		$this->assertEquals(['id' => 456, 'test' => 'abc'], $testLogger->getFirstLine()->getContext());
+		$this->assertEquals(['id' => 123, 'name' => 'Peter'], $testLogger->getLastLine()->getContext());
 	}
 
 	public function testCapture() {
@@ -54,7 +54,27 @@ class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals('info', $testLogger->getLastLine()->getSeverty());
 		$this->assertEquals('HELLO WORLD', $testLogger->getLastLine()->getMessage());
-		$this->assertEquals(array(), $testLogger->getLastLine()->getContext());
+		$this->assertEquals([], $testLogger->getLastLine()->getContext());
+	}
+
+	public function testMeasure() {
+		$testLogger = new TestLogger();
+		$logger = new ExtendedPsrLoggerWrapper($testLogger);
+		$logger->measure('Test-Region', [], static function () {
+			usleep(50);
+		});
+
+		$expectedPatterns = [
+			'/Test-Region: Enter context/',
+			'/Test-Region: Exit context: \\d+\\.\\d+ seconds/'
+		];
+
+		$this->assertCount(count($expectedPatterns), $testLogger->getMessages());
+
+		$messages = array_combine($expectedPatterns, $testLogger->getMessages());
+		foreach($messages as $expectedPattern => $actualMessage) {
+			$this->assertRegExp($expectedPattern, $actualMessage);
+		}
 	}
 }
 

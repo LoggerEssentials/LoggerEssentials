@@ -2,9 +2,10 @@
 namespace Logger\Filters;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class LogLevelRangeFilterTest extends \PHPUnit_Framework_TestCase {
+class LogLevelRangeFilterTest extends TestCase {
 	public function test() {
 		$testLogger = new TestLogger();
 		$logger = new LogLevelRangeFilter($testLogger, LogLevel::DEBUG, LogLevel::WARNING);

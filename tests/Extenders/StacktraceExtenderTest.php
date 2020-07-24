@@ -2,8 +2,9 @@
 namespace Logger\Extenders;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 
-class StacktraceExtenderTest extends \PHPUnit_Framework_TestCase {
+class StacktraceExtenderTest extends TestCase {
 	public function test() {
 		$testLogger = new TestLogger();
 		$logger = new StacktraceExtender($testLogger, 'stacktrace');

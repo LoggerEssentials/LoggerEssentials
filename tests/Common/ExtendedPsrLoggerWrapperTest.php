@@ -2,8 +2,9 @@
 namespace Logger\Common;
 
 use Logger\Common\ExtendedPsrLoggerWrapper\CapturedLogEvent;
+use PHPUnit\Framework\TestCase;
 
-class ExtendedPsrLoggerWrapperTest extends \PHPUnit_Framework_TestCase {
+class ExtendedPsrLoggerWrapperTest extends TestCase {
 	public function testSubLogger() {
 		$testLogger = new TestLogger();
 		$logger = new ExtendedPsrLoggerWrapper($testLogger);

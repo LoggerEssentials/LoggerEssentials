@@ -1,9 +1,10 @@
 <?php
 namespace Logger\Tools;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class LogLevelTranslatorTest extends \PHPUnit_Framework_TestCase {
+class LogLevelTranslatorTest extends TestCase {
 	/**
 	 */
 	public function testLevelNumbers1() {

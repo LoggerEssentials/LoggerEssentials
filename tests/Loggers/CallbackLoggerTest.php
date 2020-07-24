@@ -1,9 +1,10 @@
 <?php
 namespace Logger\Loggers;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class CallbackLoggerTest extends \PHPUnit_Framework_TestCase {
+class CallbackLoggerTest extends TestCase {
 	public function test() {
 		$obj = (object) array();
 

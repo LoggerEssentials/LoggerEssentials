@@ -2,9 +2,10 @@
 namespace Logger\Filters;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class MinLogLevelFilterTest extends \PHPUnit_Framework_TestCase {
+class MinLogLevelFilterTest extends TestCase {
 	public function test() {
 		$testLogger = new TestLogger();
 		$logger = new MinLogLevelFilter($testLogger, LogLevel::ERROR);

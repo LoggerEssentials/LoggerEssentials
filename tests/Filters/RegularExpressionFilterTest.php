@@ -2,8 +2,9 @@
 namespace Logger\Filters;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 
-class RegularExpressionFilterTest extends \PHPUnit_Framework_TestCase {
+class RegularExpressionFilterTest extends TestCase {
 	public function test() {
 		$testLogger = new TestLogger();
 		$logger = new RegularExpressionFilter($testLogger, 'is a', 'u');

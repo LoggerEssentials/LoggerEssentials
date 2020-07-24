@@ -3,8 +3,9 @@ namespace Logger\Loggers;
 
 use Logger\Formatters\FormatFormatter;
 use Logger\Tools\LogLevelTranslator;
+use PHPUnit\Framework\TestCase;
 
-class ResourceLoggerTest extends \PHPUnit_Framework_TestCase {
+class ResourceLoggerTest extends TestCase {
 	public function testLogging() {
 		$resource = fopen('php://memory', 'r+');
 		$logger = new FormatFormatter(new ResourceLogger($resource), "%s\n");

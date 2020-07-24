@@ -2,8 +2,9 @@
 namespace Logger\Extenders;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 
-class ContextExtenderTest extends \PHPUnit_Framework_TestCase {
+class ContextExtenderTest extends TestCase {
 	public function testAll() {
 		$testLogger = new TestLogger();
 		$logger = new ContextExtender($testLogger, array('test2' => 456));

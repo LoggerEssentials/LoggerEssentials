@@ -2,9 +2,10 @@
 namespace Logger\Extenders;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class CallbackExtenderTest extends \PHPUnit_Framework_TestCase {
+class CallbackExtenderTest extends TestCase {
 	public function testAll() {
 		$testLogger = new TestLogger();
 		$logger = new CallbackExtender($testLogger, function ($level, &$message) {

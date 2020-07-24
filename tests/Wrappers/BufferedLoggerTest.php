@@ -2,8 +2,9 @@
 namespace Logger\Wrappers;
 
 use Logger\Loggers\ArrayLogger;
+use PHPUnit\Framework\TestCase;
 
-class BufferedLoggerTest extends \PHPUnit_Framework_TestCase {
+class BufferedLoggerTest extends TestCase {
 	public function testBufferAllNoFlush() {
 		$arrayLogger = new ArrayLogger();
 		$logger = new BufferedLogger($arrayLogger);

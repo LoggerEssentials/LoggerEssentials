@@ -2,8 +2,9 @@
 namespace Logger\Loggers;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 
-class LoggerCollectionTest extends \PHPUnit_Framework_TestCase {
+class LoggerCollectionTest extends TestCase {
 	public function testConstructor() {
 		$testLogger1 = new TestLogger();
 		$testLogger2 = new TestLogger();

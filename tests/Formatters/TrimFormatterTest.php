@@ -2,9 +2,10 @@
 namespace Logger\Formatters;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class TrimFormatterTest extends \PHPUnit_Framework_TestCase {
+class TrimFormatterTest extends TestCase {
 	public function test() {
 		$testLogger = new TestLogger();
 		$formatter = new TrimFormatter($testLogger);

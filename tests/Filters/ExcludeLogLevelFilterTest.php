@@ -2,9 +2,10 @@
 namespace Logger\Filters;
 
 use Logger\Common\TestLogger;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class ExcludeLogLevelFilterTest extends \PHPUnit_Framework_TestCase {
+class ExcludeLogLevelFilterTest extends TestCase {
 	public function test() {
 		$testLogger = new TestLogger();
 		$logger = new ExcludeLogLevelFilter($testLogger, LogLevel::DEBUG);

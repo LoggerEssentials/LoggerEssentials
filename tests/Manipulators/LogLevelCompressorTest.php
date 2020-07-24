@@ -1,10 +1,11 @@
 <?php
 namespace Logger\Manipulators;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 
-class LogLevelCompressorTest extends \PHPUnit_Framework_TestCase {
+class LogLevelCompressorTest extends TestCase {
 	public function testMin() {
 		$compressor = new LogLevelCompressor(new NullLogger(), LogLevel::INFO, LogLevel::CRITICAL);
 		$level = $compressor->compress(LogLevel::EMERGENCY);

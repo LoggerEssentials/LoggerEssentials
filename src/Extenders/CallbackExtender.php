@@ -20,11 +20,11 @@ class CallbackExtender extends AbstractLoggerAware {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @param $level
-	 * @param $message
+	 * @param string $level
+	 * @param string $message
 	 * @param array $context
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []) {
 		$fn = $this->callback;
 		$fn($level, $message, $context);
 		$this->logger()->log($level, $message, $context);

@@ -18,11 +18,11 @@ class RegularExpressionFilter extends AbstractLoggerAware {
 	 * @param string $modifiers
 	 * @param bool $negate
 	 */
-	public function __construct(LoggerInterface $logger, $pattern, $modifiers = 'u', $negate = false) {
+	public function __construct(LoggerInterface $logger, $pattern, $modifiers = 'u', bool $negate = false) {
 		parent::__construct($logger);
 		$this->pattern = $pattern;
 		$this->modifiers = $modifiers;
-		$this->negate = (bool) $negate;
+		$this->negate = $negate;
 	}
 
 	/**

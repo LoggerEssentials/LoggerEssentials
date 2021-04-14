@@ -24,7 +24,7 @@ interface ExtendedLogger extends LoggerInterface {
 	 * @return T
 	 * @throws Exception
 	 */
-	public function context($caption, array $context = [], callable $fn);
+	public function context($caption, array $context, callable $fn);
 
 	/**
 	 * Like @see self::context() but it will emit an
@@ -39,5 +39,5 @@ interface ExtendedLogger extends LoggerInterface {
 	 * @return T
 	 * @throws Exception
 	 */
-	public function measure($caption, array $context = [], callable $fn);
+	public function measure($caption, array $context, callable $fn);
 }

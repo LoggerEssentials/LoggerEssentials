@@ -70,7 +70,7 @@ class ExtendedLoggerImpl extends AbstractLogger implements ExtendedLogger, Exten
 	/**
 	 * @inheritDoc
 	 */
-	public function context($caption, array $context = [], callable $fn) {
+	public function context($caption, array $context, callable $fn) {
 		if(!is_array($caption)) {
 			$caption = [$caption];
 		}
@@ -88,7 +88,7 @@ class ExtendedLoggerImpl extends AbstractLogger implements ExtendedLogger, Exten
 	/**
 	 * @inheritDoc
 	 */
-	public function measure($caption, array $context = [], callable $fn) {
+	public function measure($caption, array $context, callable $fn) {
 		return $this->context($caption, $context, function ($logger) use ($fn) {
 			$this->info("Enter context");
 			$timer1 = microtime(true);

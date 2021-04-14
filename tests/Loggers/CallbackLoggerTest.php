@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
 class CallbackLoggerTest extends TestCase {
-	public function test() {
+	public function test(): void {
 		$obj = (object) [];
 
 		$callable = static function ($level, $message, array $context = []) use ($obj) {
@@ -18,8 +18,8 @@ class CallbackLoggerTest extends TestCase {
 
 		$logger->info('hello world', ['a' => 'b']);
 
-		$this->assertEquals(LogLevel::INFO, $obj->level);
-		$this->assertEquals('hello world', $obj->message);
-		$this->assertEquals(['a' => 'b'], $obj->context);
+		self::assertEquals(LogLevel::INFO, $obj->level);
+		self::assertEquals('hello world', $obj->message);
+		self::assertEquals(['a' => 'b'], $obj->context);
 	}
 }

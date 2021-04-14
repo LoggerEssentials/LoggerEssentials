@@ -6,23 +6,25 @@ use Psr\Log\LoggerInterface;
 
 interface ExtendedLogger extends LoggerInterface {
 	/**
-	 * @deprecated Use @see self::context() instead.
 	 * @param string|string[] $captions
+	 * @param array<string, mixed> $context
 	 * @return ExtendedLogger
 	 */
-	public function createSubLogger($captions);
+	public function createSubLogger($captions, array $context = []): ExtendedLogger;
 
 	/**
 	 * Starts a new logging context for a region. The $caption-parameter
 	 * will be prepended to an log-message. The actual $context will be
 	 * merged over the $context-parameter given to this method.
 	 *
-	 * @param string|string[] $caption
-	 * @param array $context
-	 * @param callable $fn
-	 * @return mixed
+	 * @template T
+	 * @param string|array<int, int|float|string> $caption
+	 * @param array<string, mixed> $context
+	 * @param callable(ExtendedLogger): T $fn
+	 * @return T
+	 * @throws Exception
 	 */
-	public function context($caption, array $context = [], $fn);
+	public function context($caption, array $context = [], callable $fn);
 
 	/**
 	 * Like @see self::context() but it will emit an
@@ -30,20 +32,12 @@ interface ExtendedLogger extends LoggerInterface {
 	 * region start and will additionaly emit the
 	 * time needed in seconds when reaching the end.
 	 *
-	 * @param string|string[] $caption
-	 * @param array $context
-	 * @param mixed $fn
-	 * @return mixed
+	 * @template T
+	 * @param string|array<int, int|float|string> $caption
+	 * @param array<string, mixed> $context
+	 * @param callable(ExtendedLogger): T $fn
+	 * @return T
 	 * @throws Exception
 	 */
-	public function measure($caption, array $context = [], $fn);
-
-	/**
-	 * @deprecated
-	 * @param callable $fn
-	 * @param callable $callback
-	 * @return mixed
-	 * @throws Exception
-	 */
-	public function intercept($fn, $callback);
+	public function measure($caption, array $context = [], callable $fn);
 }

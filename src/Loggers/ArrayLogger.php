@@ -4,15 +4,15 @@ namespace Logger\Loggers;
 use Psr\Log\AbstractLogger;
 
 class ArrayLogger extends AbstractLogger {
-	/** @var array */
-	private $lines = array();
+	/** @var array<int, array{level: string, message: string, context: array<string, mixed>}> */
+	private $lines = [];
 
 	/**
 	 * Logs with an arbitrary level.
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []): void {
 		$this->lines[] = [
 			'level' => $level,
 			'message' => $message,
@@ -21,7 +21,7 @@ class ArrayLogger extends AbstractLogger {
 	}
 
 	/**
-	 * @return array[]
+	 * @return array<int, array{level: string, message: string, context: array<string, mixed>}>
 	 */
 	public function getMessages(): array {
 		return $this->lines;
@@ -30,7 +30,7 @@ class ArrayLogger extends AbstractLogger {
 	/**
 	 * @return $this
 	 */
-	public function clearAll() {
+	public function clearAll(): self {
 		$this->lines = [];
 		return $this;
 	}

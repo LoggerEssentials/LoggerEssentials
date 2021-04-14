@@ -7,7 +7,7 @@ use Psr\Log\LogLevel;
 class LogLevelTranslatorTest extends TestCase {
 	/**
 	 */
-	public function testLevelNumbers1() {
+	public function testLevelNumbers1(): void {
 		$levels = array(
 			LogLevel::EMERGENCY => Rfc5424LogLevels::EMERGENCY,
 			LogLevel::ALERT => Rfc5424LogLevels::ALERT,
@@ -23,14 +23,14 @@ class LogLevelTranslatorTest extends TestCase {
 
 	/**
 	 */
-	public function testLevelNumbers2() {
+	public function testLevelNumbers2(): void {
 		$levels = LogLevelTranslator::getRfc5424Levels();
 		$this->_testLevelNumbers($levels);
 	}
 
 	/**
 	 */
-	public function testLevelTokens1() {
+	public function testLevelTokens1(): void {
 		$tokens = array(
 			Rfc5424LogLevels::EMERGENCY => LogLevel::EMERGENCY,
 			Rfc5424LogLevels::ALERT => LogLevel::ALERT,
@@ -46,28 +46,28 @@ class LogLevelTranslatorTest extends TestCase {
 
 	/**
 	 */
-	public function testLevelTokenss() {
+	public function testLevelTokens(): void {
 		$tokens = LogLevelTranslator::getLevelTokens();
 		$this->_testLevelTokens($tokens);
 	}
 
 	/**
-	 * @param array $levels
+	 * @param array<string, int> $levels
 	 */
-	private function _testLevelNumbers(array $levels) {
+	private function _testLevelNumbers(array $levels): void {
 		foreach($levels as $levelA => $levelB) {
 			$level = LogLevelTranslator::getLevelToken($levelB);
-			$this->assertEquals($levelA, $level);
+			self::assertEquals($levelA, $level);
 		}
 	}
 
 	/**
-	 * @param array $tokens
+	 * @param array<int, string> $tokens
 	 */
-	private function _testLevelTokens(array $tokens) {
+	private function _testLevelTokens(array $tokens): void {
 		foreach($tokens as $levelA => $levelB) {
 			$level = LogLevelTranslator::getLevelNo($levelB);
-			$this->assertEquals($levelA, $level);
+			self::assertEquals($levelA, $level);
 		}
 	}
 }

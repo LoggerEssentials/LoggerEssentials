@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
 class CallbackExtenderTest extends TestCase {
-	public function testAll() {
+	public function testAll(): void {
 		$testLogger = new TestLogger();
 		$logger = new CallbackExtender($testLogger, function ($level, &$message) {
 			if($level === LogLevel::INFO) {
@@ -14,6 +14,6 @@ class CallbackExtenderTest extends TestCase {
 			}
 		});
 		$logger->info('Hello world');
-		$this->assertEquals('Hello planet', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('Hello planet', $testLogger->getLastLine()->getMessage());
 	}
 }

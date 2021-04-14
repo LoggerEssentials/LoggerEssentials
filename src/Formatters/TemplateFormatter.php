@@ -9,23 +9,23 @@ use RuntimeException;
 use stdClass;
 
 class TemplateFormatter extends AbstractLoggerAware {
-	const DEFAULT_FORMAT = "[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:\"-\"% %context|json%\n";
+	public const DEFAULT_FORMAT = "[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:\"-\"% %context|json%\n";
 
 	/** @var string */
 	private $format;
-	/** @var array */
+	/** @var array<int, array{string, callable(string): string}> */
 	private $values;
-	/** @var array */
+	/** @var array<string, mixed> */
 	private $extra;
 
 	/**
 	 * @param LoggerInterface $logger
 	 * @param string $format
-	 * @param array $extra
+	 * @param array<string, mixed> $extra
 	 */
-	public function __construct(LoggerInterface $logger, $format = self::DEFAULT_FORMAT, array $extra = array()) {
+	public function __construct(LoggerInterface $logger, $format = self::DEFAULT_FORMAT, array $extra = []) {
 		parent::__construct($logger);
-		list($this->format, $this->values) = $this->compileFormat($format);
+		[$this->format, $this->values] = $this->compileFormat($format);
 		$this->extra = $extra;
 	}
 
@@ -34,7 +34,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$packet = [
 			'level' => $level,
 			'message' => $message,
@@ -54,15 +54,15 @@ class TemplateFormatter extends AbstractLoggerAware {
 
 	/**
 	 * @param string $format
-	 * @return array
+	 * @return array{string, array<int, array{string|null, callable(string): string}>}
 	 */
-	private function compileFormat($format) {
+	private function compileFormat(string $format): array {
 		$values = [];
 		$fn = static function ($matches) use (&$values) {
 			$values[] = $matches[1];
 			return '%s';
 		};
-		$format = preg_replace_callback('/%([^%]+)%/', $fn, $format);
+		$format = (string) preg_replace_callback('/%([^%]+)%/', $fn, $format);
 		$result = [];
 		foreach($values as $value) {
 			$result[] = $this->extractConverters($value);
@@ -72,32 +72,29 @@ class TemplateFormatter extends AbstractLoggerAware {
 
 	/**
 	 * @param string $value
-	 * @return array
+	 * @return array{string|null, callable(string): string}
 	 */
-	private function extractConverters($value) {
-		list($input, $modifiers) = explode('|', $value . '|', 2);
+	private function extractConverters(string $value): array {
+		[$input, $modifiers] = explode('|', $value . '|', 2);
 		$modifiers = rtrim($modifiers, '|');
 		if(!$modifiers) {
-			return [
-				$input ?: null,
-				static function ($value) {
-					return $value;
-				}
-			];
+			return [$input ?: null, static function ($value): string {
+				return $value;
+			}];
 		}
 		$modifiers = explode('|', $modifiers);
-		$modifiers = $this->expandModifiers($modifiers);
-		return [$input ?: null, $modifiers];
+		$modifierFn = $this->expandModifiers($modifiers);
+		return [$input ?: null, $modifierFn];
 	}
 
 	/**
-	 * @param string[] $modifiers
-	 * @return Closure
+	 * @param array<int, string> $modifiers
+	 * @return callable(string): string
 	 */
-	private function expandModifiers($modifiers) {
+	private function expandModifiers(array $modifiers): callable {
 		$functions = [];
 		foreach($modifiers as $modifier) {
-			list($command, $params) = $this->extractFn($modifier);
+			[$command, $params] = $this->extractFn($modifier);
 			$functions[] = $this->convertCommandToClosure($command, $params);
 		}
 		return static function ($value) use ($functions) {
@@ -110,10 +107,10 @@ class TemplateFormatter extends AbstractLoggerAware {
 
 	/**
 	 * @param string $modifier
-	 * @return array
+	 * @return array{string, array<int, string>}
 	 */
-	private function extractFn($modifier) {
-		list($command, $params) = explode(':', $modifier . ':', 2);
+	private function extractFn(string $modifier): array {
+		[$command, $params] = explode(':', "{$modifier}:", 2);
 		$params = explode(':', $params);
 		array_pop($params);
 		foreach($params as &$param) {
@@ -122,15 +119,15 @@ class TemplateFormatter extends AbstractLoggerAware {
 				$param = strtr($param, ['\\"' => '"', '\\\\' => '\\']);
 			}
 		}
-		return array($command, $params);
+		return [$command, $params];
 	}
 
 	/**
 	 * @param string $command
-	 * @param array $params
-	 * @return Closure
+	 * @param array<int|string, string> $params
+	 * @return callable(string): string
 	 */
-	private function convertCommandToClosure($command, array $params) {
+	private function convertCommandToClosure(string $command, array $params): callable {
 		$param = static function ($key, $default = null) use ($params) {
 			if(!array_key_exists($key, $params)) {
 				if($default !== null) {
@@ -167,7 +164,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 					if(!count($value)) {
 						$value = new stdClass();
 					}
-					return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+					return (string) json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 				};
 			case 'pad':
 				return static function ($value) use ($param) {

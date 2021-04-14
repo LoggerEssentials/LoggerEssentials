@@ -4,40 +4,40 @@ namespace Logger\Common;
 class TestLoggerLine {
 	/** @var string|null */
 	private $message;
-	/** @var array */
+	/** @var array<string, mixed> */
 	private $context;
-	/** @var int|null */
+	/** @var string|null */
 	private $severity;
 
 	/**
 	 * @param string|null $message
-	 * @param array $context
-	 * @param int|null $severity
+	 * @param array<string, mixed> $context
+	 * @param string|null $severity
 	 */
-	public function __construct($message, $context, $severity) {
+	public function __construct(?string $message, array $context, ?string $severity) {
 		$this->message = $message;
 		$this->context = $context;
 		$this->severity = $severity;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getMessage() {
+	public function getMessage(): ?string {
 		return $this->message;
 	}
 
 	/**
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	public function getContext() {
+	public function getContext(): array {
 		return $this->context;
 	}
 
 	/**
-	 * @return int
+	 * @return string|null
 	 */
-	public function getSeverty() {
+	public function getSeverty(): ?string {
 		return $this->severity;
 	}
 }

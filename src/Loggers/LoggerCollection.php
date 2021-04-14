@@ -6,12 +6,12 @@ use Psr\Log\LoggerInterface;
 
 class LoggerCollection extends AbstractLogger {
 	/** @var LoggerInterface[] */
-	private $loggers = array();
+	private $loggers = [];
 
 	/**
-	 * @param array $loggers
+	 * @param array<int, LoggerInterface> $loggers
 	 */
-	public function __construct(array $loggers = array()) {
+	public function __construct(array $loggers = []) {
 		foreach($loggers as $logger) {
 			$this->add($logger);
 		}
@@ -21,7 +21,7 @@ class LoggerCollection extends AbstractLogger {
 	 * @param LoggerInterface $logger
 	 * @return $this
 	 */
-	public function add(LoggerInterface $logger) {
+	public function add(LoggerInterface $logger): self {
 		$this->loggers[] = $logger;
 		return $this;
 	}
@@ -31,7 +31,7 @@ class LoggerCollection extends AbstractLogger {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []): void {
 		foreach($this->loggers as $logger) {
 			$logger->log($level, $message, $context);
 		}

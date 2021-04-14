@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 class BufferedLogger extends AbstractLogger {
 	/** @var LoggerInterface */
 	private $logger;
-	/** @var array */
+	/** @var array<int, array{string, string, array<string, mixed>}> */
 	private $entries = [];
 	/** @var int */
 	private $maxEntries;
@@ -24,11 +24,11 @@ class BufferedLogger extends AbstractLogger {
 	/**
 	 * @return $this
 	 */
-	public function flush() {
+	public function flush(): self {
 		// This is not optimal, but due to the fact that loggers COULD throw an exception for some reason, we need to
 		// get rid of those entries already completed.
 		while(count($this->entries)) {
-			list($level, $message, $context) = array_shift($this->entries);
+			[$level, $message, $context] = array_shift($this->entries);
 			$this->logger->log($level, $message, $context);
 		}
 		return $this;
@@ -42,11 +42,11 @@ class BufferedLogger extends AbstractLogger {
 	}
 
 	/**
-	 * @param array $entries
+	 * @param array<int, array{string, string, array<string, mixed>}> $entries
 	 * @return $this
 	 */
-	public function setBuffer(array $entries) {
-		foreach($entries as list($level, $message, $context)) {
+	public function setBuffer(array $entries): self {
+		foreach($entries as [$level, $message, $context]) {
 			$this->log($level, $message, $context);
 		}
 		return $this;
@@ -55,7 +55,7 @@ class BufferedLogger extends AbstractLogger {
 	/**
 	 * @return $this
 	 */
-	public function clearBuffer() {
+	public function clearBuffer(): self {
 		$this->entries = [];
 		return $this;
 	}
@@ -65,7 +65,7 @@ class BufferedLogger extends AbstractLogger {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []): void {
 		$this->entries[] = [$level, $message, $context];
 		if($this->maxEntries > -1 && count($this->entries) >= $this->maxEntries) {
 			$this->flush();

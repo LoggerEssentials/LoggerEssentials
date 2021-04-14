@@ -6,21 +6,21 @@ use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 
 class LogLevelCompressorTest extends TestCase {
-	public function testMin() {
+	public function testMin(): void {
 		$compressor = new LogLevelCompressor(new NullLogger(), LogLevel::INFO, LogLevel::CRITICAL);
 		$level = $compressor->compress(LogLevel::EMERGENCY);
-		$this->assertEquals($level, LogLevel::CRITICAL);
+		self::assertEquals(LogLevel::CRITICAL, $level);
 	}
 
-	public function testMax() {
+	public function testMax(): void {
 		$compressor = new LogLevelCompressor(new NullLogger(), LogLevel::INFO, LogLevel::CRITICAL);
 		$level = $compressor->compress(LogLevel::DEBUG);
-		$this->assertEquals($level, LogLevel::INFO);
+		self::assertEquals(LogLevel::INFO, $level);
 	}
 
-	public function testEqual() {
+	public function testEqual(): void {
 		$compressor = new LogLevelCompressor(new NullLogger(), LogLevel::INFO, LogLevel::CRITICAL);
 		$level = $compressor->compress(LogLevel::WARNING);
-		$this->assertEquals($level, LogLevel::WARNING);
+		self::assertEquals(LogLevel::WARNING, $level);
 	}
 }

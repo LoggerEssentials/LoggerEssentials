@@ -5,142 +5,142 @@ use Logger\Common\FormatterTestCase;
 use Psr\Log\LogLevel;
 
 class TemplateFormatterTest extends FormatterTestCase {
-	public function testDate() {
+	public function testDate(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '[%|date:c%]');
 		$formatter->log(LogLevel::DEBUG, '');
-		$this->assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}\\T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\]/', $testLogger->getLastLine()->getMessage());
+		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}\\T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\]/', (string) $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testNobr() {
+	public function testNobr(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|nobr%');
 		$formatter->log(LogLevel::DEBUG, "This\nis\ra\r\ntest");
-		$this->assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testTrim() {
+	public function testTrim(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|trim%');
 		$formatter->log(LogLevel::DEBUG, "   This is a test   ");
-		$this->assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
 
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|trim:"."%');
 		$formatter->log(LogLevel::DEBUG, "...This is a test...");
-		$this->assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testLTrim() {
+	public function testLTrim(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|ltrim%');
 		$formatter->log(LogLevel::DEBUG, "   This is a test   ");
-		$this->assertEquals('This is a test   ', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('This is a test   ', $testLogger->getLastLine()->getMessage());
 
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|ltrim:"."%');
 		$formatter->log(LogLevel::DEBUG, "...This is a test...");
-		$this->assertEquals('This is a test...', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('This is a test...', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testRTrim() {
+	public function testRTrim(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|rtrim%');
 		$formatter->log(LogLevel::DEBUG, "   This is a test   ");
-		$this->assertEquals('   This is a test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('   This is a test', $testLogger->getLastLine()->getMessage());
 
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|rtrim:"."%');
 		$formatter->log(LogLevel::DEBUG, "...This is a test...");
-		$this->assertEquals('...This is a test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('...This is a test', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testJson() {
+	public function testJson(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%context|json%');
 		$formatter->log(LogLevel::DEBUG, "", array());
-		$this->assertEquals('{}', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('{}', $testLogger->getLastLine()->getMessage());
 
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%context|json%');
 		$formatter->log(LogLevel::DEBUG, "", array('test' => 123));
-		$this->assertEquals('{"test":123}', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('{"test":123}', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testPad() {
+	public function testPad(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|pad:8%');
 		$formatter->log(LogLevel::DEBUG, "test");
-		$this->assertEquals('  test  ', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('  test  ', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testLPad() {
+	public function testLPad(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|lpad:8%');
 		$formatter->log(LogLevel::DEBUG, "test");
-		$this->assertEquals('test    ', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('test    ', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testRPad() {
+	public function testRPad(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|rpad:8%');
 		$formatter->log(LogLevel::DEBUG, "test");
-		$this->assertEquals('    test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('    test', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testUppercase() {
+	public function testUppercase(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|uppercase%');
 		$formatter->log(LogLevel::DEBUG, "test");
-		$this->assertEquals('TEST', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('TEST', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testLowercase() {
+	public function testLowercase(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|lowercase%');
 		$formatter->log(LogLevel::DEBUG, "TEST");
-		$this->assertEquals('test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('test', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testLCFirst() {
+	public function testLCFirst(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|lcfirst%');
 		$formatter->log(LogLevel::DEBUG, "THIS IS A TEST");
-		$this->assertEquals('tHIS IS A TEST', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('tHIS IS A TEST', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testUCFirst() {
+	public function testUCFirst(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|ucfirst%');
 		$formatter->log(LogLevel::DEBUG, "this is a test");
-		$this->assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('This is a test', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testUCWords() {
+	public function testUCWords(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|ucwords%');
 		$formatter->log(LogLevel::DEBUG, "this is a test");
-		$this->assertEquals('This Is A Test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('This Is A Test', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testCut() {
+	public function testCut(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%message|cut:7%');
 		$formatter->log(LogLevel::DEBUG, "this is a test");
-		$this->assertEquals('this is', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('this is', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testDefault() {
+	public function testDefault(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '%notexisting|default:"Defaultvalue"%');
 		$formatter->log(LogLevel::DEBUG, "");
-		$this->assertEquals('Defaultvalue', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('Defaultvalue', $testLogger->getLastLine()->getMessage());
 	}
 
-	public function testDefaultFormat() {
+	public function testDefaultFormat(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger);
 		$formatter->log(LogLevel::DEBUG, 'This is a test');
-		$this->assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}\\T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}/', $testLogger->getLastLine()->getMessage());
+		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}\\T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}/', (string) $testLogger->getLastLine()->getMessage());
 	}
 }

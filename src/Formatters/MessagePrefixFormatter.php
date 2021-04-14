@@ -18,7 +18,7 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 	 * @param string $concatenator
 	 * @param string $endingConcatenator
 	 */
-	public function __construct(LoggerInterface $logger, $caption = null, $concatenator = ' > ', $endingConcatenator = ': ') {
+	public function __construct(LoggerInterface $logger, $caption, $concatenator = ' > ', $endingConcatenator = ': ') {
 		parent::__construct($logger);
 		$this->caption = $caption;
 		$this->concatenator = $concatenator;
@@ -30,12 +30,11 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []): void {
 		$parts = array();
 		if(is_array($this->caption)) {
 			$parts[] = implode($this->concatenator, $this->caption);
 		} elseif(is_scalar($this->caption)) {
-			/** @var mixed $caption */
 			$caption = $this->caption;
 			$parts[] = (string) $caption;
 		}

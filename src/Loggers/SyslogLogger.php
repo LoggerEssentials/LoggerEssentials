@@ -11,7 +11,7 @@ class SyslogLogger extends AbstractLogger {
 	private $options;
 	/** @var int */
 	private $facility;
-	/** @var array */
+	/** @var array<string, int> */
 	private static $levels = [
 		LogLevel::DEBUG => LOG_DEBUG,
 		LogLevel::INFO => LOG_INFO,
@@ -28,7 +28,7 @@ class SyslogLogger extends AbstractLogger {
 	 * @param int $options
 	 * @param int $facility
 	 */
-	public function __construct($ident, $options = null, $facility = LOG_USER) {
+	public function __construct(string $ident, $options = null, $facility = LOG_USER) {
 		$this->ident = $ident;
 		$this->options = $options;
 		$this->facility = $facility;
@@ -39,7 +39,7 @@ class SyslogLogger extends AbstractLogger {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []): void {
 		$options = $this->options;
 		if($options === null) {
 			$options = LOG_PID;

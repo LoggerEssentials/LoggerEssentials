@@ -4,7 +4,7 @@ namespace Logger\Formatters;
 use Logger\Common\AbstractLoggerAware;
 use Logger\Common\Builder\BuilderAware;
 
-class PassThroughFormatter extends AbstractLoggerAware implements BuilderAware {
+class PassThroughFormatter extends AbstractLoggerAware {
 	/**
 	 * Logs with an arbitrary level.
 	 *

@@ -3,9 +3,9 @@ namespace Logger\Common\ExtendedPsrLoggerWrapper;
 
 interface ExtendedLoggerContextExtender {
 	/**
-	 * @param array $parent
-	 * @param array $context
-	 * @return array
+	 * @param array<string, mixed> $parent
+	 * @param array<string, mixed> $context
+	 * @return array<string, mixed>
 	 */
 	public function extend(array $parent, array $context): array;
 }

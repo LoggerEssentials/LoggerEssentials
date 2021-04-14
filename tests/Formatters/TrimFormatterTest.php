@@ -6,10 +6,10 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
 class TrimFormatterTest extends TestCase {
-	public function test() {
+	public function test(): void {
 		$testLogger = new TestLogger();
 		$formatter = new TrimFormatter($testLogger);
 		$formatter->log(LogLevel::DEBUG, "    test    ");
-		$this->assertEquals('test', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('test', $testLogger->getLastLine()->getMessage());
 	}
 }

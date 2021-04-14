@@ -8,49 +8,49 @@ class CapturedLogEvent {
 	private $level;
 	/** @var string */
 	private $message;
-	/** @var string */
+	/** @var array<string, mixed> */
 	private $context;
 	/** @var LoggerInterface */
 	private $parentLogger;
-	
+
 	/**
 	 * @param string $level
 	 * @param string $message
-	 * @param string $context
+	 * @param array<string, mixed> $context
 	 * @param LoggerInterface $parentLogger
 	 */
-	public function __construct($level, $message, $context, LoggerInterface $parentLogger) {
+	public function __construct(string $level, string $message, array $context, LoggerInterface $parentLogger) {
 		$this->level = $level;
 		$this->message = $message;
 		$this->context = $context;
 		$this->parentLogger = $parentLogger;
 	}
-	
+
 	/**
 	 * @return string
 	 */
-	public function getLevel() {
+	public function getLevel(): string {
 		return $this->level;
 	}
-	
+
 	/**
 	 * @return string
 	 */
-	public function getMessage() {
+	public function getMessage(): string {
 		return $this->message;
 	}
-	
+
 	/**
-	 * @return string
+	 * @return array<string, mixed>
 	 */
-	public function getContext() {
+	public function getContext(): array {
 		return $this->context;
 	}
-	
+
 	/**
 	 * @return LoggerInterface
 	 */
-	public function getParentLogger() {
+	public function getParentLogger(): LoggerInterface {
 		return $this->parentLogger;
 	}
 }

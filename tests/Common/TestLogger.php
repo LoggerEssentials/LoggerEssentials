@@ -4,7 +4,7 @@ namespace Logger\Common;
 use Psr\Log\AbstractLogger;
 
 class TestLogger extends AbstractLogger {
-	/** @var array */
+	/** @var array<int, array{string, array<string, mixed>, string}> */
 	private $lines = [];
 
 	/**
@@ -19,31 +19,31 @@ class TestLogger extends AbstractLogger {
 	}
 
 	/**
-	 * @return TestLoggerLine|null
+	 * @return TestLoggerLine
 	 */
 	public function getFirstLine() {
 		if(count($this->lines) > 0) {
-			list($message, $context, $severity) = $this->lines[0];
+			[$message, $context, $severity] = $this->lines[0];
 			return new TestLoggerLine($message ?? '', $context ?? [], $severity ?? '');
 		}
-		return new TestLoggerLine('', [], '');
+		return new TestLoggerLine('', [], null);
 	}
 
 	/**
-	 * @return TestLoggerLine|null
+	 * @return TestLoggerLine
 	 */
 	public function getLastLine() {
 		if(count($this->lines) > 0) {
-			list($message, $context, $severity) = array_slice($this->lines, -1, 1)[0];
+			[$message, $context, $severity] = array_slice($this->lines, -1, 1)[0];
 			return new TestLoggerLine($message ?? '', $context ?? [], $severity ?? '');
 		}
-		return new TestLoggerLine('', [], '');
+		return new TestLoggerLine('', [], null);
 	}
 
 	/**
 	 * @param string $level
 	 * @param string $message
-	 * @param array $context
+	 * @param array<string, mixed> $context
 	 * @return void
 	 */
 	public function log($level, $message, array $context = []) {

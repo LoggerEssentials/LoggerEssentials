@@ -6,20 +6,20 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
 class LogLevelRangeFilterTest extends TestCase {
-	public function test() {
+	public function test(): void {
 		$testLogger = new TestLogger();
 		$logger = new LogLevelRangeFilter($testLogger, LogLevel::DEBUG, LogLevel::WARNING);
 
 		$logger->error('error');
-		$this->assertNotEquals('error', $testLogger->getLastLine()->getMessage());
+		self::assertNotEquals('error', $testLogger->getLastLine()->getMessage());
 
 		$logger->alert('alert');
-		$this->assertNotEquals('alert', $testLogger->getLastLine()->getMessage());
+		self::assertNotEquals('alert', $testLogger->getLastLine()->getMessage());
 
 		$logger->warning('warning');
-		$this->assertEquals('warning', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('warning', $testLogger->getLastLine()->getMessage());
 
 		$logger->debug('debug');
-		$this->assertEquals('debug', $testLogger->getLastLine()->getMessage());
+		self::assertEquals('debug', $testLogger->getLastLine()->getMessage());
 	}
 }

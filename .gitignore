@@ -5,10 +5,10 @@
 !/.editorconfig
 !/.gitattributes
 !/.gitignore
-!/.phpstorm.meta.php
 !/.travis.yml
 !/composer.json
 !/LICENSE
 !/mkdocs.yml
+!/phpstan.neon
 !/README.md
 !/tests.xml

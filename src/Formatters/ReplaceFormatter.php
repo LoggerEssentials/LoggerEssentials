@@ -6,7 +6,7 @@ use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;
 
 class ReplaceFormatter extends AbstractLoggerAware implements BuilderAware {
-	/** @var array */
+	/** @var array<string|int, string|int> */
 	private $replacement;
 
 	/**
@@ -18,7 +18,7 @@ class ReplaceFormatter extends AbstractLoggerAware implements BuilderAware {
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param array $replacement
+	 * @param array<string|int, string|int> $replacement
 	 */
 	public function __construct(LoggerInterface $logger, array $replacement) {
 		parent::__construct($logger);

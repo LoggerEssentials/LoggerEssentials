@@ -5,13 +5,13 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
 class ArrayLoggerTest extends TestCase {
-	public function test() {
+	public function test(): void {
 		$logger = new ArrayLogger();
-		$this->assertCount(0, $logger->getMessages());
+		self::assertCount(0, $logger->getMessages());
 		$logger->info('hello world');
-		$this->assertCount(1, $logger->getMessages());
-		$this->assertEquals(array(array('level' => LogLevel::INFO, 'message' => 'hello world', 'context' => array())), $logger->getMessages());
+		self::assertCount(1, $logger->getMessages());
+		self::assertEquals([['level' => LogLevel::INFO, 'message' => 'hello world', 'context' => []]], $logger->getMessages());
 		$logger->clearAll();
-		$this->assertCount(0, $logger->getMessages());
+		self::assertCount(0, $logger->getMessages());
 	}
 }

@@ -5,14 +5,14 @@ use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 
 class CallbackFilter extends AbstractLoggerAware {
-	/** @var callable */
+	/** @var callable(string, string, array<string, mixed>): bool */
 	private $callback;
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param callable $callback
+	 * @param callable(string, string, array<string, mixed>): bool $callback
 	 */
-	public function __construct(LoggerInterface $logger, $callback) {
+	public function __construct(LoggerInterface $logger, callable $callback) {
 		parent::__construct($logger);
 		$this->callback = $callback;
 	}
@@ -22,8 +22,8 @@ class CallbackFilter extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
-		$result = call_user_func($this->callback, $level, $message, $context);
+	public function log($level, $message, array $context = array()): void {
+		$result = (bool) call_user_func($this->callback, $level, $message, $context);
 		if($result) {
 			$this->logger()->log($level, $message, $context);
 		}

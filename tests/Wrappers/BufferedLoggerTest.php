@@ -5,7 +5,7 @@ use Logger\Loggers\ArrayLogger;
 use PHPUnit\Framework\TestCase;
 
 class BufferedLoggerTest extends TestCase {
-	public function testBufferAllNoFlush() {
+	public function testBufferAllNoFlush(): void {
 		$arrayLogger = new ArrayLogger();
 		$logger = new BufferedLogger($arrayLogger);
 		$logger->info('Test A');
@@ -13,10 +13,10 @@ class BufferedLoggerTest extends TestCase {
 		$logger->info('Test C');
 
 		$messages = $arrayLogger->getMessages();
-		$this->assertCount(0, $messages);
+		self::assertCount(0, $messages);
 	}
 
-	public function testBufferAllPartialFlush() {
+	public function testBufferAllPartialFlush(): void {
 		$arrayLogger = new ArrayLogger();
 		$logger = new BufferedLogger($arrayLogger);
 		$logger->info('Test A');
@@ -25,12 +25,12 @@ class BufferedLoggerTest extends TestCase {
 		$logger->info('Test C');
 
 		$messages = $arrayLogger->getMessages();
-		$this->assertCount(2, $messages);
-		$this->assertEquals('Test A', $messages[0]['message']);
-		$this->assertEquals('Test B', $messages[1]['message']);
+		self::assertCount(2, $messages);
+		self::assertEquals('Test A', $messages[0]['message']);
+		self::assertEquals('Test B', $messages[1]['message']);
 	}
 
-	public function testBufferAllFullFlush() {
+	public function testBufferAllFullFlush(): void {
 		$arrayLogger = new ArrayLogger();
 		$logger = new BufferedLogger($arrayLogger);
 		$logger->info('Test A');
@@ -39,13 +39,13 @@ class BufferedLoggerTest extends TestCase {
 		$logger->flush();
 
 		$messages = $arrayLogger->getMessages();
-		$this->assertCount(3, $messages);
-		$this->assertEquals('Test A', $messages[0]['message']);
-		$this->assertEquals('Test B', $messages[1]['message']);
-		$this->assertEquals('Test C', $messages[2]['message']);
+		self::assertCount(3, $messages);
+		self::assertEquals('Test A', $messages[0]['message']);
+		self::assertEquals('Test B', $messages[1]['message']);
+		self::assertEquals('Test C', $messages[2]['message']);
 	}
 
-	public function testBufferNothingNoFlush() {
+	public function testBufferNothingNoFlush(): void {
 		$arrayLogger = new ArrayLogger();
 		$logger = new BufferedLogger($arrayLogger, 0);
 		$logger->info('Test A');
@@ -53,13 +53,13 @@ class BufferedLoggerTest extends TestCase {
 		$logger->info('Test C');
 
 		$messages = $arrayLogger->getMessages();
-		$this->assertCount(3, $messages);
-		$this->assertEquals('Test A', $messages[0]['message']);
-		$this->assertEquals('Test B', $messages[1]['message']);
-		$this->assertEquals('Test C', $messages[2]['message']);
+		self::assertCount(3, $messages);
+		self::assertEquals('Test A', $messages[0]['message']);
+		self::assertEquals('Test B', $messages[1]['message']);
+		self::assertEquals('Test C', $messages[2]['message']);
 	}
 
-	public function testBufferTwoNoFlush() {
+	public function testBufferTwoNoFlush(): void {
 		$arrayLogger = new ArrayLogger();
 		$logger = new BufferedLogger($arrayLogger, 2);
 		$logger->info('Test A');
@@ -67,8 +67,8 @@ class BufferedLoggerTest extends TestCase {
 		$logger->info('Test C');
 
 		$messages = $arrayLogger->getMessages();
-		$this->assertCount(2, $messages);
-		$this->assertEquals('Test A', $messages[0]['message']);
-		$this->assertEquals('Test B', $messages[1]['message']);
+		self::assertCount(2, $messages);
+		self::assertEquals('Test A', $messages[0]['message']);
+		self::assertEquals('Test B', $messages[1]['message']);
 	}
 }

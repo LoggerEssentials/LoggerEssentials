@@ -5,7 +5,7 @@ use Logger\Exceptions\LogLevelNotFoundException;
 use Psr\Log\LogLevel;
 
 final class LogLevelTranslator {
-	/** @var array */
+	/** @var array<int, string> */
 	private static $levelsA = [
 		Rfc5424LogLevels::EMERGENCY => LogLevel::EMERGENCY,
 		Rfc5424LogLevels::ALERT => LogLevel::ALERT,
@@ -16,7 +16,7 @@ final class LogLevelTranslator {
 		Rfc5424LogLevels::INFO => LogLevel::INFO,
 		Rfc5424LogLevels::DEBUG => LogLevel::DEBUG
 	];
-	/** @var array */
+	/** @var array<string, int> */
 	private static $levelsB = [
 		LogLevel::EMERGENCY => Rfc5424LogLevels::EMERGENCY,
 		LogLevel::ALERT => Rfc5424LogLevels::ALERT,
@@ -29,14 +29,14 @@ final class LogLevelTranslator {
 	];
 
 	/**
-	 * @return array
+	 * @return array<string, int>
 	 */
 	public static function getRfc5424Levels(): array {
 		return self::$levelsB;
 	}
 
 	/**
-	 * @return array
+	 * @return array<int, string>
 	 */
 	public static function getLevelTokens(): array {
 		return self::$levelsA;
@@ -47,7 +47,7 @@ final class LogLevelTranslator {
 	 * @throws LogLevelNotFoundException
 	 * @return int
 	 */
-	public static function getLevelNo($levelToken): int {
+	public static function getLevelNo(string $levelToken): int {
 		return (int) self::getFrom(self::$levelsB, $levelToken);
 	}
 
@@ -56,12 +56,12 @@ final class LogLevelTranslator {
 	 * @throws LogLevelNotFoundException
 	 * @return string
 	 */
-	public static function getLevelToken($levelNo): string {
+	public static function getLevelToken(int $levelNo): string {
 		return (string) self::getFrom(self::$levelsA, $levelNo);
 	}
 
 	/**
-	 * @param array $levels
+	 * @param array<string|int, string|int> $levels
 	 * @param string|int $level
 	 * @return string|int
 	 * @throws LogLevelNotFoundException

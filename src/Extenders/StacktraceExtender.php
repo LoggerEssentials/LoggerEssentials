@@ -31,9 +31,14 @@ class StacktraceExtender extends AbstractLoggerAware {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = []) {
-		$stacktrace = debug_backtrace($this->debugbacktraceArgs);
-		$context[$this->contextKey] = json_decode(json_encode($stacktrace), true);
+	public function log($level, $message, array $context = []): void {
+		if($this->debugbacktraceArgs !== null) {
+			$stacktrace = debug_backtrace($this->debugbacktraceArgs);
+		} else {
+			$stacktrace = debug_backtrace();
+		}
+		$enc = json_encode($stacktrace, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+		$context[$this->contextKey] = json_decode($enc === false ? '{}' : $enc, true);
 		$this->logger()->log($level, $message, $context);
 	}
 }

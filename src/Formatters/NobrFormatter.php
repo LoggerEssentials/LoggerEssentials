@@ -31,7 +31,7 @@ class NobrFormatter extends AbstractLoggerAware implements BuilderAware {
 	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = []) {
-		$message = preg_replace("/[\r\n]+/", $this->replacement, $message);
+		$message = (string) preg_replace("/[\r\n]+/", $this->replacement, $message);
 		$this->logger()->log($level, $message, $context);
 	}
 }

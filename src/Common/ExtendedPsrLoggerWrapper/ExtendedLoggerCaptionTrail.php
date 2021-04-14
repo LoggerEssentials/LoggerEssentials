@@ -7,37 +7,45 @@ use ReflectionClass;
 use ReflectionException;
 use Throwable;
 
+/**
+ * @implements IteratorAggregate<int, string>
+ */
 class ExtendedLoggerCaptionTrail implements IteratorAggregate {
-    /** @var ExtendedLoggerCaptionTrail */
+    /** @var ExtendedLoggerCaptionTrail|null */
     private $parentCaptions;
-    /** @var string[] */
+    /** @var array<string, array<int, string>> */
     private $captions = [];
     /** @var int */
     private $couponCounter = 0;
 
     /**
-     * @param ExtendedLoggerCaptionTrail $parentCaptions
+     * @param ExtendedLoggerCaptionTrail|null $parentCaptions
      */
     public function __construct(ExtendedLoggerCaptionTrail $parentCaptions = null) {
         $this->parentCaptions = $parentCaptions;
     }
 
 	/**
-	 * @param string|string[]|object $caption
+	 * @param array<int, int|float|string|object> $captions
 	 * @return string Coupon to address exactly this caption
 	 */
-    public function addCaption($caption): string {
+    public function addCaptions(array $captions): string {
         $this->couponCounter++;
         $key = "caption-{$this->couponCounter}";
-        if(is_object($caption)) {
-        	try {
-				$refC = new ReflectionClass($caption);
-				$caption = $refC->getShortName();
-			} catch (ReflectionException $e) {
-				$caption = gettype($caption);
+        $convertedCaptions = [];
+        foreach($captions as $caption) {
+			if(is_object($caption)) {
+				try {
+					$refC = new ReflectionClass($caption);
+					$convertedCaptions[] = $refC->getShortName();
+				} catch (ReflectionException $e) {
+					$convertedCaptions[] = gettype($caption);
+				}
+			} else {
+				$convertedCaptions[] = (string) $caption;
 			}
 		}
-		$this->captions[$key] = $caption;
+		$this->captions[$key] = $convertedCaptions;
         return $key;
     }
 
@@ -51,8 +59,10 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
 				$result[] = $parentCaption;
 			}
 		}
-		foreach($this->_getCaptions($this->captions) as $caption) {
-			$result[] = $caption;
+		foreach($this->captions as $captions) {
+			foreach($this->_getCaptions($captions) as $caption) {
+				$result[] = $caption;
+			}
 		}
         return $result;
     }
@@ -61,7 +71,7 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
      * @param string $key
      * @return $this
      */
-    public function removeCaption($key) {
+    public function removeCaption(string $key): self {
         if(array_key_exists($key, $this->captions)) {
             unset($this->captions[$key]);
         }
@@ -69,42 +79,44 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     }
 
     /**
-     * @return ArrayIterator
+     * @return ArrayIterator<int, string>
      */
     public function getIterator(): ArrayIterator {
         return new ArrayIterator($this->getCaptions());
     }
 
     /**
-     * @param array $captions
-     * @return string[]
+     * @param array<int, string|array<mixed, mixed>|object> $captions
+     * @return array<int, string>
      */
     private function _getCaptions(array $captions): array {
-        $result = [];
+        $flatCaptions = [];
         foreach($captions as $caption) {
-            if(is_array($caption)) {
-                $subCaptions = $this->_getCaptions($caption);
-                foreach($subCaptions as $subCaption) {
-                    $result[] = $subCaption;
-                }
-            } else {
-                $result[] = $caption;
-            }
+        	if(is_array($caption)) {
+				$subCaptions = $this->_getCaptions($caption);
+				foreach($subCaptions as $subCaption) {
+					$flatCaptions[] = $subCaption;
+				}
+			} else {
+				$flatCaptions[] = $caption;
+			}
         }
-		foreach($result as &$entry) {
-			if(is_object($entry)) {
-				if(method_exists($entry, '__toString')) {
-					$entry = (string) $entry;
+
+        $result = [];
+		foreach($flatCaptions as $flatCaption) {
+			if(is_object($flatCaption)) {
+				if(method_exists($flatCaption, '__toString')) {
+					$result[] = (string) $flatCaption;
 				} else {
 					try {
-						$rc = new ReflectionClass($entry);
-						$entry = $rc->getShortName();
+						$rc = new ReflectionClass($flatCaption);
+						$result[] = $rc->getShortName();
 					} catch (Throwable $e) {
-						$entryParts = explode('\\', $entry);
-						$entry = array_slice($entryParts, -1, 1)[0];
+						$entryParts = explode("\x5C", gettype($flatCaption));
+						$result[] = array_slice($entryParts, -1, 1)[0];
 					}
 				}
-			} elseif(!is_string($entry)) {
+			} elseif(!is_string($flatCaption)) {
 				static $options = null;
 				if($options === null) {
 					$options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
@@ -112,7 +124,9 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
 						$options |= constant('JSON_THROW_ON_ERROR');
 					}
 				}
-				$entry = json_encode($entry, $options);
+				$result[] = json_encode($flatCaption, $options);
+			} else {
+				$result[] = $flatCaption;
 			}
 		}
         return $result;

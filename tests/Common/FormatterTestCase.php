@@ -7,7 +7,7 @@ class FormatterTestCase extends TestCase {
 	/**
 	 * @return TestLogger
 	 */
-	protected function createTestLogger() {
+	protected function createTestLogger(): TestLogger{
 		return new TestLogger();
 	}
 }

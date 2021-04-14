@@ -7,7 +7,7 @@ use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;
 
 class CallbackFormatter extends AbstractLoggerAware implements BuilderAware {
-	/** @var callable */
+	/** @var callable(string, string, array<string, mixed>): string */
 	private $fn;
 
 	/**
@@ -19,9 +19,9 @@ class CallbackFormatter extends AbstractLoggerAware implements BuilderAware {
 
 	/**
 	 * @param LoggerInterface $logger
-	 * @param Closure $fn
+	 * @param callable(string, string, array<string, mixed>): string $fn
 	 */
-	public function __construct(LoggerInterface $logger, $fn) {
+	public function __construct(LoggerInterface $logger, callable $fn) {
 		parent::__construct($logger);
 		$this->fn = $fn;
 	}
@@ -32,7 +32,7 @@ class CallbackFormatter extends AbstractLoggerAware implements BuilderAware {
 	 * @inheritDoc
 	 */
 	public function log($level, $message, array $context = []) {
-		$message = call_user_func($this->fn, $level, $message, $context);
+		$message = (string) call_user_func($this->fn, $level, $message, $context);
 		$this->logger()->log($level, $message, $context);
 	}
 }

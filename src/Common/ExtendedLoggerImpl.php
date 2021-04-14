@@ -2,13 +2,11 @@
 namespace Logger\Common;
 
 use Logger\Common\ExtendedLoggerImpl\ExtendedLoggerImplCtorInterface;
-use Logger\Common\ExtendedPsrLoggerWrapper\CapturedLogEvent;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerCaptionTrail;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerMessageRenderer;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardContextExtender;
 use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardMessageRenderer;
-use Logger\Loggers\CallbackLogger;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
@@ -107,7 +105,7 @@ class ExtendedLoggerImpl extends AbstractLogger implements ExtendedLogger, Exten
 	/**
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$captions = $this->captionTrail->getCaptions();
 		$message = $this->messageRenderer->render($message, $captions);
 		$context = $this->contextExtender->extend($this->context, $context);

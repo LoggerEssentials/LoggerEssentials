@@ -11,7 +11,7 @@ class ExtendedLoggerStandardMessageRenderer implements ExtendedLoggerMessageRend
 	 * @param string $concatenator
 	 * @param string $endingConcatenator
 	 */
-	public function __construct($concatenator = ' > ', $endingConcatenator = ': ') {
+	public function __construct(string $concatenator = ' > ', string $endingConcatenator = ': ') {
 		$this->concatenator = $concatenator;
 		$this->endingConcatenator = $endingConcatenator;
 	}
@@ -19,7 +19,7 @@ class ExtendedLoggerStandardMessageRenderer implements ExtendedLoggerMessageRend
 	/**
 	 * @inheritDoc
 	 */
-	public function render($message, array $parents): string {
+	public function render(string $message, array $parents): string {
 		$path = implode($this->concatenator, $parents);
 		if($path) {
 			$message = implode($this->endingConcatenator, [$path, $message]);

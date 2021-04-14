@@ -28,14 +28,17 @@ class ErrorLogLogger extends AbstractLogger {
 	 *
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($level, $message, array $context = []): void {
 		try {
 			if($this->messageType === null) {
+				/** @noinspection ForgottenDebugOutputInspection */
 				error_log($message);
-			} elseif((int)$this->messageType === 0 || (int)$this->messageType === 4) {
+			} elseif((int) $this->messageType === 0 || (int) $this->messageType === 4) {
+				/** @noinspection ForgottenDebugOutputInspection */
 				error_log($message, $this->messageType);
 			} else {
-				error_log($message, (int)$this->messageType, $this->destination, $this->extraHeaders);
+				/** @noinspection ForgottenDebugOutputInspection */
+				error_log($message, (int) $this->messageType, $this->destination, $this->extraHeaders);
 			}
 		} catch(Throwable $e) {
 		}

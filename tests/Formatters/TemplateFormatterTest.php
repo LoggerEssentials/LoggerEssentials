@@ -9,7 +9,7 @@ class TemplateFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '[%|date:c%]');
 		$formatter->log(LogLevel::DEBUG, '');
-		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}\\T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\]/', (string) $testLogger->getLastLine()->getMessage());
+		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\]/', (string) $testLogger->getLastLine()->getMessage());
 	}
 
 	public function testNobr(): void {
@@ -141,6 +141,6 @@ class TemplateFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger);
 		$formatter->log(LogLevel::DEBUG, 'This is a test');
-		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}\\T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}/', (string) $testLogger->getLastLine()->getMessage());
+		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}/', (string) $testLogger->getLastLine()->getMessage());
 	}
 }

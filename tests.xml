@@ -1,11 +1,14 @@
-<phpunit bootstrap="vendor/autoload.php"
-		 backupGlobals="false"
-		 backupStaticAttributes="false"
-		 verbose="true"
-		 timeoutForSmallTests="5">
-	<testsuites>
-		<testsuite name="LoggerEssentials">
-			<directory>tests</directory>
-		</testsuite>
-	</testsuites>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticProperties="false"
+         timeoutForSmallTests="5"
+         cacheDirectory=".phpunit.cache">
+  <testsuites>
+    <testsuite name="LoggerEssentials">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>

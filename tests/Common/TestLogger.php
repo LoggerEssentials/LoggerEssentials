@@ -4,16 +4,19 @@ namespace Logger\Common;
 use Psr\Log\AbstractLogger;
 
 class TestLogger extends AbstractLogger {
-	/** @var array<int, array{string, array<string, mixed>, string}> */
+	/** @var array<int, array{null|string, null|array<string, mixed>, null|string}> */
 	private $lines = [];
 
 	/**
 	 * @return string[]
 	 */
 	public function getMessages(): array {
+		/** @var string[] $messages */
 		$messages = [];
 		foreach($this->lines as $line) {
-			$messages[] = $line[0];
+			if($line[0] !== null) {
+				$messages[] = $line[0];
+			}
 		}
 		return $messages;
 	}
@@ -41,12 +44,12 @@ class TestLogger extends AbstractLogger {
 	}
 
 	/**
-	 * @param string $level
+	 * @param mixed $level
 	 * @param string $message
 	 * @param array<string, mixed> $context
 	 * @return void
 	 */
 	public function log($level, $message, array $context = []) {
-		$this->lines[] = [$message, $context, $level];
+		$this->lines[] = [$message, $context, is_string($level) ? $level : null];
 	}
 }

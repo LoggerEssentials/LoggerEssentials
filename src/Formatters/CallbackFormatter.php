@@ -1,7 +1,6 @@
 <?php
 namespace Logger\Formatters;
 
-use Closure;
 use Logger\Common\AbstractLoggerAware;
 use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;

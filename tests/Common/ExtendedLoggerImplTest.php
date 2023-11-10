@@ -1,7 +1,6 @@
 <?php
 namespace Logger\Common;
 
-use Logger\Common\ExtendedPsrLoggerWrapper\CapturedLogEvent;
 use PHPUnit\Framework\TestCase;
 
 class ExtendedLoggerImplTest extends TestCase {
@@ -52,8 +51,8 @@ class ExtendedLoggerImplTest extends TestCase {
 		});
 
 		$expectedPatterns = [
-			'/Test-Region: Enter context/',
-			'/Test-Region: Exit context: \\d+\\.\\d+ seconds/'
+			'{Test-Region: Enter context}',
+			'{Test-Region: Exit context: \\d+\\.\\d+ seconds}'
 		];
 
 		self::assertCount(count($expectedPatterns), $testLogger->getMessages());
@@ -61,7 +60,7 @@ class ExtendedLoggerImplTest extends TestCase {
 		$messages = array_combine($expectedPatterns, $testLogger->getMessages());
 		if($messages !== false) {
 			foreach($messages as $expectedPattern => $actualMessage) {
-				self::assertRegExp($expectedPattern, $actualMessage);
+				self::assertMatchesRegularExpression($expectedPattern, $actualMessage);
 			}
 		}
 	}

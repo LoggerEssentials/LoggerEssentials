@@ -35,7 +35,7 @@ class BufferedLogger extends AbstractLogger {
 	}
 
 	/**
-	 * @return array[]
+	 * @return array<int, array{string, string, array<string, mixed>}>
 	 */
 	public function getBuffer(): array {
 		return $this->entries;

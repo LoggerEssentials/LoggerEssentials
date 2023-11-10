@@ -86,13 +86,14 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     }
 
     /**
-     * @param array<int, string|array<mixed, mixed>|object> $captions
+     * @param array<int, string|object|array<int, mixed>> $captions
      * @return array<int, string>
      */
     private function _getCaptions(array $captions): array {
         $flatCaptions = [];
         foreach($captions as $caption) {
         	if(is_array($caption)) {
+				/** @var array<int, string|object|array<int, mixed>> $caption */
 				$subCaptions = $this->_getCaptions($caption);
 				foreach($subCaptions as $subCaption) {
 					$flatCaptions[] = $subCaption;

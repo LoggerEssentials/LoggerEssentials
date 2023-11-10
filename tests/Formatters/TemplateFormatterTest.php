@@ -3,13 +3,14 @@ namespace Logger\Formatters;
 
 use Logger\Common\FormatterTestCase;
 use Psr\Log\LogLevel;
+use RuntimeException;
 
 class TemplateFormatterTest extends FormatterTestCase {
 	public function testDate(): void {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '[%|date:c%]');
 		$formatter->log(LogLevel::DEBUG, '');
-		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\]/', (string) $testLogger->getLastLine()->getMessage());
+		self::assertMatchesRegularExpression('{\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\]}', (string) $testLogger->getLastLine()->getMessage());
 	}
 
 	public function testNobr(): void {
@@ -141,6 +142,13 @@ class TemplateFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger);
 		$formatter->log(LogLevel::DEBUG, 'This is a test');
-		self::assertRegExp('/\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}/', (string) $testLogger->getLastLine()->getMessage());
+		self::assertMatchesRegularExpression('{\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}}', (string) $testLogger->getLastLine()->getMessage());
+	}
+
+	public function testExceptions(): void {
+		$testLogger = $this->createTestLogger();
+		$formatter = new TemplateFormatter($testLogger, '[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:"-"% %context|json%');
+		$formatter->log(LogLevel::DEBUG, 'This is a test', ['exception' => new RuntimeException('Test-Exception')]);
+		self::assertMatchesRegularExpression('{\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}}', (string) $testLogger->getLastLine()->getMessage());
 	}
 }

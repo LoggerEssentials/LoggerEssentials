@@ -97,7 +97,8 @@ class ExtendedLoggerImpl extends AbstractLogger implements ExtendedLogger, Exten
 			} finally {
 				$timer2 = microtime(true);
 				$time = $timer2 - $timer1;
-				$this->info("Exit context: {$time} seconds", ['context-time' => ['start' => $timer1, 'end' => $timer2, 'time' => $time]]);
+				$timeStr = rtrim(sprintf("Exit context: %s seconds", number_format($time, 10, '.', '')), '0');
+				$this->info($timeStr, ['context-time' => ['start' => $timer1, 'end' => $timer2, 'time' => $time]]);
 			}
 		});
 	}

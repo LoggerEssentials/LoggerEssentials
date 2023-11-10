@@ -1,19 +1,18 @@
 <?php
 namespace Logger\Formatters;
 
-use Closure;
 use DateTime;
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use stdClass;
+use Throwable;
 
 class TemplateFormatter extends AbstractLoggerAware {
 	public const DEFAULT_FORMAT = "[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:\"-\"% %context|json%\n";
 
 	/** @var string */
 	private $format;
-	/** @var array<int, array{string, callable(string): string}> */
+	/** @var array<int, array{null|string, callable(string): string}> */
 	private $values;
 	/** @var array<string, mixed> */
 	private $extra;
@@ -27,6 +26,28 @@ class TemplateFormatter extends AbstractLoggerAware {
 		parent::__construct($logger);
 		[$this->format, $this->values] = $this->compileFormat($format);
 		$this->extra = $extra;
+	}
+
+	/**
+	 * @param Throwable $exception
+	 * @return array{class: class-string<Throwable>, message: string, code: int, file: string, line: int, stacktrace: string, previous?: array{class: class-string, message: string, code: int, file: string, line: int, stacktrace: string, previous?: array{}}}
+	 */
+	private static function exceptionToArray(Throwable $exception): array {
+		$data = [
+			'class'      => get_class($exception),
+			'message'    => $exception->getMessage(),
+			'code'       => (int) $exception->getCode(),
+			'file'       => $exception->getFile(),
+			'line'       => $exception->getLine(),
+			'stacktrace' => $exception->getTraceAsString(),
+		];
+
+		if($exception->getPrevious() !== null) {
+			$data['previous'] = self::exceptionToArray($exception->getPrevious());
+		}
+
+		/** @var array{class: class-string<Throwable>, message: string, code: int, file: string, line: int, stacktrace: string, previous?: array{class: class-string<Throwable>, message: string, code: int, file: string, line: int, stacktrace: string}} $data */
+		return $data;
 	}
 
 	/**
@@ -54,7 +75,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 
 	/**
 	 * @param string $format
-	 * @return array{string, array<int, array{string|null, callable(string): string}>}
+	 * @return array{string, array<int, array{null|string, callable(string): string}>}
 	 */
 	private function compileFormat(string $format): array {
 		$values = [];
@@ -62,7 +83,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 			$values[] = $matches[1];
 			return '%s';
 		};
-		$format = (string) preg_replace_callback('/%([^%]+)%/', $fn, $format);
+		$format = (string) preg_replace_callback('{%([^%]+)%}', $fn, $format);
 		$result = [];
 		foreach($values as $value) {
 			$result[] = $this->extractConverters($value);
@@ -72,7 +93,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 
 	/**
 	 * @param string $value
-	 * @return array{string|null, callable(string): string}
+	 * @return array{null|string, callable(string): string}
 	 */
 	private function extractConverters(string $value): array {
 		[$input, $modifiers] = explode('|', $value . '|', 2);
@@ -145,7 +166,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 				};
 			case 'nobr':
 				return static function ($value) {
-					return preg_replace('/[\\r\\n]+/', ' ', $value);
+					return preg_replace('{[\\r\\n]+}', ' ', $value);
 				};
 			case 'trim':
 				return static function ($value) use ($param) {
@@ -161,10 +182,11 @@ class TemplateFormatter extends AbstractLoggerAware {
 				};
 			case 'json':
 				return static function ($value) {
-					if(!count($value)) {
-						$value = new stdClass();
+					$value = (array) $value;
+					if(array_key_exists('exception', $value) && $value['exception'] instanceof Throwable) {
+						$value['exception'] = self::exceptionToArray($value['exception']);
 					}
-					return (string) json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+					return (string) json_encode((object) $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 				};
 			case 'pad':
 				return static function ($value) use ($param) {

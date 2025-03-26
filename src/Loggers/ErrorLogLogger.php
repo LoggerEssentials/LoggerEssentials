@@ -5,7 +5,7 @@ use Psr\Log\AbstractLogger;
 use Throwable;
 
 class ErrorLogLogger extends AbstractLogger {
-	/** @var mixed */
+	/** @var int&(0|1|3|4) */
 	private $messageType;
 	/** @var mixed */
 	private $destination;
@@ -13,12 +13,12 @@ class ErrorLogLogger extends AbstractLogger {
 	private $extraHeaders;
 
 	/**
-	 * @param int $messageType
+	 * @param int&(0|1|3|4) $messageType
 	 * @param mixed $destination
 	 * @param mixed $extraHeaders
 	 */
 	public function __construct($messageType = null, $destination = null, $extraHeaders = null) {
-		$this->messageType = $messageType;
+		$this->messageType = (int) $messageType;
 		$this->destination = $destination;
 		$this->extraHeaders = $extraHeaders;
 	}

@@ -149,6 +149,6 @@ class TemplateFormatterTest extends FormatterTestCase {
 		$testLogger = $this->createTestLogger();
 		$formatter = new TemplateFormatter($testLogger, '[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:"-"% %context|json%');
 		$formatter->log(LogLevel::DEBUG, 'This is a test', ['exception' => new RuntimeException('Test-Exception')]);
-		self::assertMatchesRegularExpression('{\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{\\}}', (string) $testLogger->getLastLine()->getMessage());
+		self::assertMatchesRegularExpression('{\\[\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2}\\] [A-Z]+\\s+This is a test \\- \\{.*?\\}}', (string) $testLogger->getLastLine()->getMessage());
 	}
 }

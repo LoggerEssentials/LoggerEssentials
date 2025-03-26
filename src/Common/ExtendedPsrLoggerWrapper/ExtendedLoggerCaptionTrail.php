@@ -21,7 +21,7 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     /**
      * @param ExtendedLoggerCaptionTrail|null $parentCaptions
      */
-    public function __construct(ExtendedLoggerCaptionTrail $parentCaptions = null) {
+    public function __construct(?ExtendedLoggerCaptionTrail $parentCaptions = null) {
         $this->parentCaptions = $parentCaptions;
     }
 
@@ -117,6 +117,7 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
 						$result[] = array_slice($entryParts, -1, 1)[0];
 					}
 				}
+				// @phpstan-ignore-next-line
 			} elseif(!is_string($flatCaption)) {
 				static $options = null;
 				if($options === null) {

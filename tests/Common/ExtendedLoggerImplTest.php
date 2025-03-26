@@ -58,10 +58,8 @@ class ExtendedLoggerImplTest extends TestCase {
 		self::assertCount(count($expectedPatterns), $testLogger->getMessages());
 
 		$messages = array_combine($expectedPatterns, $testLogger->getMessages());
-		if($messages !== false) {
-			foreach($messages as $expectedPattern => $actualMessage) {
-				self::assertMatchesRegularExpression($expectedPattern, $actualMessage);
-			}
+		foreach($messages as $expectedPattern => $actualMessage) {
+			self::assertMatchesRegularExpression($expectedPattern, $actualMessage);
 		}
 	}
 }

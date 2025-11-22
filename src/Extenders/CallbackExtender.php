@@ -8,6 +8,10 @@ class CallbackExtender extends AbstractLoggerAware {
 	/** @var callable(string, string, array<string, mixed>): void */
 	private $callback;
 
+	public static function wrap(LoggerInterface $logger, callable $callback): self {
+		return new self($logger, $callback);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param callable(string, string, array<string, mixed>): void $callback

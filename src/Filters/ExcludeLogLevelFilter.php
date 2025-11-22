@@ -17,6 +17,14 @@ class ExcludeLogLevelFilter extends AbstractLoggerAware {
 	 * @param LoggerInterface $logger
 	 * @param string $excludedLogLevel
 	 */
+	public static function wrap(LoggerInterface $logger, $excludedLogLevel): self {
+		return new self($logger, $excludedLogLevel);
+	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 * @param string $excludedLogLevel
+	 */
 	public function __construct(LoggerInterface $logger, $excludedLogLevel) {
 		parent::__construct($logger);
 		$this->excludedLogLevel = $excludedLogLevel;

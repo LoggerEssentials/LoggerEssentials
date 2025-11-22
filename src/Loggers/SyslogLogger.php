@@ -15,6 +15,10 @@ class SyslogLogger extends AbstractLogger {
 	private ?int $options;
 	private int $facility;
 
+	public static function wrap(string $ident, ?int $options = null, int $facility = LOG_USER): self {
+		return new self($ident, $options, $facility);
+	}
+
 	/**
 	 * @param string $ident
 	 * @param int|null $options

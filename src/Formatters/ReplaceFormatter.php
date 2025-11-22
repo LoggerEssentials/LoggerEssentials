@@ -25,6 +25,14 @@ class ReplaceFormatter extends AbstractLoggerAware implements BuilderAware {
 	 * @param LoggerInterface $logger
 	 * @param array<string|int, string|int> $replacement
 	 */
+	public static function wrap(LoggerInterface $logger, array $replacement): self {
+		return new self($logger, $replacement);
+	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 * @param array<string|int, string|int> $replacement
+	 */
 	public function __construct(LoggerInterface $logger, array $replacement) {
 		parent::__construct($logger);
 		$this->replacement = $replacement;

@@ -21,8 +21,17 @@ class ErrorLogLogger extends AbstractLogger {
 	 * @param null|string $destination
 	 * @param null|string $extraHeaders
 	 */
-	public function __construct($messageType = null, ?string $destination = null, ?string $extraHeaders = null) {
-		$this->messageType = (int) $messageType;
+	public static function wrap(int $messageType, ?string $destination = null, ?string $extraHeaders = null): self {
+		return new self($messageType, $destination, $extraHeaders);
+	}
+
+	/**
+	 * @param int&(0|1|3|4) $messageType
+	 * @param null|string $destination
+	 * @param null|string $extraHeaders
+	 */
+	public function __construct(int $messageType = 0, ?string $destination = null, ?string $extraHeaders = null) {
+		$this->messageType = $messageType;
 		$this->destination = $destination;
 		$this->extraHeaders = $extraHeaders;
 	}

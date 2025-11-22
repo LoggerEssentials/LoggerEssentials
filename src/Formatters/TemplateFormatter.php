@@ -26,6 +26,15 @@ class TemplateFormatter extends AbstractLoggerAware {
 	 * @param string $format
 	 * @param array<string, mixed> $extra
 	 */
+	public static function wrap(LoggerInterface $logger, string $format = self::DEFAULT_FORMAT, array $extra = []): self {
+		return new self($logger, $format, $extra);
+	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 * @param string $format
+	 * @param array<string, mixed> $extra
+	 */
 	public function __construct(LoggerInterface $logger, $format = self::DEFAULT_FORMAT, array $extra = []) {
 		parent::__construct($logger);
 		[$this->format, $this->values] = $this->compileFormat($format);

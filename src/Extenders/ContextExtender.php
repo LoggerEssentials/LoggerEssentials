@@ -17,6 +17,14 @@ class ContextExtender extends AbstractLoggerAware {
 	 * @param LoggerInterface $logger
 	 * @param array<string, mixed> $keyValueArray
 	 */
+	public static function wrap(LoggerInterface $logger, array $keyValueArray): self {
+		return new self($logger, $keyValueArray);
+	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 * @param array<string, mixed> $keyValueArray
+	 */
 	public function __construct(LoggerInterface $logger, array $keyValueArray) {
 		parent::__construct($logger);
 		$this->keyValueArray = $keyValueArray;

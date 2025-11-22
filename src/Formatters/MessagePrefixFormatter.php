@@ -23,6 +23,16 @@ class MessagePrefixFormatter extends AbstractLoggerAware {
 	 * @param string $concatenator
 	 * @param string $endingConcatenator
 	 */
+	public static function wrap(LoggerInterface $logger, $caption, string $concatenator = ' > ', string $endingConcatenator = ': '): self {
+		return new self($logger, $caption, $concatenator, $endingConcatenator);
+	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 * @param string|string[] $caption
+	 * @param string $concatenator
+	 * @param string $endingConcatenator
+	 */
 	public function __construct(LoggerInterface $logger, $caption, $concatenator = ' > ', $endingConcatenator = ': ') {
 		parent::__construct($logger);
 		$this->caption = $caption;

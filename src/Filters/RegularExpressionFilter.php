@@ -20,6 +20,16 @@ class RegularExpressionFilter extends AbstractLoggerAware {
 	 * @param string $modifiers
 	 * @param bool $negate
 	 */
+	public static function wrap(LoggerInterface $logger, string $pattern, string $modifiers = 'u', bool $negate = false): self {
+		return new self($logger, $pattern, $modifiers, $negate);
+	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 * @param string $pattern
+	 * @param string $modifiers
+	 * @param bool $negate
+	 */
 	public function __construct(LoggerInterface $logger, $pattern, $modifiers = 'u', bool $negate = false) {
 		parent::__construct($logger);
 		$this->pattern = $pattern;

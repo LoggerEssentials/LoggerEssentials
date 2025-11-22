@@ -23,6 +23,10 @@ class DateTimeFormatter extends AbstractLoggerAware implements BuilderAware {
 		return 0;
 	}
 
+	public static function wrap(LoggerInterface $logger, string $dateFmt = "[Y-m-d H:i:s] ", string $format = '%s%s'): self {
+		return new self($logger, $dateFmt, $format);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param string $dateFmt

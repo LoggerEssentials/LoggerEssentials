@@ -2,6 +2,7 @@
 namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
+use Psr\Log\LoggerInterface;
 
 /**
  * @phpstan-import-type TLogLevel from AbstractLoggerAware
@@ -9,6 +10,10 @@ use Logger\Common\AbstractLoggerAware;
  * @phpstan-import-type TLogContext from AbstractLoggerAware
  */
 class PassThroughFormatter extends AbstractLoggerAware {
+	public static function wrap(LoggerInterface $logger): self {
+		return new self($logger);
+	}
+
 	/**
 	 * Logs with an arbitrary level.
 	 *

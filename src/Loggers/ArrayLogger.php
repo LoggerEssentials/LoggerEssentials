@@ -14,6 +14,10 @@ class ArrayLogger extends AbstractLogger {
 	/** @var array<int, array{level: string, message: string, context: array<string, mixed>}> */
 	private $lines = [];
 
+	public static function wrap(): self {
+		return new self();
+	}
+
 	/**
 	 * Logs with an arbitrary level.
 	 *

@@ -12,10 +12,12 @@ use Psr\Log\LogLevel;
  * @phpstan-import-type TLogContext from AbstractLoggerAware
  */
 class LogLevelRangeFilter extends AbstractLoggerAware {
-	/** @var int */
-	private $minLevel;
-	/** @var int */
-	private $maxLevel;
+	private int $minLevel;
+	private int $maxLevel;
+
+	public static function wrap(LoggerInterface $logger, string $minLevel = LogLevel::DEBUG, string $maxLevel = LogLevel::EMERGENCY): self {
+		return new self($logger, $minLevel, $maxLevel);
+	}
 
 	/**
 	 * @param LoggerInterface $logger

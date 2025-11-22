@@ -18,6 +18,13 @@ class CallbackLogger extends AbstractLogger {
 	/**
 	 * @param callable(string, string, array<string, mixed>): void $callable
 	 */
+	public static function wrap(callable $callable): self {
+		return new self($callable);
+	}
+
+	/**
+	 * @param callable(string, string, array<string, mixed>): void $callable
+	 */
 	public function __construct(callable $callable) {
 		$this->callable = $callable;
 	}

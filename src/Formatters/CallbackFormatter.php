@@ -21,6 +21,10 @@ class CallbackFormatter extends AbstractLoggerAware implements BuilderAware {
 		return 0;
 	}
 
+	public static function wrap(LoggerInterface $logger, callable $fn): self {
+		return new self($logger, $fn);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param callable(string, string, array<string, mixed>): string $fn

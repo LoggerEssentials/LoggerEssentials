@@ -15,6 +15,10 @@ class StacktraceExtender extends AbstractLoggerAware {
 	/** @var int|null */
 	private $debugbacktraceArgs;
 
+	public static function wrap(LoggerInterface $logger, string $contextKey = 'stacktrace', ?int $debugbacktraceArgs = null): self {
+		return new self($logger, $contextKey, $debugbacktraceArgs);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param string $contextKey

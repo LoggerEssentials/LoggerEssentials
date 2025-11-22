@@ -17,17 +17,20 @@ class LogLevelCompressor extends AbstractLogger {
 	private int $minLevel;
 	private int $maxLevel;
 
+	public static function wrap(LoggerInterface $logger, string $minLevel = LogLevel::DEBUG, string $maxLevel = LogLevel::EMERGENCY): self {
+		return new self($logger, $minLevel, $maxLevel);
+	}
+
 	/**
-	 * LogLevelCompressor constructor.
 	 * @param LoggerInterface $logger
 	 * @param string $minLevel
 	 * @param string $maxLevel
 	 */
-	public function __construct(LoggerInterface $logger, string $minLevel = LogLevel::DEBUG, string $maxLevel = LogLevel::EMERGENCY) {
-		$this->logger = $logger;
-		$this->minLevel = LogLevelTranslator::getLevelNo($minLevel);
-		$this->maxLevel = LogLevelTranslator::getLevelNo($maxLevel);
-	}
+    public function __construct(LoggerInterface $logger, string $minLevel = LogLevel::DEBUG, string $maxLevel = LogLevel::EMERGENCY) {
+        $this->logger = $logger;
+        $this->minLevel = LogLevelTranslator::getLevelNo($minLevel);
+        $this->maxLevel = LogLevelTranslator::getLevelNo($maxLevel);
+    }
 
 	/**
 	 * @param string $level

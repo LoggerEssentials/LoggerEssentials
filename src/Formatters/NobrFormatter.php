@@ -21,6 +21,10 @@ class NobrFormatter extends AbstractLoggerAware implements BuilderAware {
 		return 0;
 	}
 
+	public static function wrap(LoggerInterface $logger, string $replacement = ' '): self {
+		return new self($logger, $replacement);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param string $replacement

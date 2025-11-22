@@ -21,6 +21,10 @@ class FormatFormatter extends AbstractLoggerAware implements BuilderAware {
 		return 0;
 	}
 
+	public static function wrap(LoggerInterface $logger, string $format = "%s"): self {
+		return new self($logger, $format);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param string $format

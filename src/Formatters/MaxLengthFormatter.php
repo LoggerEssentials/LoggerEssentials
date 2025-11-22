@@ -25,6 +25,10 @@ class MaxLengthFormatter extends AbstractLoggerAware implements BuilderAware {
 		return 0;
 	}
 
+	public static function wrap(LoggerInterface $logger, int $maxLength, string $ellipsis = '...', string $charset = 'UTF-8'): self {
+		return new self($logger, $maxLength, $ellipsis, $charset);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param int $maxLength

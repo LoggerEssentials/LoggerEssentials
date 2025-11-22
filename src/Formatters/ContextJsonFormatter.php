@@ -24,6 +24,10 @@ class ContextJsonFormatter extends AbstractLoggerAware implements BuilderAware {
 		return 0;
 	}
 
+	public static function wrap(LoggerInterface $logger, int $jsonOptions = 0, string $format = '%s %s'): self {
+		return new self($logger, $jsonOptions, $format);
+	}
+
 	/**
 	 * @param LoggerInterface $logger
 	 * @param int $jsonOptions

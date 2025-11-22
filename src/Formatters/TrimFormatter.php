@@ -3,6 +3,7 @@ namespace Logger\Formatters;
 
 use Logger\Common\AbstractLoggerAware;
 use Logger\Common\Builder\BuilderAware;
+use Psr\Log\LoggerInterface;
 use Stringable;
 
 /**
@@ -16,6 +17,10 @@ class TrimFormatter extends AbstractLoggerAware implements BuilderAware {
 	 */
 	public static function getWeight(): int {
 		return 0;
+	}
+
+	public static function wrap(LoggerInterface $logger): self {
+		return new self($logger);
 	}
 
 	/**

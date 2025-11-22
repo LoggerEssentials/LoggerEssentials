@@ -18,6 +18,13 @@ class LoggerCollection extends AbstractLogger {
 	/**
 	 * @param array<int, LoggerInterface> $loggers
 	 */
+	public static function wrap(array $loggers = []): self {
+		return new self($loggers);
+	}
+
+	/**
+	 * @param array<int, LoggerInterface> $loggers
+	 */
 	public function __construct(array $loggers = []) {
 		foreach($loggers as $logger) {
 			$this->add($logger);

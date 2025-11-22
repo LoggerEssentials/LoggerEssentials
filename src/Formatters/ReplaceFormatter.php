@@ -5,6 +5,11 @@ use Logger\Common\AbstractLoggerAware;
 use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @phpstan-import-type TLogLevel from AbstractLoggerAware
+ * @phpstan-import-type TLogMessage from AbstractLoggerAware
+ * @phpstan-import-type TLogContext from AbstractLoggerAware
+ */
 class ReplaceFormatter extends AbstractLoggerAware implements BuilderAware {
 	/** @var array<string|int, string|int> */
 	private $replacement;
@@ -28,9 +33,11 @@ class ReplaceFormatter extends AbstractLoggerAware implements BuilderAware {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @inheritDoc
+	 * @param TLogLevel $level
+	 * @param TLogMessage $message
+	 * @param TLogContext $context
 	 */
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$message = strtr($message, $this->replacement);
 		$this->logger()->log($level, $message, $context);
 	}

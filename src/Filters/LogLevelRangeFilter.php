@@ -6,6 +6,11 @@ use Logger\Tools\LogLevelTranslator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
+/**
+ * @phpstan-import-type TLogLevel from AbstractLoggerAware
+ * @phpstan-import-type TLogMessage from AbstractLoggerAware
+ * @phpstan-import-type TLogContext from AbstractLoggerAware
+ */
 class LogLevelRangeFilter extends AbstractLoggerAware {
 	/** @var int */
 	private $minLevel;
@@ -26,12 +31,14 @@ class LogLevelRangeFilter extends AbstractLoggerAware {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @inheritDoc
+	 * @param TLogLevel $level
+	 * @param TLogMessage $message
+	 * @param TLogContext $context
 	 */
-	public function log($psrLevel, $message, array $context = array()) {
-		$level = 7 - LogLevelTranslator::getLevelNo($psrLevel);
+	public function log($level, $message, array $context = []): void {
+		$level = 7 - LogLevelTranslator::getLevelNo($level);
 		if($this->minLevel <= $level && $this->maxLevel >= $level) {
-			$this->logger()->log($psrLevel, $message, $context);
+			$this->logger()->log($level, $message, $context);
 		}
 	}
 }

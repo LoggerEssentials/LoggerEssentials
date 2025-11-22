@@ -6,6 +6,11 @@ use Logger\Common\Builder\BuilderAware;
 use Psr\Log\LoggerInterface;
 use stdClass;
 
+/**
+ * @phpstan-import-type TLogLevel from AbstractLoggerAware
+ * @phpstan-import-type TLogMessage from AbstractLoggerAware
+ * @phpstan-import-type TLogContext from AbstractLoggerAware
+ */
 class ContextJsonFormatter extends AbstractLoggerAware implements BuilderAware {
 	/** @var int */
 	private $jsonOptions;
@@ -33,9 +38,11 @@ class ContextJsonFormatter extends AbstractLoggerAware implements BuilderAware {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @inheritDoc
+	 * @param TLogLevel $level
+	 * @param TLogMessage $message
+	 * @param TLogContext $context
 	 */
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$ctx = $context;
 		if(!count($ctx)) {
 			$ctx = new stdClass();

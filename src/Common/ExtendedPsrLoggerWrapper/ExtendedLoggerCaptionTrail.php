@@ -5,18 +5,17 @@ use ArrayIterator;
 use IteratorAggregate;
 use ReflectionClass;
 use ReflectionException;
+use Stringable;
 use Throwable;
 
 /**
  * @implements IteratorAggregate<int, string>
  */
 class ExtendedLoggerCaptionTrail implements IteratorAggregate {
-    /** @var ExtendedLoggerCaptionTrail|null */
-    private $parentCaptions;
+    private ?ExtendedLoggerCaptionTrail $parentCaptions;
     /** @var array<string, array<int, string>> */
-    private $captions = [];
-    /** @var int */
-    private $couponCounter = 0;
+    private array $captions = [];
+    private int $couponCounter = 0;
 
     /**
      * @param ExtendedLoggerCaptionTrail|null $parentCaptions
@@ -26,10 +25,10 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
     }
 
 	/**
-	 * @param array<int, int|float|string|object> $captions
+	 * @param iterable<int|float|string|Stringable> $captions
 	 * @return string Coupon to address exactly this caption
 	 */
-    public function addCaptions(array $captions): string {
+    public function addCaptions(iterable $captions): string {
         $this->couponCounter++;
         $key = "caption-{$this->couponCounter}";
         $convertedCaptions = [];
@@ -123,10 +122,10 @@ class ExtendedLoggerCaptionTrail implements IteratorAggregate {
 				if($options === null) {
 					$options = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
 					if(defined('JSON_THROW_ON_ERROR')) {
-						$options |= constant('JSON_THROW_ON_ERROR');
+						$options |= JSON_THROW_ON_ERROR;
 					}
 				}
-				$result[] = json_encode($flatCaption, $options);
+				$result[] = json_encode($flatCaption, $options); // @phpstan-ignore-line
 			} else {
 				$result[] = $flatCaption;
 			}

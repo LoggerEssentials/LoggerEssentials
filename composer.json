@@ -8,7 +8,7 @@
 		"email": "ron.kirschler@gmail.com"
 	}],
 	"require": {
-		"php": ">= 7.1",
+		"php": ">= 8.0",
 		"ext-json": "*",
 		"ext-iconv": "*",
 		"psr/log": "^1.0 || ^2.0 || ^3.0"

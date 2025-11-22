@@ -1,9 +1,16 @@
 <?php
 namespace Logger\Loggers;
 
+use Logger\Common\AbstractLoggerAware;
 use Psr\Log\AbstractLogger;
+use Stringable;
 use Throwable;
 
+/**
+ * @phpstan-import-type TLogLevel from AbstractLoggerAware
+ * @phpstan-import-type TLogMessage from AbstractLoggerAware
+ * @phpstan-import-type TLogContext from AbstractLoggerAware
+ */
 class CallbackLogger extends AbstractLogger {
 	/** @var callable(string, string, array<string, mixed>): void */
 	private $callable;
@@ -18,7 +25,9 @@ class CallbackLogger extends AbstractLogger {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @inheritDoc
+	 * @param TLogLevel $level
+	 * @param TLogMessage $message
+	 * @param TLogContext $context
 	 */
 	public function log($level, $message, array $context = []): void {
 		try {

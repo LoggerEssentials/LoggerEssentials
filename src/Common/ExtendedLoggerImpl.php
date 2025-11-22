@@ -10,22 +10,23 @@ use Logger\Common\ExtendedPsrLoggerWrapper\ExtendedLoggerStandardMessageRenderer
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @phpstan-import-type TLogLevel from AbstractLoggerAware
+ * @phpstan-import-type TLogMessage from AbstractLoggerAware
+ * @phpstan-import-type TLogContext from AbstractLoggerAware
+ */
 class ExtendedLoggerImpl extends AbstractLogger implements ExtendedLogger, ExtendedLoggerImplCtorInterface {
-	/** @var LoggerInterface */
-	private $logger;
-	/** @var ExtendedLoggerCaptionTrail */
-	private $captionTrail;
-	/** @var ExtendedLoggerMessageRenderer */
-	private $messageRenderer;
-	/** @var ExtendedLoggerContextExtender */
-	private $contextExtender;
-	/** @var array<string, mixed> */
-	private $context;
+	private LoggerInterface $logger;
+	private ExtendedLoggerCaptionTrail $captionTrail;
+	private ExtendedLoggerMessageRenderer $messageRenderer;
+	private ExtendedLoggerContextExtender $contextExtender;
+	/** @var TLogContext */
+	private array $context;
 
 	/**
 	 * @param LoggerInterface $logger
 	 * @param ExtendedLoggerCaptionTrail|null $captionTrail
-	 * @param array<string, mixed> $context
+	 * @param TLogContext $context
 	 * @param ExtendedLoggerMessageRenderer|null $messageRenderer
 	 * @param ExtendedLoggerContextExtender|null $contextExtender
 	 */
@@ -104,7 +105,9 @@ class ExtendedLoggerImpl extends AbstractLogger implements ExtendedLogger, Exten
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param TLogLevel $level
+	 * @param TLogMessage $message
+	 * @param TLogContext $context
 	 */
 	public function log($level, $message, array $context = []): void {
 		$captions = $this->captionTrail->getCaptions();

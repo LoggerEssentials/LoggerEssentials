@@ -5,17 +5,22 @@ use DateTime;
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Stringable;
 use Throwable;
 
+/**
+ * @phpstan-import-type TLogLevel from AbstractLoggerAware
+ * @phpstan-import-type TLogMessage from AbstractLoggerAware
+ * @phpstan-import-type TLogContext from AbstractLoggerAware
+ */
 class TemplateFormatter extends AbstractLoggerAware {
 	public const DEFAULT_FORMAT = "[%now|date:c%] %level|lpad:10|uppercase% %message|nobr% %ip|default:\"-\"% %context|json%\n";
 
-	/** @var string */
-	private $format;
+	private string $format;
 	/** @var array<int, array{null|string, callable(string): string}> */
-	private $values;
+	private array $values;
 	/** @var array<string, mixed> */
-	private $extra;
+	private array $extra;
 
 	/**
 	 * @param LoggerInterface $logger
@@ -53,7 +58,9 @@ class TemplateFormatter extends AbstractLoggerAware {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @inheritDoc
+	 * @param TLogLevel $level
+	 * @param TLogMessage $message
+	 * @param TLogContext $context
 	 */
 	public function log($level, $message, array $context = []): void {
 		$packet = [
@@ -66,8 +73,11 @@ class TemplateFormatter extends AbstractLoggerAware {
 		$values = [];
 		foreach($this->values as $valueDesc) {
 			$key = $valueDesc[0];
-			$value = $packet[$key] ?? null;
-			$values[] = call_user_func($valueDesc[1], $value);
+
+			/** @var string $value */
+			$value = $packet[(string) $key] ?? null;
+			$callable = $valueDesc[1];
+			$values[] = call_user_func($callable, $value);
 		}
 		$message = vsprintf($this->format, $values);
 		$this->logger()->log($level, $message, $context);
@@ -79,12 +89,13 @@ class TemplateFormatter extends AbstractLoggerAware {
 	 */
 	private function compileFormat(string $format): array {
 		$values = [];
-		$fn = static function ($matches) use (&$values) {
+		$fn = static function (array $matches) use (&$values) {
 			$values[] = $matches[1];
 			return '%s';
 		};
 		$format = (string) preg_replace_callback('{%([^%]+)%}', $fn, $format);
 		$result = [];
+		/** @var string[] $values */
 		foreach($values as $value) {
 			$result[] = $this->extractConverters($value);
 		}
@@ -99,9 +110,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 		[$input, $modifiers] = explode('|', $value . '|', 2);
 		$modifiers = rtrim($modifiers, '|');
 		if(!$modifiers) {
-			return [$input ?: null, static function ($value): string {
-				return $value;
-			}];
+			return [$input ?: null, static fn (?string $value): string => (string) $value];
 		}
 		$modifiers = explode('|', $modifiers);
 		$modifierFn = $this->expandModifiers($modifiers);
@@ -118,11 +127,11 @@ class TemplateFormatter extends AbstractLoggerAware {
 			[$command, $params] = $this->extractFn($modifier);
 			$functions[] = $this->convertCommandToClosure($command, $params);
 		}
-		return static function ($value) use ($functions) {
+		return static function (?string $value) use ($functions): string {
 			foreach($functions as $fn) {
-				$value = $fn($value);
+				$value = $fn((string) $value);
 			}
-			return $value;
+			return (string) $value;
 		};
 	}
 
@@ -149,39 +158,39 @@ class TemplateFormatter extends AbstractLoggerAware {
 	 * @return callable(string): string
 	 */
 	private function convertCommandToClosure(string $command, array $params): callable {
-		$param = static function ($key, $default = null) use ($params) {
-			if(!array_key_exists($key, $params)) {
+		$param = static function (null|int|string $key, null|string $default = null) use ($params): string {
+			if(!array_key_exists($key ?? '', $params)) {
 				if($default !== null) {
 					return $default;
 				}
 				throw new RuntimeException("Missing parameter {$key}");
 			}
-			return $params[$key];
+			return $params[(string) $key];
 		};
 		switch(strtolower($command)) {
 			case 'date':
-				return static function ($value) use ($param) {
-					$dt = new DateTime($value);
-					return $dt->format($param(0));
+				return static function (?string $value) use ($param) {
+					$dt = new DateTime($value ?? 'now');
+					return $dt->format($param('0'));
 				};
 			case 'nobr':
-				return static function ($value) {
-					return preg_replace('{[\\r\\n]+}', ' ', $value);
+				return static function (?string $value): string {
+					return (string) preg_replace('{[\\r\\n]+}', ' ', (string) $value);
 				};
 			case 'trim':
-				return static function ($value) use ($param) {
-					return trim($value, $param(0, " \t\n\r\0\x0B"));
+				return static function (?string $value) use ($param): string {
+					return trim((string) $value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'ltrim':
-				return static function ($value) use ($param) {
-					return ltrim($value, $param(0, " \t\n\r\0\x0B"));
+				return static function (?string $value) use ($param): string {
+					return ltrim((string) $value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'rtrim':
-				return static function ($value) use ($param) {
-					return rtrim($value, $param(0, " \t\n\r\0\x0B"));
+				return static function (?string $value) use ($param): string {
+					return rtrim((string) $value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'json':
-				return static function ($value) {
+				return static function ($value): string {
 					$value = (array) $value;
 					if(array_key_exists('exception', $value) && $value['exception'] instanceof Throwable) {
 						$value['exception'] = self::exceptionToArray($value['exception']);
@@ -189,44 +198,44 @@ class TemplateFormatter extends AbstractLoggerAware {
 					return (string) json_encode((object) $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 				};
 			case 'pad':
-				return static function ($value) use ($param) {
-					return str_pad($value, $param(0), $param(1, ' '), STR_PAD_BOTH);
+				return static function (?string $value) use ($param): string {
+					return (string) str_pad((string) $value, (int) $param(0), $param(1, ' '), STR_PAD_BOTH);
 				};
 			case 'lpad':
-				return static function ($value) use ($param) {
-					return str_pad($value, $param(0), $param(1, ' '), STR_PAD_RIGHT);
+				return static function (?string $value) use ($param): string {
+					return (string) str_pad((string) $value, (int) $param(0), $param(1, ' '), STR_PAD_RIGHT);
 				};
 			case 'rpad':
-				return static function ($value) use ($param) {
-					return str_pad($value, $param(0), $param(1, ' '), STR_PAD_LEFT);
+				return static function (?string $value) use ($param): string {
+					return (string) str_pad((string) $value, (int) $param(0), $param(1, ' '), STR_PAD_LEFT);
 				};
 			case 'uppercase':
-				return static function ($value) {
-					return strtoupper($value);
+				return static function (?string $value): string {
+					return (string) strtoupper((string) $value);
 				};
 			case 'lowercase':
-				return static function ($value) {
-					return strtolower($value);
+				return static function (?string $value): string {
+					return (string) strtolower((string) $value);
 				};
 			case 'lcfirst':
-				return static function ($value) {
-					return lcfirst($value);
+				return static function (?string $value): string {
+					return (string) lcfirst((string) $value);
 				};
 			case 'ucfirst':
-				return static function ($value) {
-					return ucfirst($value);
+				return static function (?string $value): string {
+					return (string) ucfirst((string) $value);
 				};
 			case 'ucwords':
-				return static function ($value) {
-					return ucwords($value);
+				return static function (?string $value): string {
+					return (string) ucwords((string) $value);
 				};
 			case 'cut':
-				return static function ($value) use ($param) {
-					return substr($value, 0, $param(0));
+				return static function (?string $value) use ($param): string {
+					return (string) substr((string) $value, 0, (int) $param(0));
 				};
 			case 'default':
-				return static function ($value) use ($param) {
-					return (string)$value === '' ? $param(0) : $value;
+				return static function (?string $value) use ($param): string {
+					return (string) $value === '' ? (string) $param(0) : (string) $value;
 				};
 		}
 		throw new RuntimeException("Command not registered: {$command}");

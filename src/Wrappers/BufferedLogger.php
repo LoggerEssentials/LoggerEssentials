@@ -1,13 +1,19 @@
 <?php
 namespace Logger\Wrappers;
 
+use Logger\Common\AbstractLoggerAware;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @phpstan-import-type TLogLevel from AbstractLoggerAware
+ * @phpstan-import-type TLogMessage from AbstractLoggerAware
+ * @phpstan-import-type TLogContext from AbstractLoggerAware
+ */
 class BufferedLogger extends AbstractLogger {
 	/** @var LoggerInterface */
 	private $logger;
-	/** @var array<int, array{string, string, array<string, mixed>}> */
+	/** @var list<array{string, string, array<string, mixed>}> */
 	private $entries = [];
 	/** @var int */
 	private $maxEntries;
@@ -63,7 +69,9 @@ class BufferedLogger extends AbstractLogger {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @inheritDoc
+	 * @param TLogLevel $level
+	 * @param TLogMessage $message
+	 * @param TLogContext $context
 	 */
 	public function log($level, $message, array $context = []): void {
 		$this->entries[] = [$level, $message, $context];

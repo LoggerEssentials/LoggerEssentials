@@ -49,7 +49,7 @@ class TestLogger extends AbstractLogger {
 	 * @param array<string, mixed> $context
 	 * @return void
 	 */
-	public function log($level, $message, array $context = []) {
+	public function log($level, $message, array $context = []): void {
 		$this->lines[] = [$message, $context, is_string($level) ? $level : null];
 	}
 }

@@ -5,7 +5,6 @@ use DateTime;
 use Logger\Common\AbstractLoggerAware;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use Stringable;
 use Throwable;
 
 /**
@@ -127,11 +126,17 @@ class TemplateFormatter extends AbstractLoggerAware {
 			[$command, $params] = $this->extractFn($modifier);
 			$functions[] = $this->convertCommandToClosure($command, $params);
 		}
-		return static function (?string $value) use ($functions): string {
+
+		return static function (null|string|array $value) use ($functions): string {
 			foreach($functions as $fn) {
-				$value = $fn((string) $value);
+				/** @var null|string|array<array-key, null|scalar> $val */
+				$val = $value;
+				$value = $fn($val);
 			}
-			return (string) $value;
+			if(is_string($value)) {
+				return $value;
+			}
+			return '';
 		};
 	}
 
@@ -155,7 +160,7 @@ class TemplateFormatter extends AbstractLoggerAware {
 	/**
 	 * @param string $command
 	 * @param array<int|string, string> $params
-	 * @return callable(string): string
+	 * @return callable(null|string|array<array-key, null|scalar>): string
 	 */
 	private function convertCommandToClosure(string $command, array $params): callable {
 		$param = static function (null|int|string $key, null|string $default = null) use ($params): string {
@@ -169,24 +174,29 @@ class TemplateFormatter extends AbstractLoggerAware {
 		};
 		switch(strtolower($command)) {
 			case 'date':
-				return static function (?string $value) use ($param) {
+				return static function (null|string|array $value) use ($param) {
+					$value = is_array($value) ? null : $value;
 					$dt = new DateTime($value ?? 'now');
 					return $dt->format($param('0'));
 				};
 			case 'nobr':
-				return static function (?string $value): string {
+				return static function (null|string|array $value): string {
+					$value = is_array($value) ? null : $value;
 					return (string) preg_replace('{[\\r\\n]+}', ' ', (string) $value);
 				};
 			case 'trim':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return trim((string) $value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'ltrim':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return ltrim((string) $value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'rtrim':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return rtrim((string) $value, $param(0, " \t\n\r\0\x0B"));
 				};
 			case 'json':
@@ -198,43 +208,53 @@ class TemplateFormatter extends AbstractLoggerAware {
 					return (string) json_encode((object) $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 				};
 			case 'pad':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return (string) str_pad((string) $value, (int) $param(0), $param(1, ' '), STR_PAD_BOTH);
 				};
 			case 'lpad':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return (string) str_pad((string) $value, (int) $param(0), $param(1, ' '), STR_PAD_RIGHT);
 				};
 			case 'rpad':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return (string) str_pad((string) $value, (int) $param(0), $param(1, ' '), STR_PAD_LEFT);
 				};
 			case 'uppercase':
-				return static function (?string $value): string {
+				return static function (null|string|array $value): string {
+					$value = is_array($value) ? null : $value;
 					return (string) strtoupper((string) $value);
 				};
 			case 'lowercase':
-				return static function (?string $value): string {
+				return static function (null|string|array $value): string {
+					$value = is_array($value) ? null : $value;
 					return (string) strtolower((string) $value);
 				};
 			case 'lcfirst':
-				return static function (?string $value): string {
+				return static function (null|string|array $value): string {
+					$value = is_array($value) ? null : $value;
 					return (string) lcfirst((string) $value);
 				};
 			case 'ucfirst':
-				return static function (?string $value): string {
+				return static function (null|string|array $value): string {
+					$value = is_array($value) ? null : $value;
 					return (string) ucfirst((string) $value);
 				};
 			case 'ucwords':
-				return static function (?string $value): string {
+				return static function (null|string|array $value): string {
+					$value = is_array($value) ? null : $value;
 					return (string) ucwords((string) $value);
 				};
 			case 'cut':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return (string) substr((string) $value, 0, (int) $param(0));
 				};
 			case 'default':
-				return static function (?string $value) use ($param): string {
+				return static function (null|string|array $value) use ($param): string {
+					$value = is_array($value) ? null : $value;
 					return (string) $value === '' ? (string) $param(0) : (string) $value;
 				};
 		}

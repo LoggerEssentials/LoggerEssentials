@@ -33,6 +33,6 @@ Component overview
 
 How it differs from other logging solutions:
 
-[Monolog](docs/other-loggers/monolog.md)
-[KLogger](docs/other-loggers/klogger.md)
-[Log4PHP](docs/other-loggers/log4php.md)
+- [Monolog](docs/other-loggers/monolog.md)
+- [KLogger](docs/other-loggers/klogger.md)
+- [Log4PHP](docs/other-loggers/log4php.md)

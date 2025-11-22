@@ -1,5 +1,7 @@
 # CallbackFormatter
 
+[← Back to README](../../README.md)
+
 CallbackFormatter transforms the message via a user-provided callable before forwarding to the next logger. The callable receives `(level, message, context)` and must return the new message string.
 
 **When to use**

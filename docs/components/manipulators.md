@@ -1,5 +1,7 @@
 # LogLevelCompressor
 
+[← Back to README](../../README.md)
+
 LogLevelCompressor clamps incoming log levels into a configured inclusive range. Messages below the minimum are raised to the minimum; messages above the maximum are lowered to the maximum. The text, context, and downstream pipeline are unchanged.
 
 **When to use**

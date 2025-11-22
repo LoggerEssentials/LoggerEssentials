@@ -1,5 +1,7 @@
 # CallbackFilter
 
+[← Back to README](../../README.md)
+
 CallbackFilter decides whether to forward a log event by invoking a user callback. The callback receives `(level, message, context)` and must return `true` to pass or `false` to drop.
 
 **When to use**

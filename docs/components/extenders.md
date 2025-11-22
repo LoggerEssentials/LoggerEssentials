@@ -1,5 +1,7 @@
 # CallbackExtender
 
+[← Back to README](../../README.md)
+
 CallbackExtender invokes a user-provided callback for every log event before passing it on. It does not alter the message or context itself; it is meant for side-effects such as metrics, tracing, or custom enrichment performed out-of-band.
 
 **When to use**

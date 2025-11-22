@@ -1,5 +1,7 @@
 # ExtendedLogger
 
+[← Back to README](../../README.md)
+
 ExtendedLogger augments the PSR‑3 interface with hierarchical captions and contextual execution scopes. It lets you build breadcrumb trails that become part of the message and consistently extend context across nested operations.
 
 Note: `ExtendedPsrLoggerWrapper` is provided for backwards compatibility and currently extends `ExtendedLoggerImpl`. Prefer using `ExtendedLoggerImpl` directly for new code.

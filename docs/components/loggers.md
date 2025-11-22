@@ -1,5 +1,7 @@
 # ArrayLogger
 
+[← Back to README](../../README.md)
+
 ArrayLogger collects log entries in memory. Each call to `log()` stores the level, message, and context in an internal array that you can later inspect or clear. It does not write to I/O.
 
 **When to use**

@@ -6,9 +6,9 @@
 !/.gitattributes
 !/.gitignore
 !/.travis.yml
-!/composer.json
 !/LICENSE
+!/README.md
+!/composer.json
 !/mkdocs.yml
 !/phpstan.neon
-!/README.md
 !/tests.xml

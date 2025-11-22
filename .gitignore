@@ -11,4 +11,5 @@
 !/composer.json
 !/mkdocs.yml
 !/phpstan.neon
+!/rector.php
 !/tests.xml

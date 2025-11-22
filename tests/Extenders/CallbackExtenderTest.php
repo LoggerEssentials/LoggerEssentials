@@ -8,7 +8,7 @@ use Psr\Log\LogLevel;
 class CallbackExtenderTest extends TestCase {
 	public function testAll(): void {
 		$testLogger = new TestLogger();
-		$logger = new CallbackExtender($testLogger, function ($level, &$message) {
+		$logger = new CallbackExtender($testLogger, function ($level, &$message): void {
 			if($level === LogLevel::INFO) {
 				$message = preg_replace('/\\bworld\\b/', 'planet', $message);
 			}

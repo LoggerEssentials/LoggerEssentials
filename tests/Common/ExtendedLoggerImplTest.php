@@ -15,8 +15,8 @@ class ExtendedLoggerImplTest extends TestCase {
 	public function testContextExtenderSimple(): void {
 		$testLogger = new TestLogger();
 		$logger = new ExtendedLoggerImpl($testLogger);
-		$logger->context('context a', [], function () use ($logger) {
-			$logger->context('context b', [], function () use ($logger) {
+		$logger->context('context a', [], function () use ($logger): void {
+			$logger->context('context b', [], function () use ($logger): void {
 				$logger->info('Hello world');
 			});
 		});
@@ -27,10 +27,10 @@ class ExtendedLoggerImplTest extends TestCase {
 	public function testContextExtenderComplex(): void {
 		$testLogger = new TestLogger();
 		$logger = new ExtendedLoggerImpl($testLogger);
-		$logger->context('context a', ['id' => 123], function () use ($logger) {
+		$logger->context('context a', ['id' => 123], function () use ($logger): void {
 			$loggerA = $logger->createSubLogger('child a', ['id' => 456]);
 			$loggerC = $logger->createSubLogger('child c', ['name' => 'Peter']);
-			$logger->context('context b', ['id' => 789], function () use ($loggerA, $loggerC) {
+			$logger->context('context b', ['id' => 789], function () use ($loggerA, $loggerC): void {
 				$loggerB = $loggerA->createSubLogger('child b', ['test' => 'abc']);
 				$loggerB->info('Hello world');
 				$loggerC->info('Hello world');
@@ -46,7 +46,7 @@ class ExtendedLoggerImplTest extends TestCase {
 	public function testMeasure(): void {
 		$testLogger = new TestLogger();
 		$logger = new ExtendedLoggerImpl($testLogger);
-		$logger->measure('Test-Region', [], static function () {
+		$logger->measure('Test-Region', [], static function (): void {
 			usleep(50);
 		});
 

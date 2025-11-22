@@ -8,7 +8,7 @@ class CallbackLoggerTest extends TestCase {
 	public function test(): void {
 		$obj = (object) [];
 
-		$callable = static function ($level, $message, array $context = []) use ($obj) {
+		$callable = static function ($level, $message, array $context = []) use ($obj): void {
 			$obj->level = $level;
 			$obj->message = $message;
 			$obj->context = $context;

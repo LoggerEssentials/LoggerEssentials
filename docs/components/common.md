@@ -1,115 +1,106 @@
 # ExtendedLogger
 
-You can create subloggers from a logger-instance. The reason is to easly create a base-context for all deriving log-messages. So you can track, how a certain log-message come from. In a different project, the call-context could be different.
+ExtendedLogger augments the PSR‑3 interface with hierarchical captions and contextual execution scopes. It lets you build breadcrumb trails that become part of the message and consistently extend context across nested operations.
 
-```PHP
-$psrLogger = ...;
-$logger = new ExtendedPsrLoggerWrapper($psrLogger);
-$logger = $logger->createSubLogger('Sub-Routine');
-$logger = $logger->createSubLogger('Sub-Sub-Routine');
-$logger->notice('Hello World'); // Sub-Routine / Sub-Sub-Routine: Hello World
-```
+Note: `ExtendedPsrLoggerWrapper` is provided for backwards compatibility and currently extends `ExtendedLoggerImpl`. Prefer using `ExtendedLoggerImpl` directly for new code.
 
+**When to use**
 
-# ExtendedPsrLoggerWrapper
+Use ExtendedLogger when you need structured call‑site context without repeating prefixes at each log call. It is ideal for batch processing, nested workflows, and request-scoped logging where you want to see the path a message took through the system.
 
-In addition to the standard-interface LoggerInterface, ExtendedLogger provides a way to build a breadcrumb-path to better communicate the context of a log-entry.
-
-Here is some code that illustrates, how this is meant:
-
-## Sub-loggers
+**Examples**
 
 ```php
-<?php
-use Logger\Common\ExtendedPsrLoggerWrapper;
+use Logger\Builder;
+use Logger\Common\ExtendedLoggerImpl;
 use Logger\Formatters\TemplateFormatter;
 use Logger\Loggers\ResourceLogger;
+use Psr\Log\LoggerInterface;
 
-include 'vendor/autoload.php';
+$base = Builder::chain(
+    ResourceLogger::outputToStdOut(),
+    fn (LoggerInterface $l) => new TemplateFormatter($l)
+);
 
-$logger = new TemplateFormatter(new ResourceLogger(STDOUT));
-$logger = new ExtendedPsrLoggerWrapper($logger);
+$logger = new ExtendedLoggerImpl($base);
 
-$orderIds = array(1234567, 7654321, 4352617);
-$logger = $logger->createSubLogger('Process order');
-$logger->info('Start');
+$orders = [1234567, 7654321, 4352617];
+$proc = $logger->createSubLogger('Process order');
+$proc->info('Start');
 
-foreach($orderIds as $orderId) {
-	$childLogger = $logger->createSubLogger($orderId);
-	$childLogger->info('Start processing');
-
-	try {
-		#processOrder($orderId);
-		$childLogger->info('Successfully processed order');
-	} catch (Exception $e) {
-		$childLogger->critical($e->getMessage(), array('exception' => $e));
-	}
-
+foreach ($orders as $orderId) {
+    $child = $proc->createSubLogger((string) $orderId);
+    $child->info('Start processing');
+    $child->info('Successfully processed order');
 }
 
-$logger->info('Done');
+$proc->info('Done');
 ```
 
 Output:
-
+```text
+[2025-01-01T12:00:00+00:00] INFO       Process order > 1234567: Start processing - {}
+[2025-01-01T12:00:00+00:00] INFO       Process order > 1234567: Successfully processed order - {}
+[2025-01-01T12:00:00+00:00] INFO       Process order > 7654321: Start processing - {}
+[2025-01-01T12:00:00+00:00] INFO       Process order > 7654321: Successfully processed order - {}
+[2025-01-01T12:00:00+00:00] INFO       Process order > 4352617: Start processing - {}
+[2025-01-01T12:00:00+00:00] INFO       Process order > 4352617: Successfully processed order - {}
+[2025-01-01T12:00:00+00:00] INFO       Process order: Done - {}
 ```
-[2015-04-01T00:00:00+00:00] INFO       Process order > 1234567: Start processing - {}
-[2015-04-01T00:00:00+00:00] INFO       Process order > 1234567: Successfully processed order - {}
-[2015-04-01T00:00:00+00:00] INFO       Process order > 7654321: Start processing - {}
-[2015-04-01T00:00:00+00:00] INFO       Process order > 7654321: Successfully processed order - {}
-[2015-04-01T00:00:00+00:00] INFO       Process order > 4352617: Start processing - {}
-[2015-04-01T00:00:00+00:00] INFO       Process order > 4352617: Successfully processed order - {}
-[2015-04-01T00:00:00+00:00] INFO       Process order: Done - {}
-```
-
-## Contexts
 
 ```php
-<?php
-use Logger\Common\ExtendedPsrLoggerWrapper;
+use Logger\Builder;
+use Logger\Common\ExtendedLoggerImpl;
 use Logger\Formatters\TemplateFormatter;
 use Logger\Loggers\ResourceLogger;
+use Psr\Log\LoggerInterface;
 
-include 'vendor/autoload.php';
+$base = Builder::chain(
+    ResourceLogger::outputToStdOut(),
+    fn (LoggerInterface $l) => new TemplateFormatter($l)
+);
 
-$logger = new TemplateFormatter(new ResourceLogger(STDOUT));
-$logger = new ExtendedPsrLoggerWrapper($logger);
+$logger = new ExtendedLoggerImpl($base);
 
-$logger->context(['a', 'b'], [], function () use ($logger) {
-    $logger->context('c', [], function () use ($logger) {
+$logger->context(['a', 'b'], [], function (ExtendedLoggerImpl $logger) {
+    $logger->context('c', [], function (ExtendedLoggerImpl $logger) {
         $logger->info('Test');
     });
 });
 ```
 
 Output:
-
+```text
+[2025-01-01T12:00:00+00:00] INFO       a > b > c: Test - {}
 ```
-[2015-04-01T00:00:00+00:00] INFO       a > b > c: Test - {}
-```
 
-## Intercepting
+# ExtendedPsrLoggerWrapper
+
+ExtendedPsrLoggerWrapper is a compatibility alias that currently inherits all behavior from `ExtendedLoggerImpl`.
+
+**When to use**
+
+Prefer `ExtendedLoggerImpl` for new projects. Use `ExtendedPsrLoggerWrapper` if you maintain existing code that already references this class.
+
+**Examples**
 
 ```php
-<?php
+use Logger\Builder;
 use Logger\Common\ExtendedPsrLoggerWrapper;
 use Logger\Formatters\TemplateFormatter;
 use Logger\Loggers\ResourceLogger;
+use Psr\Log\LoggerInterface;
 
-include 'vendor/autoload.php';
+$base = Builder::chain(
+    ResourceLogger::outputToStdOut(),
+    fn (LoggerInterface $l) => new TemplateFormatter($l)
+);
 
-$logger = new TemplateFormatter(new ResourceLogger(STDOUT));
-$logger = new ExtendedPsrLoggerWrapper($logger);
-
-$logger->intercept(function () use ($logger) {
-    $logger->info('Hello World');
-}, function (CapturedLogEvent $logEvent) {
-    $logEvent->getParentLogger()->log($logEvent->getLevel(), strtoupper($logEvent->getMessage()), $logEvent->getContext());
-});
+$logger = new ExtendedPsrLoggerWrapper($base);
+$logger->createSubLogger('Sub')->info('Hello World');
 ```
 
 Output:
-
-```
-[2015-04-01T00:00:00+00:00] INFO       HELLO WORLD - {}
+```text
+[2025-01-01T12:00:00+00:00] INFO       Sub: Hello World - {}
 ```

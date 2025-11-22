@@ -6,10 +6,29 @@
 
 ## Example
 
-```PHP
+```php
+use Logger\Builder;
+use Logger\Loggers\LoggerCollection;
+use Logger\Loggers\ResourceLogger;
+use Logger\Formatters\TemplateFormatter;
+use Logger\Filters\MaxLogLevelFilter;
+use Logger\Filters\MinLogLevelFilter;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+
+$stdout = Builder::chain(
+    ResourceLogger::outputToStdOut(),
+    fn (LoggerInterface $l) => new TemplateFormatter($l)
+);
+
+$stderr = Builder::chain(
+    ResourceLogger::outputToStdErr(),
+    fn (LoggerInterface $l) => new TemplateFormatter($l)
+);
+
 $logger = new LoggerCollection();
-$logger->add(new MaxLogLevelFilter(new TemplateFormatter(new ResourceLogger(STDOUT)), LogLevel::WARNING));
-$logger->add(new MinLogLevelFilter(new TemplateFormatter(new ResourceLogger(STDERR)), LogLevel::ERROR));
+$logger->add(new MaxLogLevelFilter($stdout, LogLevel::WARNING));
+$logger->add(new MinLogLevelFilter($stderr, LogLevel::ERROR));
 
 $logger->info('Hello world');
 ```
@@ -18,11 +37,23 @@ $logger->info('Hello world');
 
 You could use Monolog as an output-channel, which is also PSR-3 compatible but ships propritary log-handlers. LoggerEssentials assumes, that all LogHandlers are PSR-3 compatible, so you can't use monolog's handlers directly. May be I could create a wrapper for them at some time. 
 
-```PHP
+```php
+use Logger\Builder;
+use Logger\Loggers\LoggerCollection;
+use Logger\Formatters\TemplateFormatter;
+use Logger\Filters\MaxLogLevelFilter;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+
 $slackLogger = (new Monolog\Logger( /* ... */ ))->pushHandler(new SlackHandler( /* ... */ )); // *1
 
+$formattedSlack = Builder::chain(
+    $slackLogger,
+    fn (LoggerInterface $l) => new TemplateFormatter($l)
+);
+
 $logger = new LoggerCollection();
-$logger->add(new MaxLogLevelFilter(new TemplateFormatter($slackLogger), LogLevel::DEBUG));
+$logger->add(new MaxLogLevelFilter($formattedSlack, LogLevel::DEBUG));
 
 $logger->info('Hello world');
 ```

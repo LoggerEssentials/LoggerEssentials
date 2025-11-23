@@ -33,8 +33,8 @@ class MinLogLevelFilter extends AbstractLoggerAware {
 	 * @param TLogContext $context
 	 */
 	public function log($level, $message, array $context = []): void {
-		$level = 7 - LogLevelTranslator::getLevelNo($level);
-		if($this->minLevel <= $level) {
+		$curLevel = 7 - LogLevelTranslator::getLevelNo($level);
+		if($this->minLevel <= $curLevel) {
 			$this->logger()->log($level, $message, $context);
 		}
 	}

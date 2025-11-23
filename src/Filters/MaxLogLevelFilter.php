@@ -33,8 +33,8 @@ class MaxLogLevelFilter extends AbstractLoggerAware {
 	 * @param TLogContext $context
 	 */
 	public function log($level, $message, array $context = []): void {
-		$level = 7 - LogLevelTranslator::getLevelNo($level);
-		if($this->maxLevel >= $level) {
+		$curLevel = 7 - LogLevelTranslator::getLevelNo($level);
+		if($this->maxLevel >= $curLevel) {
 			$this->logger()->log($level, $message, $context);
 		}
 	}
